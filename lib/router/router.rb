@@ -18,17 +18,20 @@ module Rain
     attr_reader :routes, :trie
 
     def initialize
-      @routes = {}
       @breadcrumbs = []
+      @routes = {}
       @trie = Trie.new
     end
 
     def route(path, verbs = [], &block)
       @breadcrumbs << path
-
       path = @breadcrumbs.join
+
+      route = Route.new(path:, verbs: [*verbs])
+      @routes[path] = route
+      @trie.merge(route:)
+
       observable path
-      @routes[path] = Route.new(path:, verbs: [*verbs])
 
       block.call if block_given?
 
@@ -51,12 +54,12 @@ module Rain
       route(path, 'DELETE', &block)
     end
 
-    class << self
-      # TODO: Add type: ::Low::RequestEvent
-      def handle(event:)
-        route = Trie.parse(event.request.path)
-        route_event = RouteEvent.new(route:)
-        trigger route_event
+    # Raindeer internal API.
+
+    # TODO: Define type: ::Low::RequestEvent
+    def handle(event:)
+      @trie.match(path: event.request.path).each do |route_event|
+        trigger route_event, route_event.route.path
       end
     end
   end

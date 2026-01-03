@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'observers'
-require 'low_event' # RequestEvent. TODO: Move to LowLoop.
+require 'low_event' # TODO: Move RequestEvent to LowLoop.
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
@@ -10,14 +10,12 @@ RSpec.describe RainRouter do
 
   before do
     Observers::Observables.reset
-    allow(Observers).to receive(:observable)
-    allow(Observers::Observables).to receive(:upsert)
   end
 
-  context 'when defining routes' do
+  describe '#route' do
     it 'defines routes as observable' do
       rain_router.get '/user'
-      expect(Observers::Observables).to have_received(:upsert)
+      expect(Observers::Observables.all.count).to eq(1)
     end
 
     it 'creates combinatorial routes' do
@@ -30,13 +28,16 @@ RSpec.describe RainRouter do
     end
   end
 
-  # context 'when handling events' do
-  #   let(:request_event) { Low::RequestEvent.new(request:) }
-  #   let(:request) { Low::RequestFactory.request(path: '/user') }
+  describe '#handle' do
+    let(:request_event) { Low::RequestEvent.new(request:) }
+    let(:request) { Low::RequestFactory.request(path: '/users') }
 
-  #   it 'converts a request event to a route event' do
-  #     rain_router.get '/user'
-  #     RainRouter.handle(event: request_event)
-  #   end
-  # end
+    before do
+      rain_router.get '/users'
+    end
+
+    it 'triggers a route event on observers' do
+      rain_router.handle(event: request_event)
+    end
+  end
 end
