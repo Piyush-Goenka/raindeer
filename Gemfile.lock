@@ -1,4 +1,15 @@
 PATH
+  remote: ../expressions
+  specs:
+    expressions (0.0.0)
+
+PATH
+  remote: ../low_dependency
+  specs:
+    low_dependency (0.2.0)
+      expressions
+
+PATH
   remote: ../low_event
   specs:
     low_event (0.0.1)
@@ -140,6 +151,8 @@ PLATFORMS
   x86_64-darwin-22
 
 DEPENDENCIES
+  expressions!
+  low_dependency!
   low_event!
   low_loop!
   low_type!

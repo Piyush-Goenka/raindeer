@@ -6,6 +6,8 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
+  gem 'expressions', path: '../expressions'
+  gem 'low_dependency', path: '../low_dependency'
   gem 'low_event', path: '../low_event'
   gem 'low_loop', path: '../low_loop'
   gem 'low_type', path: '../low_type'
