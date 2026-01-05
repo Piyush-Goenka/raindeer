@@ -1,7 +1,13 @@
 PATH
+  remote: ../antlers
+  specs:
+    antlers (0.0.0)
+      low_type (~> 1.0)
+
+PATH
   remote: ../expressions
   specs:
-    expressions (0.0.0)
+    expressions (0.1.0)
 
 PATH
   remote: ../low_dependency
@@ -19,7 +25,7 @@ PATH
 PATH
   remote: ../low_loop
   specs:
-    low_loop (0.0.0)
+    low_loop (0.1.0)
       async
       async-http
       io-stream
@@ -36,22 +42,27 @@ PATH
   remote: ../observers
   specs:
     observers (0.2.0)
+      low_dependency
 
 PATH
   remote: .
   specs:
     raindeer (0.0.0)
+      antlers
+      expressions
+      low_dependency
       low_event
       low_loop
       low_node
       low_state
       low_type (~> 1.0)
+      observers
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
-    async (2.35.0)
+    async (2.35.1)
       console (~> 1.29)
       fiber-annotation
       io-event (~> 1.11)
@@ -83,7 +94,7 @@ GEM
     io-endpoint (0.16.0)
     io-event (1.14.2)
     io-stream (0.11.1)
-    json (2.15.2)
+    json (2.18.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     low_node (0.0.0)
@@ -95,9 +106,9 @@ GEM
     parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
-    prism (1.6.0)
+    prism (1.7.0)
     protocol-hpack (1.5.1)
-    protocol-http (0.55.0)
+    protocol-http (0.56.1)
     protocol-http1 (0.35.2)
       protocol-http (~> 0.22)
     protocol-http2 (0.23.0)
@@ -111,22 +122,22 @@ GEM
       pry (>= 0.9.10, < 0.15)
     racc (1.8.1)
     rainbow (3.1.1)
-    rake (13.3.0)
+    rake (13.3.1)
     regexp_parser (2.11.3)
-    rspec (3.13.1)
+    rspec (3.13.2)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.5)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.5)
+    rspec-mocks (3.13.7)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.6)
-    rubocop (1.81.6)
+    rubocop (1.82.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -134,23 +145,24 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.47.1, < 2.0)
+      rubocop-ast (>= 1.48.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.47.1)
+    rubocop-ast (1.49.0)
       parser (>= 3.3.7.2)
-      prism (~> 1.4)
+      prism (~> 1.7)
     ruby-progressbar (1.13.0)
     traces (0.18.2)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
-    unicode-emoji (4.1.0)
+    unicode-emoji (4.2.0)
 
 PLATFORMS
   ruby
-  x86_64-darwin-22
+  x86_64-darwin-23
 
 DEPENDENCIES
+  antlers!
   expressions!
   low_dependency!
   low_event!
@@ -166,4 +178,4 @@ DEPENDENCIES
   rubocop
 
 BUNDLED WITH
-   2.5.9
+   2.7.2

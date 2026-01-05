@@ -35,3 +35,10 @@ Instead of the model defining relationships and associated queries to the databa
 <p align="center">
   <img src="assets/Architecture.svg" alt="Raindeer architecture diagram" style="max-width: 800px;">
 </p>
+
+## Local setup
+
+In your terminal run:
+```
+bin/server
+```

@@ -36,7 +36,7 @@ RSpec.describe RainRouter do
       rain_router.get '/users'
     end
 
-    it 'triggers a route event on observers' do
+    it 'triggers route events on observers' do
       rain_router.handle(event: request_event)
     end
   end
