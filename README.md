@@ -28,7 +28,7 @@ The RainRouter accepts `RequestEvent`s and directs the request to the appropriat
 
 ### LowData
 
-Instead of the model defining relationships and associated queries to the database, LowData follows the repository pattern with a twist; Expressions. For example, a "table expression" inverts the usual database query logic. Instead of building a query of what we want from the database, we build the table we want and let the expression build the query; An expression like `table(:username > :title | :body)` builds a SQL query to RIGHT JOIN the user table into the articles table and results in a list of articles with the user's username in each row.
+Instead of the model defining relationships and associated queries to the database, LowData follows the repository pattern with a twist; [Expressions](https://github.com/raindeer-rb/expressions). For example, a "table expression" inverts the usual database query logic. Instead of building a query of what we want from the database, we build the table we want and let the expression build the query; An expression like `table(:username > :title | :body)` builds a SQL query to RIGHT JOIN the user table into the articles table and results in a list of articles with the user's username in each row.
 
 ## Architecture
 
