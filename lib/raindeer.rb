@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-require 'low_type'
 require 'low_dependency'
-require_relative 'router'
+require 'low_event'
+require 'low_type'
+require 'observers'
+
+require_relative 'router/router'
 
 class Raindeer
   class << self

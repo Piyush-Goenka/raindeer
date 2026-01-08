@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'low_event'
-require 'observers'
-
 require_relative 'route'
 require_relative 'route_event'
 require_relative 'trie'
