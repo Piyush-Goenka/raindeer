@@ -9,11 +9,12 @@ group :development do
   gem 'low_dependency', path: '../low_dependency'
   gem 'low_event', path: '../low_event'
   gem 'low_loop', path: '../low_loop'
+  gem 'low_node', path: '../low_node'
   gem 'low_type', path: '../low_type'
 
   gem 'antlers', path: '../antlers'
-  gem 'observers', path: '../observers'
   gem 'expressions', path: '../expressions'
+  gem 'observers', path: '../observers'
 
   gem 'pry'
   gem 'pry-nav'
