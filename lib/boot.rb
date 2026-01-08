@@ -14,3 +14,5 @@ end
 LowDependency.provide('rain.router') do
   RainRouter.new
 end
+
+require_relative 'system/system'
