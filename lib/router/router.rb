@@ -20,7 +20,7 @@ module Rain
       @trie = Trie.new
 
       # TODO: Actually inject dependency.
-      observe Low::Providers.find('low.loop')
+      observe Low::Providers.find('low.loop').result
     end
 
     def route(path, verbs = [], &block)

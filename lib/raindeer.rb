@@ -6,8 +6,8 @@ require_relative 'router'
 
 class Raindeer
   class << self
-    def router(&)
-      Low::Providers.find('rain.router').instance_eval(&block)
+    def router(&block)
+      Low::Providers.find('rain.router').result.instance_eval(&block)
     end
   end
 end
