@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'observers'
-require 'low_event' # TODO: Move RequestEvent to LowLoop.
+require 'low_event'
+
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
