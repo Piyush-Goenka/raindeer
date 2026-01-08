@@ -18,9 +18,10 @@ PATH
 PATH
   remote: ../low_event
   specs:
-    low_event (0.0.1)
+    low_event (0.1.0)
       low_type (~> 1.0)
       observers
+      protocol-http
 
 PATH
   remote: ../low_loop
