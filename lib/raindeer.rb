@@ -2,6 +2,7 @@
 
 require 'low_dependency'
 require 'low_event'
+require 'low_node'
 require 'low_type'
 require 'observers'
 
