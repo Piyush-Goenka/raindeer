@@ -2,12 +2,13 @@
 
 require 'observers'
 require 'low_event'
+require 'low_loop'
 
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
 RSpec.describe RainRouter do
-  subject(:rain_router) { described_class.new }
+  subject(:rain_router) { described_class.new(low_loop: LowLoop.new) }
 
   before do
     Observers::Observables.reset
@@ -16,7 +17,7 @@ RSpec.describe RainRouter do
   describe '#route' do
     it 'defines routes as observable' do
       rain_router.get '/user'
-      expect(Observers::Observables.all.count).to eq(1)
+      expect(Observers::Observables.all).to have_key('/user')
     end
 
     it 'creates combinatorial routes' do
@@ -30,8 +31,8 @@ RSpec.describe RainRouter do
   end
 
   describe '#handle' do
-    let(:request_event) { Low::RequestEvent.new(request:) }
-    let(:request) { Low::RequestFactory.request(path: '/users') }
+    let(:request_event) { Low::Events::RequestEvent.new(request:) }
+    let(:request) { Low::Support::RequestFactory.request(path: '/users') }
 
     before do
       rain_router.get '/users'

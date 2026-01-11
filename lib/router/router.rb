@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'low_dependency'
+
 require_relative 'route'
 require_relative 'route_event'
 require_relative 'trie'
@@ -11,13 +13,12 @@ module Rain
 
     attr_reader :routes, :trie
 
-    def initialize
+    def initialize(low_loop:)
       @breadcrumbs = []
       @routes = {}
       @trie = Trie.new
 
-      # TODO: Actually inject dependency.
-      observe Low::Providers.find('low.loop').result
+      observe low_loop
     end
 
     def route(path, verbs = [], &block)
