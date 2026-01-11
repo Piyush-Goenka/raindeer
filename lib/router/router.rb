@@ -59,7 +59,7 @@ module Rain
 
       # TODO: An application should be able to listen to the same event and override it.
       @trie.match(path: event.request.path).each do |route_event|
-        response_event = take(route_event, route_event.route.path)
+        response_event = trigger route_event.route.path, event: route_event
       end
 
       response_event unless response_event.nil?
