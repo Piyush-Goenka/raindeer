@@ -12,7 +12,8 @@ LowDependency.provide('low.loop') do
 end
 
 LowDependency.provide('rain.router') do
-  RainRouter.new
+  # TODO: Use "def method(dependency: Dependency)" in rain router's constructor when this feature is ready.
+  RainRouter.new(low_loop: Low::Providers['low.loop'])
 end
 
 require_relative 'system/system'

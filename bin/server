@@ -10,4 +10,4 @@ config = Struct.new(:host, :port, :matrix_mode, :mirror_mode)
 
 require_relative '../lib/boot'
 
-Low::Providers.find('low.loop').result.start(config: config.new(host, port, matrix_mode, mirror_mode))
+Low::Providers['low.loop'].start(config: config.new(host, port, matrix_mode, mirror_mode))
