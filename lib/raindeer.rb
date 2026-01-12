@@ -7,7 +7,6 @@ require 'low_type'
 require 'observers'
 
 require_relative 'router/router'
-require_relative 'system/system'
 
 class Raindeer
   class << self
