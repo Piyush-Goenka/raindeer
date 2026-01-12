@@ -6,9 +6,7 @@ require 'low_loop'
 require_relative 'router/router'
 
 LowDependency.provide('low.loop') do
-  low_loop = LowLoop.new
-  low_loop.observable
-  low_loop
+  LowLoop.new
 end
 
 LowDependency.provide('rain.router') do

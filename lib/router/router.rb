@@ -30,8 +30,6 @@ module Rain
       @routes[path] = route
       @trie.merge(route:)
 
-      observable path
-
       block.call if block_given?
 
       @breadcrumbs.pop
