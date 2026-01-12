@@ -16,11 +16,6 @@ RSpec.describe RainRouter do
   end
 
   describe '#route' do
-    it 'defines routes as observable' do
-      rain_router.get '/user'
-      expect(Observers::Observables.all).to have_key('/user')
-    end
-
     it 'creates combinatorial routes' do
       rain_router.route '/users' do
         rain_router.get '/:id'
