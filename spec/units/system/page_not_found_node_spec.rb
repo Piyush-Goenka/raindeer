@@ -20,7 +20,7 @@ RSpec.describe PageNotFoundNode do
 
   context 'when a 404 status event is triggered' do
     let(:event) { Low::Events::StatusEvent.new(status: LowType::Status[404], request:) }
-    let(:request) { Low::Support::RequestFactory.request(path: '/missing-page') }
+    let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
     it 'renders a response' do
       response = low_loop.trigger(LowType::Status[404], action: :render, event:)

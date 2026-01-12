@@ -52,8 +52,6 @@ module Rain
       route(path, 'DELETE', &block)
     end
 
-    # Raindeer internal API.
-
     # TODO: Define type: ::Low::Events::RequestEvent
     def handle(event:)
       response_event = nil
@@ -63,7 +61,13 @@ module Rain
         response_event = trigger route_event.route.path, event: route_event
       end
 
-      response_event unless response_event.nil?
+      if response_event.nil?
+        status = LowType::Status[404]
+        response_event = trigger status, Low::Events::StatusEvent.new(status:, request: event.request)
+      end
+
+      # Fiber.blocking { binding.irb }
+      response_event
     end
   end
 end

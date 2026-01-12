@@ -4,6 +4,7 @@ require 'observers'
 require 'low_event'
 require 'low_loop'
 
+require_relative '../../../lib/router/route_event'
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
@@ -32,14 +33,32 @@ RSpec.describe RainRouter do
 
   describe '#handle' do
     let(:request_event) { Low::Events::RequestEvent.new(request:) }
-    let(:request) { Low::Support::RequestFactory.request(path: '/users') }
 
-    before do
-      rain_router.get '/users'
+    context 'when the route is found' do
+      let(:request) { Low::Support::RequestFactory.request(path: '/users') }
+
+      before do
+        rain_router.get '/users'
+        allow(rain_router).to receive(:trigger)
+      end
+
+      it 'triggers route event on observers' do
+        rain_router.handle(event: request_event)
+        expect(rain_router).to have_received(:trigger).with('/users', event: an_instance_of(Rain::RouteEvent))
+      end
     end
 
-    it 'triggers route events on observers' do
-      rain_router.handle(event: request_event)
+    context 'when the route is missing' do
+      let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
+
+      before do
+        allow(rain_router).to receive(:trigger)
+      end
+
+      it 'triggers status event on observers' do
+        rain_router.handle(event: request_event)
+        expect(rain_router).to have_received(:trigger).with('/missing-path', event: an_instance_of(Low::Events::StatusEvent))
+      end
     end
   end
 end
