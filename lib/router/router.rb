@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'low_dependency'
+require 'low_event'
 
 require_relative 'route'
 require_relative 'route_event'
@@ -53,20 +54,19 @@ module Rain
     end
 
     # TODO: Define type: ::Low::Events::RequestEvent
+    # You can override any route/status simply by adding your own observer.
     def handle(event:)
       response_event = nil
 
-      # TODO: An application should be able to listen to the same event and override it.
       @trie.match(path: event.request.path).each do |route_event|
         response_event = trigger route_event.route.path, event: route_event
       end
 
       if response_event.nil?
         status = LowType::Status[404]
-        response_event = trigger status, Low::Events::StatusEvent.new(status:, request: event.request)
+        response_event = trigger status, event: Low::Events::StatusEvent.new(status:, request: event.request)
       end
 
-      # Fiber.blocking { binding.irb }
       response_event
     end
   end

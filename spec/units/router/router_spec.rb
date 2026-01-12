@@ -57,7 +57,7 @@ RSpec.describe RainRouter do
 
       it 'triggers status event on observers' do
         rain_router.handle(event: request_event)
-        expect(rain_router).to have_received(:trigger).with('/missing-path', event: an_instance_of(Low::Events::StatusEvent))
+        expect(rain_router).to have_received(:trigger).with(LowType::Status[404], event: an_instance_of(Low::Events::StatusEvent))
       end
     end
   end
