@@ -2,14 +2,13 @@
 
 require 'observers'
 require 'low_event'
-require 'low_loop'
 
 require_relative '../../../lib/router/route_event'
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
 RSpec.describe RainRouter do
-  subject(:rain_router) { described_class.new(low_loop: LowLoop.new) }
+  subject(:rain_router) { described_class.new }
 
   before do
     Observers::Observables.reset

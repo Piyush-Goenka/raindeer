@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'observers'
-require 'low_loop'
 require 'low_node'
 
 require_relative '../../../lib/system/page_not_found_node'
 require_relative '../../factories/request_factory'
+require_relative '../../fixtures/mock_router'
 
 RSpec.describe PageNotFoundNode do
   subject(:page_not_found) { described_class }
 
-  let(:low_loop) { LowLoop.new }
+  let(:mock_router) { MockRouter.new }
 
   before do
     Observers::Observables.reset
@@ -23,7 +23,7 @@ RSpec.describe PageNotFoundNode do
     let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
     it 'renders a response' do
-      response = low_loop.trigger(LowType::Status[404], action: :render, event:)
+      response = mock_router.take(LowType::Status[404], action: :render, event:)
       expect(response).to be_instance_of(Low::Events::ResponseEvent)
     end
   end

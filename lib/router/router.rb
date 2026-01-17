@@ -14,12 +14,10 @@ module Rain
 
     attr_reader :routes, :trie
 
-    def initialize(low_loop:)
+    def initialize
       @breadcrumbs = []
       @routes = {}
       @trie = Trie.new
-
-      observe low_loop
     end
 
     def route(path, verbs = [], &block)
