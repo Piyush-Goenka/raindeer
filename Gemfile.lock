@@ -12,8 +12,8 @@ PATH
 PATH
   remote: ../low_dependency
   specs:
-    low_dependency (0.2.1)
-      expressions
+    low_dependency (0.3.1)
+      expressions (~> 0.1)
 
 PATH
   remote: ../low_event
@@ -26,31 +26,34 @@ PATH
 PATH
   remote: ../low_loop
   specs:
-    low_loop (0.2.1)
+    low_loop (0.3.0)
       async
       async-http
       io-stream
       low_event
       low_type (~> 1.0)
       protocol-http
+      protocol-url
 
 PATH
   remote: ../low_node
   specs:
     low_node (0.1.2)
       low_event
+      low_loop
       low_type (~> 1.0)
       observers
 
 PATH
   remote: ../low_type
   specs:
-    low_type (1.1.5)
+    low_type (1.1.7)
+      expressions (~> 0.1)
 
 PATH
   remote: ../observers
   specs:
-    observers (0.5.1)
+    observers (0.5.2)
       low_dependency
 
 PATH

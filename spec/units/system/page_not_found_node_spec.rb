@@ -19,11 +19,11 @@ RSpec.describe PageNotFoundNode do
   end
 
   context 'when a 404 status event is triggered' do
-    let(:event) { Low::Events::StatusEvent.new(status: LowType::Status[404], request:) }
+    let(:event) { Low::Events::StatusEvent.new(status: Low::Types::Status[404], request:) }
     let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
     it 'renders a response' do
-      response = mock_router.take(LowType::Status[404], action: :render, event:)
+      response = mock_router.take(Low::Types::Status[404], action: :render, event:)
       expect(response).to be_instance_of(Low::Events::ResponseEvent)
     end
   end
