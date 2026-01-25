@@ -90,12 +90,14 @@ module Rain
 
         context 'when :param is an end node' do
           it "sets the mid node's event action to #handle" do
-            route_event = trie.match(path: '/users/1').first # /users
+            # /users
+            route_event = trie.match(path: '/users/1').first
             expect(route_event).to have_attributes(action: :handle)
           end
 
           it "sets the end node's event action to #render" do
-            route_event = trie.match(path: '/users/1').last # /users/:id
+            # /users/:id
+            route_event = trie.match(path: '/users/1').last
             expect(route_event).to have_attributes(action: :render)
           end
 
@@ -105,12 +107,14 @@ module Rain
             end
 
             it "sets the mid node's event action to #handle" do
-              route_event = trie.match(path: '/users/1/edit')[1] # /users/:id
+              # /users/:id
+              route_event = trie.match(path: '/users/1/edit')[1]
               expect(route_event).to have_attributes(action: :handle)
             end
 
             it "sets the end node's event action to #render" do
-              route_event = trie.match(path: '/users/1/edit').last # /users/:id/edit
+              # /users/:id/edit
+              route_event = trie.match(path: '/users/1/edit').last
               expect(route_event).to have_attributes(action: :render)
             end
           end
