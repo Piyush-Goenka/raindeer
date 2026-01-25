@@ -18,7 +18,7 @@ PATH
 PATH
   remote: ../low_event
   specs:
-    low_event (0.2.0)
+    low_event (0.3.0)
       low_type (~> 1.0)
       observers
       protocol-http
@@ -26,7 +26,7 @@ PATH
 PATH
   remote: ../low_loop
   specs:
-    low_loop (0.3.0)
+    low_loop (0.3.1)
       async
       async-http
       io-stream
@@ -47,7 +47,7 @@ PATH
 PATH
   remote: ../low_type
   specs:
-    low_type (1.1.7)
+    low_type (1.1.8)
       expressions (~> 0.1)
 
 PATH
