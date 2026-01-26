@@ -69,6 +69,7 @@ PATH
       low_state
       low_type (~> 1.0)
       observers
+      ostruct
 
 GEM
   remote: https://gem.coop/
@@ -112,6 +113,7 @@ GEM
     low_state (0.2.0)
     method_source (1.1.0)
     metrics (0.15.0)
+    ostruct (0.6.1)
     parallel (1.27.0)
     parser (3.3.10.0)
       ast (~> 2.4.1)

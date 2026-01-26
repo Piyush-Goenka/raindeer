@@ -1,24 +1,26 @@
 # frozen_string_literal: true
 
-require 'low_dependency'
 require 'low_loop'
+require 'low_dependency'
 
-require_relative 'router/router'
+require_relative 'support/config_loader'
 
-host = ENV.fetch('RAIN_HOST', '127.0.0.1').freeze
-port = ENV.fetch('RAIN_PORT', 4133)
-matrix_mode = ENV.fetch('RAIN_MATRIX', nil) == '1'
-mirror_mode = ENV.fetch('RAIN_MIRROR', nil) == '1'
+env = {
+  host: ENV.fetch('RAIN_HOST', nil),
+  port: ENV.fetch('RAIN_PORT', nil),
+  web_root: ENV.fetch('RAIN_WEB_ROOT', nil),
+  matrix_mode: Rain::ConfigLoader.parse_boolean(ENV.fetch('RAIN_MATRIX', nil)),
+  mirror_mode: Rain::ConfigLoader.parse_boolean(ENV.fetch('RAIN_MIRROR', nil))
+}
 
-config = Struct.new(:host, :port, :matrix_mode, :mirror_mode)
+config = Rain::ConfigLoader.load('./config/config.yaml', env)
 
 LowDependency.provide('rain.router') do
   RainRouter.new
 end
 
 LowDependency.provide('low.loop') do
-  # TODO: Use "def method(dependency: Dependency)" in low loop's constructor when this feature is ready.
-  LowLoop.new(config: config.new(host, port, matrix_mode, mirror_mode), router: Low::Providers['rain.router'])
+  LowLoop.new(config:, router: Low::Providers['rain.router'])
 end
 
 require_relative 'system/system'
