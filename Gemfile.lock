@@ -59,7 +59,7 @@ PATH
 PATH
   remote: .
   specs:
-    raindeer (0.1.1)
+    raindeer (0.1.2)
       antlers
       expressions
       low_dependency
