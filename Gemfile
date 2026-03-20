@@ -9,8 +9,10 @@ group :development do
   gem 'low_dependency', path: '../low_dependency'
   gem 'low_event', path: '../low_event'
   gem 'low_loop', path: '../low_loop'
-  gem 'low_node', path: '../low_node'
-  gem 'low_type', path: '../low_type'
+  gem 'low_node', path: '../lownode'
+  gem 'low_type', path: '../lowtype'
+  gem 'lowkey', path: '../lowkey'
+  gem 'lowload', path: '../lowload'
 
   gem 'antlers', path: '../antlers'
   gem 'expressions', path: '../expressions'

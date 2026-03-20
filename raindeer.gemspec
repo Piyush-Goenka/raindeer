@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'low_node'
   spec.add_dependency 'low_state'
   spec.add_dependency 'low_type', '~> 1.0'
+  spec.add_dependency 'lowload'
 
   spec.add_dependency 'antlers'
   spec.add_dependency 'expressions'

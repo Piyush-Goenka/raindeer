@@ -36,19 +36,33 @@ PATH
       protocol-url
 
 PATH
-  remote: ../low_node
+  remote: ../lowkey
+  specs:
+    lowkey (0.4.1)
+      prism
+
+PATH
+  remote: ../lowload
+  specs:
+    lowload (0.3.0)
+      lowkey
+
+PATH
+  remote: ../lownode
   specs:
     low_node (0.1.2)
+      antlers
       low_event
       low_loop
       low_type (~> 1.0)
       observers
 
 PATH
-  remote: ../low_type
+  remote: ../lowtype
   specs:
-    low_type (1.1.8)
+    low_type (1.1.12)
       expressions (~> 0.1)
+      lowkey (~> 0.4)
 
 PATH
   remote: ../observers
@@ -59,7 +73,7 @@ PATH
 PATH
   remote: .
   specs:
-    raindeer (0.1.2)
+    raindeer (0.1.3)
       antlers
       expressions
       low_dependency
@@ -68,6 +82,7 @@ PATH
       low_node
       low_state
       low_type (~> 1.0)
+      lowload
       observers
       ostruct
 
@@ -181,6 +196,8 @@ DEPENDENCIES
   low_loop!
   low_node!
   low_type!
+  lowkey!
+  lowload!
   observers!
   protocol-http
   pry
