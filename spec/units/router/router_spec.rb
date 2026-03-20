@@ -3,7 +3,6 @@
 require 'observers'
 require 'low_event'
 
-require_relative '../../../lib/router/route_event'
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 

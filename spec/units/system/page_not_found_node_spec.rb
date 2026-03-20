@@ -2,8 +2,9 @@
 
 require 'observers'
 require 'low_node'
+require 'lowload'
 
-require_relative '../../../lib/system/page_not_found_node'
+LowLoad.lowload(File.expand_path('../../../../lib/system/page_not_found_node.rbx', __FILE__))
 require_relative '../../factories/request_factory'
 require_relative '../../fixtures/mock_router'
 
@@ -15,7 +16,7 @@ RSpec.describe PageNotFoundNode do
   before do
     Observers::Observables.reset
     Object.send(:remove_const, 'PageNotFoundNode') unless defined?(PageNotFoundNode)
-    load 'lib/system/page_not_found_node.rb'
+    LowLoad.lowload(File.expand_path('../../../../lib/system/page_not_found_node.rbx', __FILE__))
   end
 
   context 'when a 404 status event is triggered' do
