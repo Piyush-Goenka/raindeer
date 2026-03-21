@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-require 'low_loop'
 require 'low_dependency'
+require 'low_loop'
+require 'low_node'
+require 'low_type'
+require 'lowload'
 
 require_relative 'support/config_loader'
 
@@ -23,4 +26,4 @@ LowDependency.provide('low.loop') do
   LowLoop.new(config:, router: Low::Providers['rain.router'])
 end
 
-require_relative 'system/system'
+LowLoad.dirload(File.expand_path('../system', __FILE__))

@@ -3,7 +3,7 @@
 class SystemNode < LowNode
   observe '/system'
 
-  def render(event: RouteEvent) # rubocop:disable Lint/UnusedMethodArgument
+  def render(event: Rain::RouteEvent) # rubocop:disable Lint/UnusedMethodArgument
     'SYSTEM!'
   end
 end

@@ -8,7 +8,7 @@ require 'observers'
 
 require_relative 'router/router'
 
-class Raindeer
+module Raindeer
   class << self
     def router(&block)
       Low::Providers['rain.router'].instance_eval(&block)
