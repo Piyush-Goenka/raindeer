@@ -5,6 +5,8 @@ matrix_mode: true
 mirror_mode: false
 content_types:
   html: text/html
+  css: text/css
   txt: text/plain
   jpg: image/jpeg
   png: image/png
+  svg: image/svg+xml
