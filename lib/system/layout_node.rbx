@@ -14,7 +14,7 @@ class LayoutNode < LowNode
           <nav id="navbar">
             <ul>
               <li><a href="/system/">{"Dashboard"}</a>
-              <li><a href="/system/routes">{"Routes"}</a>
+              <li><a href="/routes">{"Routes"}</a>
             </ul>
           </nav>
         </header>

@@ -3,7 +3,6 @@
 require_relative '../raindeer'
 
 Raindeer.router do
-  get '/system' do
-    get '/routes'
-  end
+  get '/system'
+  get '/routes'
 end
