@@ -44,24 +44,24 @@ Raindeer pulls it all together with a router, pipelines and JS integrations. It'
 
 ### It can be made simpler
 
-Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how, but it's worth it. We should really care about the little guy. People new to a framework shouldn't have to learn much. One way to do this is by removing things, things you held dear and thought you needed are the best things to remove. Incredible complexity can be hidden in a way where the surface still looks simple.
+Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people new to a framework; they shouldn't have to learn much. One way to do this is by removing things, things you held dear and thought you needed are the best things to remove. Complexity can be hidden in a way where the surface is simple.
 
 **Some of the things we removed:**
-- *Namespaces* - Namespace are confusing to new and old developers, and the `::` syntax just doesn't look right. You can add them in later once you understand the basics
-- *Heredoc* - If you want to write multi-line HTML then you just write it via RBX and Raindeer handles the technical hurdles
-- *MVC* - You don't need to know what is called when or where to put it. Just `observe` an event in a node and render results, or call more code
+- *Namespaces* - Namespace are confusing to new and old developers alike and the `::` syntax just doesn't look right. You can add them in later and they are still used internally by Raindeer, but not exposed to the application layer.
+- *Heredoc* - If you want to write multi-line HTML then you can just write it directly into a LowNode via RBX, Raindeer handles the technical hurdles
+- *MVC* - You shouldn't have to learn the 5 places to put particular files in and the order in which they're called. Just `observe` an event in a node and render output, or call more code
 
 ### No build steps
 
-It should just work out of the box. If that creates a "less clean" isolation between concerns then so be it. You can still isolate concerns within mixed concerns, it just takes extra thinking. Frameworks are here to make application developers lives easier, not our own.
+Your files should just work out of the box. Internally this can create a "less clean" isolation between concerns, but with a bit of extra thinking we can still isolate these "mixed" concerns. Frameworks are here to make application developers lives easier, not our own.
 
 ### It's okay to be dynamic
 
-An application is a living organism and so is the framework below it. Raindeer does a lot of dynamic processing of previously static elements; from type checking and expressions to automatic parallelisation of LowNode variables into immutable `Data` classes via Antlers syntax. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic". Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them, rather than calling one magic method that goes off and adds a bunch of things but you don't know what it's done.
+An application is a living organism and so is the framework below it. Raindeer does a lot of dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelisation of low nodes via Antlers syntax. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic". Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of things that you don't know about.
 
 ## Installation
 
-Install instructions coming soon...
+Install instructions coming soon... for now just clone this repo and play around with the `lib/system` folder, which is an internal Raindeer app inside the framework itself.
 
 ## Development
 
