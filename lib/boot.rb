@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
-require 'low_dependency'
-require 'low_loop'
-require 'low_node'
-require 'low_type'
-require 'lowload'
+if ENV.fetch('RAIN_ENV', nil) == 'dev'
+  require 'pry'
+  require 'pry-nav'
+  require_relative '../../low_dependency/lib/low_dependency'
+  require_relative '../../low_event/lib/low_event'
+  require_relative '../../low_loop/lib/low_loop'
+  require_relative '../../lownode/lib/low_node'
+  require_relative '../../lowtype/lib/low_type'
+  require_relative '../../lowload/lib/lowload'
+  require_relative '../../observers/lib/observers'
+else
+  require 'low_dependency'
+  require 'low_event'
+  require 'low_loop'
+  require 'low_node'
+  require 'low_type'
+  require 'lowload'
+end
 
 require_relative 'support/config_loader'
 
