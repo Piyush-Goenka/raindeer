@@ -16,7 +16,7 @@ Raindeer is a new web framework using the dynamic features and latest async impr
 
 ### LowEvent
 
-[LowEvent](https://github.com/low-rb/low_event) represents events of all kinds; `RequestEvent`, `RouteEvent` (RainRouter), `RenderEvent` (LowNode) and `ResponseEvent`. Plus you can extend with your own event types.
+[LowEvent](https://github.com/low-rb/low_event) represents events of all kinds; Raindeer uses `RequestEvent`, `RouteEvent`, `RenderEvent` and `ResponseEvent`. Plus you can extend with your own event types. Events can be observed with [Observers](https://github.com/raindeer-rb/observers).
 
 ### RainRouter
 
