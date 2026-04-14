@@ -54,7 +54,7 @@ module Rain
     def handle(event:)
       response_event = nil
 
-      @trie.match(path: event.request.path).each do |route_event|
+      @trie.match(path: event.request.path.delete_suffix('/')).each do |route_event|
         response_event = trigger route_event.route.path, event: route_event
       end
 
