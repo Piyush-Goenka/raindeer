@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DashboardNode < LowNode
-  observe '/system', action: :render
+  observe '/system'
 
   def render(event:) # rubocop:disable Lint/UnusedMethodArgument
     <{ LayoutNode: }>
