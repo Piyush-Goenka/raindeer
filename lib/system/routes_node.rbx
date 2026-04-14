@@ -5,7 +5,7 @@ class RoutesNode < LowNode
 
   def render(event:) # rubocop:disable Lint/UnusedMethodArgument
     <{ LayoutNode: }>
-      {"Routes"}
+      <h1>{"Routes"}</h1>
     <{ :LayoutNode }>
   end
 end

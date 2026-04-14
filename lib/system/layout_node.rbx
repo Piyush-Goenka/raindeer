@@ -5,30 +5,33 @@ class LayoutNode < LowNode
     <html>
       <head>
         <link rel="stylesheet" href="/assets/pico.min.css">
+        <link rel="stylesheet" href="/assets/system.css">
       </head>
       <body>
-        <header class="container">
-          <img class="favicon" src="/assets/favicon.svg"/>
-          <div class="site-title">{"System"}</div>
-
-          <nav id="navbar">
-            <ul>
-              <li><a href="/system">{"Dashboard"}</a>
-              <li><a href="/system/routes">{"Routes"}</a>
-            </ul>
-          </nav>
+        <header>
+          <div class="container">
+            <a id="favicon" href="/system"><img src="/assets/favicon.svg"/></a>
+            <nav id="navbar">
+              <ul>
+                <li><a href="/system">{"Dashboard"}</a>
+                <li><a href="/system/routes">{"Routes"}</a>
+              </ul>
+            </nav>
+          </div>
         </header>
 
         <main class="container">
           <{ :slot }>
         </main>
 
-        <footer class="container">
-          <ul>
-            <li><a href="https://raindeer.dev">{"Website"}</a></li>
-            <li><a href="https://raindeer.dev/docs">{"Docs"}</a></li>
-            <li><a href="https://github.com/raindeer-rb/raindeer">{"Source code"}</a></li>
-          </ul>
+        <footer>
+          <div class="container">
+            <ul>
+              <li><a href="https://raindeer.dev">{"Website"}</a></li>
+              <li><a href="https://raindeer.dev/docs">{"Docs"}</a></li>
+              <li><a href="https://github.com/raindeer-rb/raindeer">{"Source code"}</a></li>
+            </ul>
+          </div>
         </footer>
       </body>
     </html>

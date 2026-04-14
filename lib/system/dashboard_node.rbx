@@ -5,7 +5,7 @@ class DashboardNode < LowNode
 
   def render(event:) # rubocop:disable Lint/UnusedMethodArgument
     <{ LayoutNode: }>
-      {"Dashboard"}
+      <h1>{"Dashboard"}</h1>
     <{ :LayoutNode }>
   end
 end
