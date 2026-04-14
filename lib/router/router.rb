@@ -33,19 +33,19 @@ module Rain
       @breadcrumbs.pop
     end
 
-    def get(path = String, &block)
+    def get(path, &block)
       route(path, 'GET', &block)
     end
 
-    def post(path = String, &block)
+    def post(path, &block)
       route(path, 'POST', &block)
     end
 
-    def update(path = String, &block)
+    def update(path, &block)
       route(path, 'UPDATE', &block)
     end
 
-    def delete(path = String, &block)
+    def delete(path, &block)
       route(path, 'DELETE', &block)
     end
 
