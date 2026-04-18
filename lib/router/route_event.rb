@@ -7,7 +7,7 @@ module Rain
     attr_reader :route, :params
 
     def initialize(route:, action: :render, params: Hash | nil)
-      super(action:)
+      super(key: route.path, action:)
 
       @route = route
       @params = params

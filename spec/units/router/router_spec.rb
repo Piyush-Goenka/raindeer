@@ -15,11 +15,11 @@ RSpec.describe RainRouter do
 
   describe '#route' do
     it 'creates combinatorial routes' do
-      rain_router.route '/users' do
+      rain_router.get '/users' do
         rain_router.get '/:id'
       end
 
-      expect(rain_router.routes['/users']).to have_attributes(path: '/users', verbs: [])
+      expect(rain_router.routes['/users']).to have_attributes(path: '/users', verbs: ['GET'])
       expect(rain_router.routes['/users/:id']).to have_attributes(path: '/users/:id', verbs: ['GET'])
     end
   end
@@ -27,30 +27,36 @@ RSpec.describe RainRouter do
   describe '#handle' do
     let(:request_event) { Low::Events::RequestEvent.new(request:) }
 
+    before do
+      class MockObserver
+        include Observers
+        observe '/users'
+        observe Low::Types::Status[404]
+        def self.render = nil
+      end
+
+      allow(MockObserver).to receive(:render)
+    end
+
     context 'when the route is found' do
       let(:request) { Low::Support::RequestFactory.request(path: '/users') }
 
       before do
         rain_router.get '/users'
-        allow(rain_router).to receive(:trigger)
       end
 
-      it 'triggers route event on observers' do
+      it 'triggers route event on observer' do
         rain_router.handle(event: request_event)
-        expect(rain_router).to have_received(:trigger).with(key: '/users', event: an_instance_of(Rain::RouteEvent))
+        expect(MockObserver).to have_received(:render).with({event: an_instance_of(Rain::RouteEvent)})
       end
     end
 
     context 'when the route is missing' do
       let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
-      before do
-        allow(rain_router).to receive(:trigger)
-      end
-
-      it 'triggers status event on observers' do
+      it 'triggers status event on observer' do
         rain_router.handle(event: request_event)
-        expect(rain_router).to have_received(:trigger).with(key: Low::Types::Status[404], action: :render, event: an_instance_of(Low::Events::StatusEvent))
+        expect(MockObserver).to have_received(:render).with({event: an_instance_of(Low::Events::StatusEvent)})
       end
     end
   end

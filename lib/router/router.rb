@@ -54,17 +54,14 @@ module Rain
     def handle(event:)
       response_event = nil
 
+      # The last route event will render a response event which we want to return to the request event.
       @trie.match(path: event.request.path.delete_suffix('/')).each do |route_event|
-        response_event = trigger key: route_event.route.path, event: route_event
+        response_event = route_event.trigger
       end
 
-      if response_event.nil?
-        status = Low::Types::Status[404]
-        event = Low::Events::StatusEvent.new(status:, request: event.request)
-        response_event = trigger key: status, action: :render, event:
-      end
+      return response_event if response_event
 
-      response_event
+      Low::Events::StatusEvent.trigger(status: Low::Types::Status[404], request: event.request)
     end
   end
 end
