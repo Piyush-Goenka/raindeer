@@ -60,7 +60,8 @@ module Rain
 
       if response_event.nil?
         status = Low::Types::Status[404]
-        response_event = trigger status, action: :render, event: Low::Events::StatusEvent.new(status:, request: event.request)
+        event = Low::Events::StatusEvent.new(status:, request: event.request)
+        response_event = trigger status, action: :render, event:
       end
 
       response_event
