@@ -37,7 +37,7 @@ RSpec.describe RainRouter do
 
       it 'triggers route event on observers' do
         rain_router.handle(event: request_event)
-        expect(rain_router).to have_received(:trigger).with('/users', event: an_instance_of(Rain::RouteEvent))
+        expect(rain_router).to have_received(:trigger).with(key: '/users', event: an_instance_of(Rain::RouteEvent))
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe RainRouter do
 
       it 'triggers status event on observers' do
         rain_router.handle(event: request_event)
-        expect(rain_router).to have_received(:trigger).with(Low::Types::Status[404], action: :render, event: an_instance_of(Low::Events::StatusEvent))
+        expect(rain_router).to have_received(:trigger).with(key: Low::Types::Status[404], action: :render, event: an_instance_of(Low::Events::StatusEvent))
       end
     end
   end

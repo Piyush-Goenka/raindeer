@@ -26,7 +26,7 @@ RSpec.describe Error404Node do
     let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
     it 'renders a response' do
-      response = mock_router.take(Low::Types::Status[404], action: :render, event:)
+      response = mock_router.take(key: Low::Types::Status[404], action: :render, event:)
       expect(response).to be_instance_of(Low::Events::ResponseEvent)
     end
   end

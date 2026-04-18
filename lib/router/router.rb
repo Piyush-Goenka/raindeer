@@ -55,13 +55,13 @@ module Rain
       response_event = nil
 
       @trie.match(path: event.request.path.delete_suffix('/')).each do |route_event|
-        response_event = trigger route_event.route.path, event: route_event
+        response_event = trigger key: route_event.route.path, event: route_event
       end
 
       if response_event.nil?
         status = Low::Types::Status[404]
         event = Low::Events::StatusEvent.new(status:, request: event.request)
-        response_event = trigger status, action: :render, event:
+        response_event = trigger key: status, action: :render, event:
       end
 
       response_event
