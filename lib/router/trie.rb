@@ -66,7 +66,7 @@ module Rain
 
     private
 
-    # End nodes render events, mid nodes handle events.
+    # Mid nodes handle events, end nodes render events.
     def route_event(next_index:, params:, path:, route:)
       action = path[next_index].nil? ? :render : :handle
       RouteEvent.new(action:, route:, params:)
