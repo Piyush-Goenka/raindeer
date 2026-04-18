@@ -10,7 +10,7 @@ RSpec.describe RainRouter do
   subject(:rain_router) { described_class.new }
 
   before do
-    Observers::Observables.reset
+    Observers::Keys.reset
   end
 
   describe '#route' do

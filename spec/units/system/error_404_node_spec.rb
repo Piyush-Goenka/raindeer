@@ -16,7 +16,7 @@ RSpec.describe Error404Node do
   let(:mock_router) { MockRouter.new }
 
   before do
-    Observers::Observables.reset
+    Observers::Keys.reset
     Object.send(:remove_const, 'Error404Node') unless defined?(Error404Node)
     LowLoad.lowload(File.join(Dir.pwd, '/lib/system/error_404_node.rbx'))
   end
