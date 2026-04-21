@@ -20,7 +20,7 @@ env = {
 config = Rain::ConfigLoader.load('./config/config.yaml', env)
 
 LowDependency.provide('rain.router') do
-  RainRouter.new
+  Rain::Router.new
 end
 
 LowDependency.provide('low.loop') do

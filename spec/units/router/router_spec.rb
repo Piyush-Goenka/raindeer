@@ -6,7 +6,7 @@ require 'low_event'
 require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
-RSpec.describe RainRouter do
+RSpec.describe Rain::Router do
   subject(:rain_router) { described_class.new }
 
   before do
