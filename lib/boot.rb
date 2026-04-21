@@ -23,8 +23,12 @@ LowDependency.provide('rain.router') do
   Rain::Router.new
 end
 
+LowDependency.provide('rain.matrix') do
+  Rain::Matrix.new(streams: Low::Providers['low.event.pool']) # Provider defined in LowEvent.
+end
+
 LowDependency.provide('low.loop') do
-  LowLoop.new(config:, router: Low::Providers['rain.router'])
+  LowLoop.new(config:, router: Low::Providers['rain.router'], renderer: Low::Providers['rain.matrix'])
 end
 
 LowLoad.dirload(File.expand_path('../system', __FILE__))
