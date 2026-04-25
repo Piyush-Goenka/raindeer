@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 require 'low_event'
-require '../fixtures/mock_events'
+require_relative '../fixtures/mock_events'
 
-module Low
-  module Fixtures
-    class EventFactory
-      class << self
-        def create_event_tree
-          event_tree = EventTree.new
-          event = RequestEvent.new(request: 'mock request')
-          event_tree.children << event
-          event_tree
-        end
+module Fixtures
+  class EventFactory
+    class << self
+      def create_event_tree
+        event_tree = Low::Events::EventTree.new
+        event = RequestEvent.new
+        event_tree.branch(event:)
+        event_tree
       end
     end
   end

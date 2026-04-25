@@ -12,21 +12,17 @@ RSpec.describe Rain::Matrix do
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
   let(:event_trees) do
     {
-      1 => Low::Fixtures::EventFactory.create_event_tree,
-      2 => Low::Fixtures::EventFactory.create_event_tree,
-      3 => Low::Fixtures::EventFactory.create_event_tree,
+      1 => Fixtures::EventFactory.create_event_tree,
+      2 => Fixtures::EventFactory.create_event_tree,
+      3 => Fixtures::EventFactory.create_event_tree,
     }
   end
 
   context 'with events' do
-    let(:screen_size) { columns: 3, lines: 50 }
+    let(:screen_size) { { columns: 3, lines: 50 } }
 
     it 'returns a matrix' do
-      expect(rain_matrix.render(screen_size:)).to eq([
-        [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
-        [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
-        [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
-      ])
+      expect(rain_matrix.render(screen_size:)).to eq('asdf')
     end
   end
 end
