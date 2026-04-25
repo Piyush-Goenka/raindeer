@@ -6,10 +6,10 @@ require_relative '../fixtures/mock_events'
 module Fixtures
   class EventFactory
     class << self
-      def create_event_tree
+      def request_response_tree
         event_tree = Low::Events::EventTree.new
-        event = RequestEvent.new
-        event_tree.branch(event:)
+        event_tree.branch(event: RequestEvent.new)
+        event_tree.branch(event: ResponseEvent.new)
         event_tree
       end
     end

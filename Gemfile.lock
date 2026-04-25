@@ -87,6 +87,7 @@ PATH
       lowload
       observers
       ostruct
+      paint
 
 GEM
   remote: https://gem.coop/
@@ -132,6 +133,7 @@ GEM
     method_source (1.1.0)
     metrics (0.15.0)
     ostruct (0.6.3)
+    paint (2.3.0)
     parallel (2.0.1)
     parser (3.3.11.1)
       ast (~> 2.4.1)
