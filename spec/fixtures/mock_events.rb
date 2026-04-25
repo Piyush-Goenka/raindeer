@@ -2,6 +2,8 @@
 
 module Fixtures
   class MockEvent
+    attr_reader :created_at
+
     def initialize
       @created_at = Time.now.to_i
     end
