@@ -4,8 +4,10 @@ module Rain
   class Matrix
     ARROW = ['│', '▼']
 
-    def initialize(stream_pool:, screen_size:)
-      
+    def initialize(event_pool:)
+    end
+
+    def render(screen_size:)
     end
   end
 end

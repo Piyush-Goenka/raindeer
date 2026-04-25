@@ -7,20 +7,22 @@ require_relative '../../factories/event_factory'
 require_relative '../../fixtures/mock_events'
 
 RSpec.describe Rain::Matrix do
-  subject(:rain_matrix) { described_class.new(stream_pool:, screen_size:) }
+  subject(:rain_matrix) { described_class.new(event_pool:) }
 
-  let(:stream_pool) { instance_double(Low::Streams::StreamPool, streams:) }
-  let(:streams) do
+  let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
+  let(:event_trees) do
     {
-      1 => Low::Fixtures::EventFactory.create_stream,
+      1 => Low::Fixtures::EventFactory.create_event_tree,
+      2 => Low::Fixtures::EventFactory.create_event_tree,
+      3 => Low::Fixtures::EventFactory.create_event_tree,
     }
   end
 
-  context 'with streams' do
+  context 'with events' do
     let(:screen_size) { columns: 3, lines: 50 }
 
     it 'returns a matrix' do
-      expect(rain_matrix.columns).to eq([
+      expect(rain_matrix.render(screen_size:)).to eq([
         [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
         [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
         [RequestEvent.new, RouteEvent.new, RenderEvent.new, ResponseEvent.new]
