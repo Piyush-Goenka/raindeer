@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'https://gem.coop'
+source 'https://rubygems.org'
 
 # Specify your gem's dependencies in raindeer.gemspec
 gemspec
@@ -27,4 +27,5 @@ end
 group :testing do
   gem 'protocol-http'
   gem 'rspec', '~> 3.0'
+  gem 'timecop'
 end

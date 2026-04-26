@@ -11,7 +11,7 @@ module Rain
 
     observe Low::Events::EventPool
 
-    CELL_COLORS = ['#fff', '#0071BB', '#0084db', '#0098fc', '#3db2ff', '#5dbfff', '#7eccff', '#9ed9ff', '#bee5ff', '#dff2ff'].freeze
+    CELL_COLORS = ['#fff', '#0071BB', '#0098fc', '#5dbfff', '#9ed9ff', '#dff2ff'].freeze
 
     def initialize(event_pool:, index_type: :random)
       @event_pool = event_pool
@@ -70,7 +70,6 @@ module Rain
 
     def color(timestamp:)
       duration = Time.now.to_i - timestamp
-      binding.irb if CELL_COLORS[duration].nil?
       CELL_COLORS[duration]
     end
 

@@ -5,8 +5,8 @@ module Fixtures
     attr_reader :created_at
     attr_accessor :children
 
-    def initialize
-      @created_at = Time.now.to_i
+    def initialize(created_at: nil, step: 0)
+      @created_at = (created_at || Time.now.to_i) + step
       @children = []
     end
   end

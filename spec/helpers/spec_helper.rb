@@ -3,6 +3,7 @@
 require 'pry'
 require 'pry-nav'
 require 'low_type'
+require 'timecop'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
