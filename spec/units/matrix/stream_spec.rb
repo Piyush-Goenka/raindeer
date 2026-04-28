@@ -32,13 +32,13 @@ RSpec.describe Rain::Stream do
     end
   end
 
-  describe '#renderable' do
+  describe '#characters' do
     before do
       rain_stream.redraw(cell_count: 20)
     end
 
-    it 'returns a renderable cell' do
-      expect(rain_stream.renderable(index: 0)).to include(character: 'R', timestamp: kind_of(Integer))
+    it 'returns a character' do
+      expect(rain_stream.characters[0]).to eq('R')
     end
   end
 end

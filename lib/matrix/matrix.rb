@@ -11,7 +11,7 @@ module Rain
 
     observe Low::Events::EventPool
 
-    CELL_COLORS = ['#fff', '#0071BB', '#0098fc', '#5dbfff', '#9ed9ff', '#dff2ff'].freeze
+    CELL_COLOR = '#0071BB' # '#0098fc'
 
     def initialize(event_pool:, index_type: :random)
       @event_pool = event_pool
@@ -50,15 +50,17 @@ module Rain
 
     def render_streams
       (0...@screen_size[:row_count]).each do |row_index|
-        line = []
+        current_line = []
+        next_line = []
 
         (0...@screen_size[:column_count]).each do |column_index|
-          line << @columns[column_index].renderable(index: row_index)
+          current_line << @columns[column_index].characters[row_index]
+          next_line << @columns[column_index].characters[row_index + 1]
         end
 
-        output = line.map do |renderable|
-          if renderable[:timestamp] && (color = color(timestamp: renderable[:timestamp]))
-            Paint[renderable[:character], color]
+        output = current_line.map do |cell|
+          if cell.character && cell.render_at > 
+            Paint[cell.character, CELL_COLOR]
           else
             Paint['', nil]
           end
