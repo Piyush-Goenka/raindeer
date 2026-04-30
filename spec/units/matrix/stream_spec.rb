@@ -32,6 +32,9 @@ RSpec.describe Rain::Stream do
     end
   end
 
+  describe '#render' do
+  end
+
   describe '#characters' do
     before do
       rain_stream.redraw(cell_count: 20)

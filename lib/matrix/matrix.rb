@@ -54,12 +54,12 @@ module Rain
         next_line = []
 
         (0...@screen_size[:column_count]).each do |column_index|
-          current_line << @columns[column_index].characters[row_index]
-          next_line << @columns[column_index].characters[row_index + 1]
+          current_line << @columns[column_index].render(cell_index: row_index)
+          next_line << @columns[column_index].render(cell_index: row_index + 1)
         end
 
         output = current_line.map do |cell|
-          if cell.character && cell.render_at > 
+          if cell 
             Paint[cell.character, CELL_COLOR]
           else
             Paint['', nil]

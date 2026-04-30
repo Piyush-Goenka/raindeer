@@ -30,11 +30,24 @@ module Rain
         past_event = @event_tree.sequence[event_index - 1]
 
         redraw_event(current_event:, past_event:)
-
         @event_cursor += 1
       end
 
       @characters
+    end
+
+    # Render cells, with previously unrendered cells being shown via a cursor.
+    # ┌─┐
+    # │││  CELLS
+    # │▼│  Each cell is represented by a character, duration and rendered character.
+    # │R│
+    # │o│
+    # │u│ <-- The render cursor increments for each cell after every cell duration and colors the leading cell white.
+    # │ │
+    # │ │
+    # └─┘
+    def render(cell_index:)
+      # TODO.
     end
 
     private
@@ -42,7 +55,7 @@ module Rain
     # A column of characters representing events that appear sequentially and render in and out as an animation.
     # ┌─┐
     # │R│  FIRST EVENT
-    # │e│  Each cell has a minimum duration just above frame rate since there's no prior event.
+    # │e│  Each cell will render for a minimum duration (just above frame rate) since there's no prior event.
     # │q│
     # │u│ 
     # │e│
@@ -51,7 +64,7 @@ module Rain
     # └─┘ <-- Time has passed between events.
     # ┌─┐
     # │││  SECOND EVENT
-    # │▼│  Each cell renders for the following duration; the time elapsed between events divided by the number of characters.
+    # │▼│  Each cell will render for the following duration; the time elapsed between events divided by the number of characters.
     # │R│
     # │o│
     # │u│ <-- A cursor increments for each cell after every cell duration and colors the leading cell white.
