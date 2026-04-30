@@ -102,9 +102,9 @@ RSpec.describe Rain::Matrix do
     let(:index_type) { :latest }
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree(created_at:, step: 1),
-        2 => Fixtures::EventFactory.request_response_tree(created_at:, step: 2),
-        3 => Fixtures::EventFactory.request_response_tree(created_at:, step: 3),
+        1 => Fixtures::EventFactory.request_response_tree(created_at:),
+        2 => Fixtures::EventFactory.request_response_tree(created_at:),
+        3 => Fixtures::EventFactory.request_response_tree(created_at:),
       }
     end
 
