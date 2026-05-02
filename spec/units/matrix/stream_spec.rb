@@ -53,6 +53,26 @@ RSpec.describe Rain::Stream do
       it 'returns 2 characters' do
         expect(rain_stream.render(cell_index: 0, duration: 34)).to eq('R')
         expect(rain_stream.render(cell_index: 1, duration: 34)).to eq('e')
+
+    context 'before 1 second' do
+      it 'keeps characters' do
+        stream = described_class.new(index: 0, event_tree:)
+        stream.redraw(cell_count: 20)
+
+        sleep(0.5)
+
+        expect(stream.render(cell_index: 0)).to eq('R')
+      end
+    end
+
+    context 'after 1 second' do
+      it 'removes characters' do
+        stream = described_class.new(index: 0, event_tree:)
+        stream.redraw(cell_count: 20)
+
+        sleep(1.1)
+
+        expect(stream.render(cell_index: 0)).to eq(nil)
       end
     end
   end

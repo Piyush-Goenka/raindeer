@@ -19,9 +19,9 @@ module Rain
       @outputs = []
 
       @head_cursor = 0
-      @head_last_update = 0
-
       @tail_cursor = 0
+      @head_last_update = now
+      @tail_last_update = now
     end
 
     def redraw(cell_count:)
@@ -46,21 +46,33 @@ module Rain
     # │ │
     # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
     # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
-    def render(cell_index:, duration: Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) - @head_last_update)
-      if duration >= @delays[@head_cursor]
-        @head_last_update = 0
-
-        @outputs[cell_index] = @inputs[cell_index]
-        @inputs[cell_index] = nil
-
-        @head_cursor += 1
-        @head_cursor = 0 if @head_cursor >= @inputs.count
-      end
+    def render(cell_index:, duration: nil)
+      @head_cursor = move_cursor(cursor: @head_cursor, cell_index:, duration: duration || now - @head_last_update)
+      @tail_cursor = move_cursor(cursor: @tail_cursor, cell_index:, duration: duration || now - @tail_last_update)
 
       @outputs[cell_index]
     end
 
     private
+
+    def move_cursor(cursor:, cell_index:, duration:)
+      if duration >= @delays[cursor]
+        @head_last_update = 0
+
+        @outputs[cell_index] = @inputs[cell_index]
+        @delays[cell_index] = cursor == 0 ? 1000 : MIN_DELAY
+        @inputs[cell_index] = nil
+
+        cursor += 1
+        cursor = 0 if cursor >= @inputs.count
+      end
+
+      cursor
+    end
+
+    def now
+      Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
+    end
 
     # A column of cells representing sequential events.
     # ┌─┐
