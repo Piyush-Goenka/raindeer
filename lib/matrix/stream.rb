@@ -3,27 +3,28 @@
 module Rain
   class Stream
     attr_reader :index
-    attr_accessor :characters, :durations, :renders
+    attr_accessor :inputs, :delays, :outputs
 
     ARROW = ['│', '▼']
-    MIN_DURATION = 34 # miliseconds
+    MIN_DELAY = 34 # miliseconds
 
     def initialize(index:, event_tree:)
       @index = index
 
       @event_tree = event_tree
       @event_cursor = 0
-
-      @characters = []
-      @durations = []
-      @renders = []
-
       @redraw_cursor = 0
-      @render_cursor = 0
+
+      @inputs = []
+      @delays = []
+      @outputs = []
+
+      @tail_cursor = 0
+      @head_cursor = 0
     end
 
     def redraw(cell_count:)
-      @characters.fill(nil, 0...cell_count)
+      @inputs.fill(nil, 0...cell_count)
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
@@ -33,29 +34,28 @@ module Rain
         @event_cursor += 1
       end
 
-      @characters
+      @inputs
     end
 
-    # Render cells, with previously unrendered cells being shown via a cursor.
+    # Render a cell's input as output after a delay, using cursors.
     # ┌─┐
     # │││  CELLS
-    # │▼│  Each cell is represented by a character, duration and rendered character.
+    # │▼│  Each cell is represented as an input, delay and output.
     # │R│
     # │o│
-    # │u│ <-- The render cursor increments for each cell after every cell duration and colors the leading cell white.
-    # │ │
-    # │ │
+    # │u│ <-- The head cursor outputs the input after a delay and colors the leading cell white.
+    # │ │     The tail cursor does the same thing but the input (and therefore output) will be empty.
     # └─┘
-    def render(cell_index:)
+    def render(cell_index:, duration:)
       # TODO.
     end
 
     private
 
-    # A column of characters representing events that appear sequentially and render in and out as an animation.
+    # A column of cells representing sequential events.
     # ┌─┐
     # │R│  FIRST EVENT
-    # │e│  Each cell will render for a minimum duration (just above frame rate) since there's no prior event.
+    # │e│  Each cell will render input as output after a delay (that is just above frame rate) since there's no prior event.
     # │q│
     # │u│ 
     # │e│
@@ -64,29 +64,29 @@ module Rain
     # └─┘ <-- Time has passed between events.
     # ┌─┐
     # │││  SECOND EVENT
-    # │▼│  Each cell will render for the following duration; the time elapsed between events divided by the number of characters.
-    # │R│
+    # │▼│  The next event has data to work with, it can represent the time it took to get from the previous event to the next.
+    # │R│  Each cell will render for the following delay; the time elapsed between events divided by the number of inputs.
     # │o│
-    # │u│ <-- A cursor increments for each cell after every cell duration and colors the leading cell white.
+    # │u│ <-- A cursor moves to the next cell after a delay and colors the leading cell white.
     # │t│
     # │e│
     # └─┘
     def redraw_event(current_event:, past_event:)
       if @event_cursor == 0
-        characters = event_name(current_event:)
-        duration = MIN_DURATION
+        inputs = event_name(current_event:)
+        delay = MIN_DELAY
       else
-        characters = [*ARROW, *event_name(current_event:)]
+        inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
-        duration = difference == 0 ? MIN_DURATION : (difference / characters.count).to_i.clamp(MIN_DURATION, nil)
+        delay = difference == 0 ? MIN_DELAY : (difference / inputs.count).to_i.clamp(MIN_DELAY, nil)
       end
 
-      characters.each do |character|
-        @characters[@redraw_cursor] = character
-        @durations[@redraw_cursor] = duration
+      inputs.each do |character|
+        @inputs[@redraw_cursor] = character
+        @delays[@redraw_cursor] = delay
 
         @redraw_cursor += 1
-        @redraw_cursor = 0 if @redraw_cursor == @characters.count
+        @redraw_cursor = 0 if @redraw_cursor == @inputs.count
       end
     end
 

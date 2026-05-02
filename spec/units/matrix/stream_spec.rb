@@ -32,16 +32,24 @@ RSpec.describe Rain::Stream do
     end
   end
 
-  describe '#render' do
-  end
-
-  describe '#characters' do
+  describe '#inputs' do
     before do
       rain_stream.redraw(cell_count: 20)
     end
 
     it 'returns a character' do
-      expect(rain_stream.characters[0]).to eq('R')
+      expect(rain_stream.inputs[0]).to eq('R')
+    end
+  end
+
+  xdescribe '#outputs' do
+    before do
+      rain_stream.redraw(cell_count: 20)
+      rain_stream.render()
+    end
+
+    it 'returns a character' do
+      expect(rain_stream.outputs[0]).to eq('R')
     end
   end
 end
