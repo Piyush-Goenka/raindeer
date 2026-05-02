@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'paint'
 require 'low_event'
 
 require_relative '../../../lib/matrix/matrix'
@@ -7,17 +8,22 @@ require_relative '../../factories/event_factory'
 require_relative '../../fixtures/mock_events'
 
 def loop_output
-  return
+  return if ENV['CI']
 
-  7.times do
+  250.times do
     system 'clear'
-    rain_matrix.render(screen_size:)
-    sleep 1
+    matrix.render(screen_size:)
+  end
+end
+
+class Array
+  def paint_columns
+    self.map { ::Paint[it[0], it[1]] }.join(' ')
   end
 end
 
 RSpec.describe Rain::Matrix do
-  subject(:rain_matrix) { described_class.new(event_pool:, index_type:) }
+  subject(:matrix) { described_class.new(event_pool:, index_type:, min_delay: 34) }
 
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
   let(:event_trees) do
@@ -28,38 +34,40 @@ RSpec.describe Rain::Matrix do
     }
   end
 
+  let(:color) { '#0098fc' }
+
   context 'when 1 column' do
     let(:screen_size) { { column_count: 1, row_count: 20 } }
     let(:index_type) { :random }
 
     let(:lines) do
       <<~BASH
-        #{[['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['q', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['u', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['t', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['│', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['▼', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['p', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['o', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['n', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
+        #{[['R', color]].paint_columns}
+        #{[['e', color]].paint_columns}
+        #{[['q', color]].paint_columns}
+        #{[['u', color]].paint_columns}
+        #{[['e', color]].paint_columns}
+        #{[['s', color]].paint_columns}
+        #{[['t', color]].paint_columns}
+        #{[['│', color]].paint_columns}
+        #{[['▼', color]].paint_columns}
+        #{[['R', color]].paint_columns}
+        #{[['e', color]].paint_columns}
+        #{[['s', color]].paint_columns}
+        #{[['p', color]].paint_columns}
+        #{[['o', color]].paint_columns}
+        #{[['n', color]].paint_columns}
+        #{[['s', color]].paint_columns}
+        #{[['e', color]].paint_columns}
+        #{[['',       ]].paint_columns}
+        #{[['',       ]].paint_columns}
+        #{[['',       ]].paint_columns}
       BASH
     end
   
     it 'returns a matrix' do
-      expect { rain_matrix.render(screen_size:) }.to output(lines).to_stdout
       loop_output
+      expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
 
@@ -69,87 +77,76 @@ RSpec.describe Rain::Matrix do
 
     let(:lines) do
       <<~BASH
-        #{[['R', '#fff'], ['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['q', '#fff'], ['q', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['u', '#fff'], ['u', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['t', '#fff'], ['t', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['│', '#fff'], ['│', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['▼', '#fff'], ['▼', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['R', '#fff'], ['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['p', '#fff'], ['p', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['o', '#fff'], ['o', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['n', '#fff'], ['n', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
+        #{[['R', color], ['R', color]].paint_columns}
+        #{[['e', color], ['e', color]].paint_columns}
+        #{[['q', color], ['q', color]].paint_columns}
+        #{[['u', color], ['u', color]].paint_columns}
+        #{[['e', color], ['e', color]].paint_columns}
+        #{[['s', color], ['s', color]].paint_columns}
+        #{[['t', color], ['t', color]].paint_columns}
+        #{[['│', color], ['│', color]].paint_columns}
+        #{[['▼', color], ['▼', color]].paint_columns}
+        #{[['R', color], ['R', color]].paint_columns}
+        #{[['e', color], ['e', color]].paint_columns}
+        #{[['s', color], ['s', color]].paint_columns}
+        #{[['p', color], ['p', color]].paint_columns}
+        #{[['o', color], ['o', color]].paint_columns}
+        #{[['n', color], ['n', color]].paint_columns}
+        #{[['s', color], ['s', color]].paint_columns}
+        #{[['e', color], ['e', color]].paint_columns}
+        #{[['',       ], ['',       ]].paint_columns}
+        #{[['',       ], ['',       ]].paint_columns}
+        #{[['',       ], ['',       ]].paint_columns}
       BASH
     end
   
     it 'returns a matrix' do
-      expect { rain_matrix.render(screen_size:) }.to output(lines).to_stdout
       loop_output
+      expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
 
   context 'when events created seconds apart' do
+    let(:screen_size) { { column_count: 3, row_count: 20 } }
     let(:index_type) { :latest }
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree(created_at:),
-        2 => Fixtures::EventFactory.request_response_tree(created_at:),
-        3 => Fixtures::EventFactory.request_response_tree(created_at:),
+        1 => Fixtures::EventFactory.request_response_tree(created_at: created_at),
+        2 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 1000),
+        3 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 2000),
       }
     end
 
-    let(:created_at) { Time.now.to_i }
+    let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
 
-    before do
-      Timecop.freeze(created_at)
+    let(:lines) do
+      <<~BASH
+        #{[['R', color], ['R', color], ['R', color]].paint_columns}
+        #{[['e', color], ['e', color], ['e', color]].paint_columns}
+        #{[['q', color], ['q', color], ['q', color]].paint_columns}
+        #{[['u', color], ['u', color], ['u', color]].paint_columns}
+        #{[['e', color], ['e', color], ['e', color]].paint_columns}
+        #{[['s', color], ['s', color], ['s', color]].paint_columns}
+        #{[['t', color], ['t', color], ['t', color]].paint_columns}
+        #{[['│', color], ['│', color], ['│', color]].paint_columns}
+        #{[['▼', color], ['▼', color], ['▼', color]].paint_columns}
+        #{[['R', color], ['R', color], ['R', color]].paint_columns}
+        #{[['e', color], ['e', color], ['e', color]].paint_columns}
+        #{[['s', color], ['s', color], ['s', color]].paint_columns}
+        #{[['p', color], ['p', color], ['p', color]].paint_columns}
+        #{[['o', color], ['o', color], ['o', color]].paint_columns}
+        #{[['n', color], ['n', color], ['n', color]].paint_columns}
+        #{[['s', color], ['s', color], ['s', color]].paint_columns}
+        #{[['e', color], ['e', color], ['e', color]].paint_columns}
+        #{[['',       ], ['',       ], ['',       ]].paint_columns}
+        #{[['',       ], ['',       ], ['',       ]].paint_columns}
+        #{[['',       ], ['',       ], ['',       ]].paint_columns}
+      BASH
     end
 
-    after do
-      Timecop.unfreeze
-    end
-
-    context 'when 1 column' do
-      let(:screen_size) { { column_count: 3, row_count: 20 } }
-
-      let(:lines) do
-        <<~BASH
-        #{[['R', '#fff'], ['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['q', '#fff'], ['q', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['u', '#fff'], ['u', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['t', '#fff'], ['t', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['│', '#fff'], ['│', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['▼', '#fff'], ['▼', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['R', '#fff'], ['R', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['p', '#fff'], ['p', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['o', '#fff'], ['o', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['n', '#fff'], ['n', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['s', '#fff'], ['s', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['e', '#fff'], ['e', '#fff']].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        #{[['',        ], ['',        ]].map { |l| Paint[l[0], l[1]] }.join(' ')}
-        BASH
-      end
-    
-      it 'returns a matrix' do
-        expect { rain_matrix.render(screen_size:) }.to output(lines).to_stdout
-        loop_output
-      end
+    it 'returns a matrix' do
+      loop_output
+      expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
 end

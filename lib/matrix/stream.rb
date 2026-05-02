@@ -2,30 +2,33 @@
 
 module Rain
   class Stream
-    attr_reader :index
+    attr_reader :index, :outputs
 
     ARROW = ['│', '▼']
-    MIN_DELAY = 34 # miliseconds. Slightly longer than the 33.33 miliseconds of each frame.
-
-    def initialize(index:, event_tree:)
+    
+    # @param min_delay: Miliseconds - Slightly longer than the 33.33 miliseconds of each frame.
+    def initialize(index:, min_delay: 34, event_tree:)
       @index = index
 
       @event_tree = event_tree
       @event_cursor = 0
+
       @redraw_cursor = 0
+      @min_delay = min_delay
 
       @inputs = []
       @delays = []
       @outputs = []
 
-      @head_cursor = 0
-      @tail_cursor = 0
+      @head_cursor = -1
+      @tail_cursor = -1
       @head_last_update = now
       @tail_last_update = now
     end
 
     def redraw(cell_count:)
-      @inputs.fill(nil, 0...cell_count)
+      @inputs.fill(nil, 0...cell_count)[0...cell_count]
+      @delays.fill(@min_delay, 0...cell_count)[0...cell_count]
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
@@ -46,28 +49,31 @@ module Rain
     # │ │
     # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
     # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
-    def render(cell_index:, duration: nil)
-      @head_cursor = move_cursor(cursor: @head_cursor, cell_index:, duration: duration || now - @head_last_update)
-      @tail_cursor = move_cursor(cursor: @tail_cursor, cell_index:, duration: duration || now - @tail_last_update)
+    def render(duration: nil)
+      move_cursor(cursor: @head_cursor, duration: duration || now - @head_last_update) do |cursor|
+        @head_cursor = cursor
+        @head_last_update = 0
 
-      @outputs[cell_index]
+        if @inputs[cursor]
+          @outputs[cursor] = @inputs[cursor]
+          @delays[cursor] = @min_delay
+          @inputs[cursor] = nil
+        end
+      end
+
+      # @tail_cursor = move_cursor(cursor: @tail_cursor, duration: duration || now - @tail_last_update)
     end
 
     private
 
-    def move_cursor(cursor:, cell_index:, duration:)
-      if duration >= @delays[cursor]
-        @head_last_update = 0
-
-        @outputs[cell_index] = @inputs[cell_index]
-        @delays[cell_index] = cursor == 0 ? 1000 : MIN_DELAY
-        @inputs[cell_index] = nil
-
+    def move_cursor(cursor:, duration:)
+      next_cursor = cursor + 1
+      if @delays[next_cursor] && duration >= @delays[next_cursor]
         cursor += 1
         cursor = 0 if cursor >= @inputs.count
-      end
 
-      cursor
+        yield cursor
+      end
     end
 
     def now
@@ -96,11 +102,11 @@ module Rain
     def redraw_event(current_event:, past_event:)
       if @event_cursor == 0
         inputs = event_name(current_event:)
-        delay = MIN_DELAY
+        delay = @min_delay
       else
         inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
-        delay = difference == 0 ? MIN_DELAY : (difference / inputs.count).to_i.clamp(MIN_DELAY, nil)
+        delay = difference == 0 ? @min_delay : (difference / inputs.count).to_i.clamp(@min_delay, nil)
       end
 
       inputs.each do |character|

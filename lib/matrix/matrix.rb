@@ -11,13 +11,14 @@ module Rain
 
     observe Low::Events::EventPool
 
-    CELL_COLOR = '#0071BB' # '#0098fc'
+    CELL_COLOR = '#0098fc'
 
-    def initialize(event_pool:, index_type: :random)
+    def initialize(event_pool:, index_type: :random, min_delay: nil)
       @event_pool = event_pool
 
       @index_type = index_type
       @current_index = -1
+      @min_delay = min_delay
 
       @screen_size = nil
       @streams = {}
@@ -49,34 +50,25 @@ module Rain
     end
 
     def render_streams
+      @streams.each_value { it.render }
+
       (0...@screen_size[:row_count]).each do |row_index|
-        current_line = []
-        next_line = []
+        row_cells = []
 
         (0...@screen_size[:column_count]).each do |column_index|
-          current_line << @columns[column_index].render(cell_index: row_index)
-          next_line << @columns[column_index].render(cell_index: row_index + 1)
+          row_cells << @columns[column_index].outputs[row_index]
         end
 
-        output = current_line.map do |cell|
-          if cell 
-            Paint[cell.character, CELL_COLOR]
-          else
-            Paint['', nil]
-          end
+        output = row_cells.map do |cell|
+          cell ? Paint[cell, CELL_COLOR] : Paint['', nil]
         end.join(' ')
 
         puts output
       end
     end
 
-    def color(timestamp:)
-      duration = Time.now.to_i - timestamp
-      CELL_COLORS[duration]
-    end
-
     def upsert_stream(stream_id:, event_tree:)
-      @streams[stream_id] ||= Stream.new(index:, event_tree:)
+      @streams[stream_id] ||= Stream.new(index:, min_delay: @min_delay, event_tree:)
     end
 
     def index
