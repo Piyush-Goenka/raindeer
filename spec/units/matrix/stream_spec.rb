@@ -32,24 +32,28 @@ RSpec.describe Rain::Stream do
     end
   end
 
-  describe '#inputs' do
+  describe '#render' do
     before do
       rain_stream.redraw(cell_count: 20)
     end
 
-    it 'returns a character' do
-      expect(rain_stream.inputs[0]).to eq('R')
-    end
-  end
-
-  xdescribe '#outputs' do
-    before do
-      rain_stream.redraw(cell_count: 20)
-      rain_stream.render()
+    context 'on first frame' do
+      it 'returns nil' do
+        expect(rain_stream.render(cell_index: 0, duration: 0)).to eq(nil)
+      end
     end
 
-    it 'returns a character' do
-      expect(rain_stream.outputs[0]).to eq('R')
+    context 'on second frame' do
+      it 'returns a character' do
+        expect(rain_stream.render(cell_index: 0, duration: 34)).to eq('R')
+      end
+    end
+
+    context 'on third frame' do
+      it 'returns 2 characters' do
+        expect(rain_stream.render(cell_index: 0, duration: 34)).to eq('R')
+        expect(rain_stream.render(cell_index: 1, duration: 34)).to eq('e')
+      end
     end
   end
 end

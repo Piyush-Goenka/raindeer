@@ -3,10 +3,9 @@
 module Rain
   class Stream
     attr_reader :index
-    attr_accessor :inputs, :delays, :outputs
 
     ARROW = ['│', '▼']
-    MIN_DELAY = 34 # miliseconds
+    MIN_DELAY = 34 # miliseconds. Slightly longer than the 33.33 miliseconds of each frame.
 
     def initialize(index:, event_tree:)
       @index = index
@@ -19,8 +18,10 @@ module Rain
       @delays = []
       @outputs = []
 
-      @tail_cursor = 0
       @head_cursor = 0
+      @head_last_update = 0
+
+      @tail_cursor = 0
     end
 
     def redraw(cell_count:)
@@ -39,15 +40,24 @@ module Rain
 
     # Render a cell's input as output after a delay, using cursors.
     # ┌─┐
-    # │││  CELLS
-    # │▼│  Each cell is represented as an input, delay and output.
-    # │R│
-    # │o│
-    # │u│ <-- The head cursor outputs the input after a delay and colors the leading cell white.
-    # │ │     The tail cursor does the same thing but the input (and therefore output) will be empty.
-    # └─┘
-    def render(cell_index:, duration:)
-      # TODO.
+    # │R│ <-- Each cell is represented as an input, delay and output.
+    # │e│
+    # │q│ <-- The head cursor outputs the cell's input after a delay and colors the leading cell white.
+    # │ │
+    # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
+    # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
+    def render(cell_index:, duration: Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) - @head_last_update)
+      if duration >= @delays[@head_cursor]
+        @head_last_update = 0
+
+        @outputs[cell_index] = @inputs[cell_index]
+        @inputs[cell_index] = nil
+
+        @head_cursor += 1
+        @head_cursor = 0 if @head_cursor >= @inputs.count
+      end
+
+      @outputs[cell_index]
     end
 
     private
@@ -86,7 +96,7 @@ module Rain
         @delays[@redraw_cursor] = delay
 
         @redraw_cursor += 1
-        @redraw_cursor = 0 if @redraw_cursor == @inputs.count
+        @redraw_cursor = 0 if @redraw_cursor >= @inputs.count
       end
     end
 
