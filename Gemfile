@@ -18,8 +18,7 @@ group :development do
   gem 'expressions', path: '../expressions'
   gem 'observers', path: '../observers'
 
-  gem 'pry'
-  gem 'pry-nav'
+  gem 'irb'
   gem 'rake', '~> 13.0'
   gem 'rubocop', require: false
 end
