@@ -53,14 +53,16 @@ module Rain
       @streams.each_value { it.render }
 
       (0...@screen_size[:row_count]).each do |row_index|
-        row_cells = []
+        cell_outputs = []
+        cell_colors = []
 
         (0...@screen_size[:column_count]).each do |column_index|
-          row_cells << @columns[column_index].outputs[row_index]
+          cell_colors << @columns[column_index].colors[row_index]
+          cell_outputs << @columns[column_index].outputs[row_index]
         end
 
-        output = row_cells.map do |cell|
-          cell ? Paint[cell, CELL_COLOR] : Paint['', nil]
+        output = cell_outputs.zip(cell_colors).map do |cell, color|
+          cell ? Paint[cell, color] : Paint['', nil]
         end.join(' ')
 
         puts output

@@ -2,9 +2,11 @@
 
 module Rain
   class Stream
-    attr_reader :index, :outputs
+    attr_reader :index, :colors, :outputs
 
     ARROW = ['│', '▼']
+    CELL_COLOR = '#0098fc'
+    LEADING_CELL_COLOR = '#fff'
     
     # @param min_delay: Miliseconds - Slightly longer than the 33.33 miliseconds of each frame.
     def initialize(index:, min_delay: 34, event_tree:)
@@ -18,6 +20,7 @@ module Rain
 
       @inputs = []
       @delays = []
+      @colors = []
       @outputs = []
 
       @head_cursor = -1
@@ -29,6 +32,7 @@ module Rain
     def redraw(cell_count:)
       @inputs.fill(nil, 0...cell_count)[0...cell_count]
       @delays.fill(@min_delay, 0...cell_count)[0...cell_count]
+      @colors.fill(CELL_COLOR, 0...cell_count)[0...cell_count]
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
@@ -54,9 +58,14 @@ module Rain
         @head_cursor = cursor
         @head_last_update = 0
 
+        prev_cursor = (cursor - 1).clamp(0, nil)
+        next_cursor = cursor >= @inputs.count ? 0 : cursor + 1
+
         if @inputs[cursor]
           @outputs[cursor] = @inputs[cursor]
           @delays[cursor] = @min_delay
+          @colors[prev_cursor] = CELL_COLOR if @colors[prev_cursor]
+          @colors[cursor] = @outputs[next_cursor] ? CELL_COLOR : LEADING_CELL_COLOR
           @inputs[cursor] = nil
         end
       end
@@ -111,7 +120,7 @@ module Rain
 
       inputs.each do |character|
         @inputs[@redraw_cursor] = character
-        @delays[@redraw_cursor] = delay
+        @delays[@redraw_cursor] = @redraw_cursor == 0 ? 0 : delay # Don't add delay to the first cell, looks stuck.
 
         @redraw_cursor += 1
         @redraw_cursor = 0 if @redraw_cursor >= @inputs.count

@@ -10,9 +10,10 @@ require_relative '../../fixtures/mock_events'
 def loop_output
   return if ENV['CI']
 
-  250.times do
+  100.times do
     system 'clear'
     matrix.render(screen_size:)
+    sleep(0.03333)
   end
 end
 
