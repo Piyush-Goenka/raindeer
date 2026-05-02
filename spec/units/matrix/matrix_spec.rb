@@ -35,7 +35,8 @@ RSpec.describe Rain::Matrix do
     }
   end
 
-  let(:color) { '#0098fc' }
+  let(:cell_color) { '#0098fc' }
+  let(:lead_color) { '#ffffff' }
 
   context 'when 1 column' do
     let(:screen_size) { { column_count: 1, row_count: 20 } }
@@ -43,26 +44,26 @@ RSpec.describe Rain::Matrix do
 
     let(:lines) do
       <<~BASH
-        #{[['R', color]].paint_columns}
-        #{[['e', color]].paint_columns}
-        #{[['q', color]].paint_columns}
-        #{[['u', color]].paint_columns}
-        #{[['e', color]].paint_columns}
-        #{[['s', color]].paint_columns}
-        #{[['t', color]].paint_columns}
-        #{[['│', color]].paint_columns}
-        #{[['▼', color]].paint_columns}
-        #{[['R', color]].paint_columns}
-        #{[['e', color]].paint_columns}
-        #{[['s', color]].paint_columns}
-        #{[['p', color]].paint_columns}
-        #{[['o', color]].paint_columns}
-        #{[['n', color]].paint_columns}
-        #{[['s', color]].paint_columns}
-        #{[['e', color]].paint_columns}
-        #{[['',       ]].paint_columns}
-        #{[['',       ]].paint_columns}
-        #{[['',       ]].paint_columns}
+        #{[['R', cell_color]].paint_columns}
+        #{[['e', cell_color]].paint_columns}
+        #{[['q', cell_color]].paint_columns}
+        #{[['u', cell_color]].paint_columns}
+        #{[['e', cell_color]].paint_columns}
+        #{[['s', cell_color]].paint_columns}
+        #{[['t', cell_color]].paint_columns}
+        #{[['│', cell_color]].paint_columns}
+        #{[['▼', cell_color]].paint_columns}
+        #{[['R', cell_color]].paint_columns}
+        #{[['e', cell_color]].paint_columns}
+        #{[['s', cell_color]].paint_columns}
+        #{[['p', cell_color]].paint_columns}
+        #{[['o', cell_color]].paint_columns}
+        #{[['n', cell_color]].paint_columns}
+        #{[['s', cell_color]].paint_columns}
+        #{[['e', lead_color]].paint_columns}
+        #{[['',            ]].paint_columns}
+        #{[['',            ]].paint_columns}
+        #{[['',            ]].paint_columns}
       BASH
     end
   
@@ -78,26 +79,26 @@ RSpec.describe Rain::Matrix do
 
     let(:lines) do
       <<~BASH
-        #{[['R', color], ['R', color]].paint_columns}
-        #{[['e', color], ['e', color]].paint_columns}
-        #{[['q', color], ['q', color]].paint_columns}
-        #{[['u', color], ['u', color]].paint_columns}
-        #{[['e', color], ['e', color]].paint_columns}
-        #{[['s', color], ['s', color]].paint_columns}
-        #{[['t', color], ['t', color]].paint_columns}
-        #{[['│', color], ['│', color]].paint_columns}
-        #{[['▼', color], ['▼', color]].paint_columns}
-        #{[['R', color], ['R', color]].paint_columns}
-        #{[['e', color], ['e', color]].paint_columns}
-        #{[['s', color], ['s', color]].paint_columns}
-        #{[['p', color], ['p', color]].paint_columns}
-        #{[['o', color], ['o', color]].paint_columns}
-        #{[['n', color], ['n', color]].paint_columns}
-        #{[['s', color], ['s', color]].paint_columns}
-        #{[['e', color], ['e', color]].paint_columns}
-        #{[['',       ], ['',       ]].paint_columns}
-        #{[['',       ], ['',       ]].paint_columns}
-        #{[['',       ], ['',       ]].paint_columns}
+        #{[['R', cell_color], ['R', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['q', cell_color], ['q', cell_color]].paint_columns}
+        #{[['u', cell_color], ['u', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['t', cell_color], ['t', cell_color]].paint_columns}
+        #{[['│', cell_color], ['│', cell_color]].paint_columns}
+        #{[['▼', cell_color], ['▼', cell_color]].paint_columns}
+        #{[['R', cell_color], ['R', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['p', cell_color], ['p', cell_color]].paint_columns}
+        #{[['o', cell_color], ['o', cell_color]].paint_columns}
+        #{[['n', cell_color], ['n', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['e', lead_color], ['e', lead_color]].paint_columns}
+        #{[['',            ], ['',            ]].paint_columns}
+        #{[['',            ], ['',            ]].paint_columns}
+        #{[['',            ], ['',            ]].paint_columns}
       BASH
     end
   
@@ -122,26 +123,26 @@ RSpec.describe Rain::Matrix do
 
     let(:lines) do
       <<~BASH
-        #{[['R', color], ['R', color], ['R', color]].paint_columns}
-        #{[['e', color], ['e', color], ['e', color]].paint_columns}
-        #{[['q', color], ['q', color], ['q', color]].paint_columns}
-        #{[['u', color], ['u', color], ['u', color]].paint_columns}
-        #{[['e', color], ['e', color], ['e', color]].paint_columns}
-        #{[['s', color], ['s', color], ['s', color]].paint_columns}
-        #{[['t', color], ['t', color], ['t', color]].paint_columns}
-        #{[['│', color], ['│', color], ['│', color]].paint_columns}
-        #{[['▼', color], ['▼', color], ['▼', color]].paint_columns}
-        #{[['R', color], ['R', color], ['R', color]].paint_columns}
-        #{[['e', color], ['e', color], ['e', color]].paint_columns}
-        #{[['s', color], ['s', color], ['s', color]].paint_columns}
-        #{[['p', color], ['p', color], ['p', color]].paint_columns}
-        #{[['o', color], ['o', color], ['o', color]].paint_columns}
-        #{[['n', color], ['n', color], ['n', color]].paint_columns}
-        #{[['s', color], ['s', color], ['s', color]].paint_columns}
-        #{[['e', color], ['e', color], ['e', color]].paint_columns}
-        #{[['',       ], ['',       ], ['',       ]].paint_columns}
-        #{[['',       ], ['',       ], ['',       ]].paint_columns}
-        #{[['',       ], ['',       ], ['',       ]].paint_columns}
+        #{[['R', cell_color], ['R', cell_color], ['R', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['q', cell_color], ['q', cell_color], ['q', cell_color]].paint_columns}
+        #{[['u', cell_color], ['u', cell_color], ['u', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['t', cell_color], ['t', cell_color], ['t', cell_color]].paint_columns}
+        #{[['│', cell_color], ['│', cell_color], ['│', cell_color]].paint_columns}
+        #{[['▼', cell_color], ['▼', cell_color], ['▼', cell_color]].paint_columns}
+        #{[['R', cell_color], ['R', cell_color], ['R', cell_color]].paint_columns}
+        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['p', cell_color], ['p', cell_color], ['p', cell_color]].paint_columns}
+        #{[['o', cell_color], ['o', cell_color], ['o', cell_color]].paint_columns}
+        #{[['n', cell_color], ['n', cell_color], ['n', cell_color]].paint_columns}
+        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
+        #{[['e', lead_color], ['e', lead_color], ['e', lead_color]].paint_columns}
+        #{[['',            ], ['',            ], ['',            ]].paint_columns}
+        #{[['',            ], ['',            ], ['',            ]].paint_columns}
+        #{[['',            ], ['',            ], ['',            ]].paint_columns}
       BASH
     end
 
