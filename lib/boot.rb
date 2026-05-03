@@ -7,6 +7,7 @@ require 'low_node'
 require 'low_type'
 require 'lowload'
 
+require_relative 'matrix/matrix'
 require_relative 'support/config_loader'
 
 env = {

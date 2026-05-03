@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'paint'
 require 'low_event'
 require 'observers'
 
@@ -12,7 +13,7 @@ module Rain
 
     observe Low::Events::EventPool
 
-    def initialize(event_pool:, config: Rain::ConfigLoader.load('../../config/matrix.yaml'))
+    def initialize(event_pool:, config: Rain::ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
 
@@ -54,9 +55,10 @@ module Rain
         cell_outputs = []
         cell_colors = []
 
+        # Rendering streams can happen before redrawing streams and @columns haven't been populated yet (empty event pool).
         (0...@screen_size[:column_count]).each do |column_index|
-          cell_colors << @columns[column_index].colors[row_index]
-          cell_outputs << @columns[column_index].outputs[row_index]
+          cell_colors << (@columns[column_index].nil? ? nil : @columns[column_index].colors[row_index])
+          cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
         end
 
         output = cell_outputs.zip(cell_colors).map do |cell, color|
