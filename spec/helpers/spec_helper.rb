@@ -21,3 +21,21 @@ LowType.configure do |config|
   config.output_mode = :value
   config.output_size = 100
 end
+
+def render_frames(frames = 100, fps = 30)
+  return if ENV['CI']
+
+  frame_duration = 1.0 / fps
+
+  frames.times do
+    system 'clear'
+    matrix.render(screen_size:)
+    sleep(frame_duration)
+  end
+end
+
+class Array
+  def paint_columns
+    self.map { ::Paint[it[0], it[1]] }.join(' ')
+  end
+end

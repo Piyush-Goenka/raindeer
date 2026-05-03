@@ -8,24 +8,6 @@ require_relative '../../../lib/support/config_loader'
 require_relative '../../factories/event_factory'
 require_relative '../../fixtures/mock_events'
 
-def render_frames(frames = 100, fps = 30)
-  return if ENV['CI']
-
-  frame_duration = 1.0 / fps
-
-  frames.times do
-    system 'clear'
-    matrix.render(screen_size:)
-    sleep(frame_duration)
-  end
-end
-
-class Array
-  def paint_columns
-    self.map { ::Paint[it[0], it[1]] }.join(' ')
-  end
-end
-
 RSpec.describe Rain::Matrix do
   subject(:matrix) { described_class.new(event_pool:, config:) }
 
