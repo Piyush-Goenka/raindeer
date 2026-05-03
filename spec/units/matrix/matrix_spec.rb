@@ -24,7 +24,7 @@ class Array
 end
 
 RSpec.describe Rain::Matrix do
-  subject(:matrix) { described_class.new(event_pool:, index_type:, min_delay: 34) }
+  subject(:matrix) { described_class.new(event_pool:, index_type:, min_delay: 75) }
 
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
   let(:event_trees) do
