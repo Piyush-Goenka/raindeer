@@ -61,14 +61,6 @@ Your files should just work out of the box. Internally this can create a "less c
 
 An application is a living organism and so is the framework below it. Raindeer does a lot of dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelisation of low nodes via Antlers syntax. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic". Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of things that you don't know about.
 
-## Installation
+## Getting Started
 
-Install instructions coming soon... for now just clone this repo and play around with the `lib/system` folder, which is an internal Raindeer app inside the framework itself.
-
-## Development
-
-1. Clone the repo
-2. In your terminal run:
-```
-bin/server
-```
+Clone the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) to begin developing your own Raindeer application.
