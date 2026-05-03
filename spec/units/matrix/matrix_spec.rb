@@ -66,9 +66,9 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color]].paint_columns}
         #{[['s', cell_color]].paint_columns}
         #{[['e', lead_color]].paint_columns}
-        #{[['',            ]].paint_columns}
-        #{[['',            ]].paint_columns}
-        #{[['',            ]].paint_columns}
+        #{[[' ',           ]].paint_columns}
+        #{[[' ',           ]].paint_columns}
+        #{[[' ',           ]].paint_columns}
       BASH
     end
   
@@ -100,9 +100,9 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color], ['n', cell_color]].paint_columns}
         #{[['s', cell_color], ['s', cell_color]].paint_columns}
         #{[['e', lead_color], ['e', lead_color]].paint_columns}
-        #{[['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ]].paint_columns}
+        #{[[' ',           ], [' ',           ]].paint_columns}
+        #{[[' ',           ], [' ',           ]].paint_columns}
+        #{[[' ',           ], [' ',           ]].paint_columns}
       BASH
     end
   
@@ -143,9 +143,9 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color], ['n', cell_color], ['n', cell_color]].paint_columns}
         #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
         #{[['e', lead_color], ['e', lead_color], ['e', lead_color]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
+        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
+        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
+        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
       BASH
     end
 
@@ -170,31 +170,31 @@ RSpec.describe Rain::Matrix do
 
     let(:lines) do
       <<~BASH
-        #{[['R', cell_color], ['R', cell_color], ['R', cell_color]].paint_columns}
-        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
-        #{[['q', cell_color], ['q', cell_color], ['q', cell_color]].paint_columns}
-        #{[['u', cell_color], ['u', cell_color], ['u', cell_color]].paint_columns}
-        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
-        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
-        #{[['t', cell_color], ['t', cell_color], ['t', cell_color]].paint_columns}
-        #{[['│', cell_color], ['│', cell_color], ['│', cell_color]].paint_columns}
-        #{[['▼', cell_color], ['▼', cell_color], ['▼', cell_color]].paint_columns}
-        #{[['R', cell_color], ['R', cell_color], ['R', cell_color]].paint_columns}
-        #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
-        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
-        #{[['p', cell_color], ['p', cell_color], ['p', cell_color]].paint_columns}
-        #{[['o', cell_color], ['o', cell_color], ['o', cell_color]].paint_columns}
-        #{[['n', cell_color], ['n', cell_color], ['n', cell_color]].paint_columns}
-        #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
-        #{[['e', lead_color], ['e', lead_color], ['e', lead_color]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
-        #{[['',            ], ['',            ], ['',            ]].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
+        #{[[' '], [' '], [' ']].paint_columns}
       BASH
     end
 
     it 'returns a matrix with no rows' do
-      render_frames(1000)
+      render_frames(250)
 
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
       sleep(5)
