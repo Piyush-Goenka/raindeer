@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'cursor'
+
 module Rain
   class Stream
     attr_reader :index, :colors, :outputs
@@ -23,8 +25,8 @@ module Rain
       @colors = []
       @outputs = []
 
-      @head_cursor = -1
-      @tail_cursor = -1
+      @head_cursor = Cursor.new
+      @tail_cursor = Cursor.new
       @head_last_update = now
       @tail_last_update = now
     end
@@ -54,19 +56,16 @@ module Rain
     # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
     # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
     def render(duration: nil)
-      move_cursor(cursor: @head_cursor, duration: duration || now - @head_last_update) do |cursor|
-        @head_cursor = cursor
-        @head_last_update = now
+      @head_cursor.increment(delays:, inputs:) do |index|
+        prev_index = (index - 1).clamp(0, nil)
+        next_index = index >= @inputs.count ? 0 : index + 1
 
-        prev_cursor = (cursor - 1).clamp(0, nil)
-        next_cursor = cursor >= @inputs.count ? 0 : cursor + 1
-
-        if @inputs[cursor]
-          @outputs[cursor] = @inputs[cursor]
-          @delays[cursor] = @min_delay
-          @colors[prev_cursor] = CELL_COLOR if @colors[prev_cursor]
-          @colors[cursor] = @outputs[next_cursor] ? CELL_COLOR : LEADING_CELL_COLOR
-          @inputs[cursor] = nil
+        if @inputs[index]
+          @outputs[index] = @inputs[index]
+          @delays[index] = FADE_DELAY
+          @colors[prev_index] = CELL_COLOR if @colors[prev_index]
+          @colors[index] = @outputs[next_index] ? CELL_COLOR : LEADING_CELL_COLOR
+          @inputs[index] = nil
         end
       end
 
@@ -75,15 +74,7 @@ module Rain
 
     private
 
-    def move_cursor(cursor:, duration:)
-      next_cursor = cursor + 1
-      if @delays[next_cursor] && duration >= @delays[next_cursor]
-        cursor += 1
-        cursor = 0 if cursor >= @inputs.count
-
-        yield cursor
-      end
-    end
+    attr_reader :inputs, :delays
 
     def now
       Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
