@@ -13,12 +13,13 @@ module Rain
 
     CELL_COLOR = '#0098fc'
 
-    def initialize(event_pool:, index_type: :random, min_delay: nil)
+    def initialize(event_pool:, index_type: :random, min_delay: nil, fade: false)
       @event_pool = event_pool
 
       @index_type = index_type
       @current_index = -1
       @min_delay = min_delay
+      @fade = fade
 
       @screen_size = nil
       @streams = {}
@@ -70,7 +71,7 @@ module Rain
     end
 
     def upsert_stream(stream_id:, event_tree:)
-      @streams[stream_id] ||= Stream.new(index:, min_delay: @min_delay, event_tree:)
+      @streams[stream_id] ||= Stream.new(index:, min_delay: @min_delay, fade: @fade, event_tree:)
     end
 
     def index

@@ -9,9 +9,10 @@ module Rain
     ARROW = ['│', '▼']
     CELL_COLOR = '#0098fc'
     LEADING_CELL_COLOR = '#fff'
-    
-    # @param min_delay: Miliseconds - Slightly longer than the 33.33 miliseconds of each frame.
-    def initialize(index:, min_delay: 34, event_tree:)
+    FADE_DELAY = 1000
+
+    # @param min_delay: Slightly longer than the 33.33 miliseconds of each frame (30fps).
+    def initialize(index:, min_delay: 34, fade: false, event_tree:)
       @index = index
 
       @event_tree = event_tree
@@ -19,6 +20,7 @@ module Rain
 
       @redraw_cursor = 0
       @min_delay = min_delay
+      @fade = fade
 
       @inputs = []
       @delays = []
