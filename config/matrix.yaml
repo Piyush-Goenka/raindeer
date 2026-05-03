@@ -1,7 +1,7 @@
 cell_color: '#0098fc'
 lead_color: '#ffffff'
-start_col: :random # Options are :random, :latest
+start_col: :latest # Options are :random, :latest
 start_row: :random # Options are :random, 0
 min_delay: 75
-fade: true
+fade: false
 fade_delay: 250
