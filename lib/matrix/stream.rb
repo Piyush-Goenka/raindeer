@@ -29,8 +29,6 @@ module Rain
 
       @head_cursor = Cursor.new
       @tail_cursor = Cursor.new
-      @head_last_update = now
-      @tail_last_update = now
     end
 
     def redraw(cell_count:)
