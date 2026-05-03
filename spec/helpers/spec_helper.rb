@@ -23,13 +23,11 @@ LowType.configure do |config|
 end
 
 def render_frames(frames = 100, fps = 30)
-  return if ENV['CI']
-
   frame_duration = 1.0 / fps
 
   frames.times do
-    system 'clear'
-    matrix.render(screen_size:)
+    system 'clear' if ENV['SHOW_OUTPUT'] == '1'
+    yield
     sleep(frame_duration)
   end
 end

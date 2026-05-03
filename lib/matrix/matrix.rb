@@ -23,13 +23,13 @@ module Rain
       @columns = []
     end
 
-    def render(screen_size:)
+    def render(screen_size:, show_output: true)
       if screen_size != @screen_size
         @screen_size = screen_size
         redraw_streams
       end
 
-      render_streams
+      render_streams(show_output:)
     end
 
     def update(stream_id:, event_tree:)
@@ -47,7 +47,7 @@ module Rain
       end
     end
 
-    def render_streams
+    def render_streams(show_output:)
       @streams.each_value { |stream| stream.render }
 
       (0...@screen_size[:row_count]).each do |row_index|
@@ -63,7 +63,7 @@ module Rain
           cell ? Paint[cell, color] : Paint[' ', nil]
         end.join(' ')
 
-        puts output
+        puts output if show_output
       end
     end
 

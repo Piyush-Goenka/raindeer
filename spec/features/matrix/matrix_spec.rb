@@ -21,6 +21,7 @@ RSpec.describe Rain::Matrix do
   end
   let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
   let(:overrides) { {} }
+  let(:show_output) { ENV['SHOW_OUTPUT'] == '1' ? true : false }
 
   let(:cell_color) { '#0098fc' }
   let(:lead_color) { '#ffffff' }
@@ -54,8 +55,8 @@ RSpec.describe Rain::Matrix do
       BASH
     end
   
-    it 'returns a matrix' do
-      render_frames
+    it 'renders a matrix' do
+      render_frames { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
@@ -88,8 +89,8 @@ RSpec.describe Rain::Matrix do
       BASH
     end
   
-    it 'returns a matrix' do
-      render_frames
+    it 'renders a matrix' do
+      render_frames { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
@@ -131,8 +132,8 @@ RSpec.describe Rain::Matrix do
       BASH
     end
 
-    it 'returns a matrix' do
-      render_frames
+    it 'renders a matrix' do
+      render_frames { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
@@ -175,11 +176,8 @@ RSpec.describe Rain::Matrix do
       BASH
     end
 
-    it 'returns a matrix with no rows' do
-      render_frames(250)
-
-      expect { matrix.render(screen_size:) }.to output(lines).to_stdout
-      sleep(5)
+    it 'renders a matrix with no rows' do
+      render_frames(300) { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end

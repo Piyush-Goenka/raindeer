@@ -33,6 +33,11 @@ Fiber.blocking { binding.irb }
 
 https://socketry.github.io/async/guides/debugging/index
 
+## Testing
+
+Run all tests with `bundle exec rspec`.
+Add the `SHOW_OUTPUT=1` flag to see the terminal output of some of the feature tests.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://codeberg.org/raindeer/raindeer.
