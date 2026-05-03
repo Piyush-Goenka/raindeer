@@ -3,6 +3,7 @@
 require 'low_event'
 require 'observers'
 
+require_relative '../support/config_loader'
 require_relative 'stream'
 
 module Rain
@@ -11,17 +12,13 @@ module Rain
 
     observe Low::Events::EventPool
 
-    CELL_COLOR = '#0098fc'
-
-    def initialize(event_pool:, index_type: :random, min_delay: nil, fade: false)
+    def initialize(event_pool:, config: Rain::ConfigLoader.load('../../config/matrix.yaml'))
       @event_pool = event_pool
-
-      @index_type = index_type
-      @current_index = -1
-      @min_delay = min_delay
-      @fade = fade
+      @config = config
 
       @screen_size = nil
+
+      @last_stream_index = -1
       @streams = {}
       @columns = []
     end
@@ -71,17 +68,17 @@ module Rain
     end
 
     def upsert_stream(stream_id:, event_tree:)
-      @streams[stream_id] ||= Stream.new(index:, min_delay: @min_delay, fade: @fade, event_tree:)
+      @streams[stream_id] ||= Stream.new(index:, config: @config, event_tree:)
     end
 
     def index
-      case @index_type
+      case @config.start_col
       when :random
         rand(0...@screen_size[:column_count])
       when :latest
-        @current_index += 1
-        return @current_index = 0 if @current_index >= @screen_size[:column_count]
-        @current_index
+        @last_stream_index += 1
+        return @last_stream_index = 0 if @last_stream_index >= @screen_size[:column_count]
+        @last_stream_index
       end
     end
   end

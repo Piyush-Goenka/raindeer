@@ -1,0 +1,8 @@
+# Matrix config with more determinisitic defaults better suited for testing.
+cell_color: '#0098fc'
+lead_color: '#ffffff'
+start_col: :latest # Options are :random, :latest
+start_row: 0 # Options are :random, 0
+min_delay: 75
+fade: false
+fade_delay: 250

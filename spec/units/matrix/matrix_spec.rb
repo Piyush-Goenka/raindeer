@@ -4,6 +4,7 @@ require 'paint'
 require 'low_event'
 
 require_relative '../../../lib/matrix/matrix'
+require_relative '../../../lib/support/config_loader'
 require_relative '../../factories/event_factory'
 require_relative '../../fixtures/mock_events'
 
@@ -26,7 +27,7 @@ class Array
 end
 
 RSpec.describe Rain::Matrix do
-  subject(:matrix) { described_class.new(event_pool:, index_type:, min_delay: 75, fade:) }
+  subject(:matrix) { described_class.new(event_pool:, config:) }
 
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
   let(:event_trees) do
@@ -36,16 +37,15 @@ RSpec.describe Rain::Matrix do
       3 => Fixtures::EventFactory.request_response_tree,
     }
   end
-
-  let(:index_type) { :latest }
-  let(:fade) { false }
+  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
+  let(:overrides) { {} }
 
   let(:cell_color) { '#0098fc' }
   let(:lead_color) { '#ffffff' }
 
   context 'when 1 column' do
     let(:screen_size) { { column_count: 1, row_count: 20 } }
-    let(:index_type) { :random }
+    let(:overrides) { { start_col: :random } }
 
     let(:lines) do
       <<~BASH
@@ -156,7 +156,7 @@ RSpec.describe Rain::Matrix do
   end
 
   context 'when events fade' do
-    let(:fade) { true }
+    let(:overrides) { { fade: :true } }
     let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:event_trees) do

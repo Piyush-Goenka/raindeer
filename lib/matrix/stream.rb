@@ -7,20 +7,14 @@ module Rain
     attr_reader :index, :colors, :outputs
 
     ARROW = ['│', '▼']
-    CELL_COLOR = '#0098fc'
-    LEADING_CELL_COLOR = '#fff'
-    FADE_DELAY = 250
 
-    # @param min_delay: Slightly longer than the 33.33 miliseconds of each frame (30fps).
-    def initialize(index:, min_delay: 34, fade: false, event_tree:)
+    def initialize(index:, config:, event_tree:)
       @index = index
+      @config = config
 
       @event_tree = event_tree
       @event_cursor = 0
-
       @redraw_cursor = 0
-      @min_delay = min_delay
-      @fade = fade
 
       @inputs = []
       @delays = []
@@ -33,8 +27,8 @@ module Rain
 
     def redraw(cell_count:)
       @inputs.fill(nil, 0...cell_count)[0...cell_count]
-      @delays.fill(@min_delay, 0...cell_count)[0...cell_count]
-      @colors.fill(CELL_COLOR, 0...cell_count)[0...cell_count]
+      @delays.fill(@config.min_delay, 0...cell_count)[0...cell_count]
+      @colors.fill(@config.cell_color, 0...cell_count)[0...cell_count]
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
@@ -63,9 +57,9 @@ module Rain
         # Head cursor iterates over every cell, but only affects cells with visible output.
         if @inputs[index]
           @outputs[index] = @inputs[index]
-          @delays[index] = FADE_DELAY
-          @colors[prev_index] = CELL_COLOR if @colors[prev_index]
-          @colors[index] = @outputs[next_index] ? CELL_COLOR : LEADING_CELL_COLOR
+          @delays[index] = @config.fade_delay
+          @colors[prev_index] = @config.cell_color if @colors[prev_index]
+          @colors[index] = @outputs[next_index] ? @config.cell_color : @config.lead_color
           @inputs[index] = nil
         end
       end
@@ -112,11 +106,11 @@ module Rain
     def redraw_event(current_event:, past_event:)
       if @event_cursor == 0
         inputs = event_name(current_event:)
-        delay = @min_delay
+        delay = @config.min_delay
       else
         inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
-        delay = difference == 0 ? @min_delay : (difference / inputs.count).to_i.clamp(@min_delay, nil)
+        delay = difference == 0 ? @config.min_delay : (difference / inputs.count).to_i.clamp(@config.min_delay, nil)
       end
 
       inputs.each do |character|
