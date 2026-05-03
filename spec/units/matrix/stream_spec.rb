@@ -3,11 +3,14 @@
 require 'low_event'
 
 require_relative '../../../lib/matrix/stream'
+require_relative '../../../lib/support/config_loader'
 require_relative '../../factories/event_factory'
 
 RSpec.describe Rain::Stream do
-  subject(:stream) { described_class.new(index: 0, event_tree:) }
+  subject(:stream) { described_class.new(index: 0, config:, event_tree:) }
 
+  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
+  let(:overrides) { {} }
   let(:event_tree) { Fixtures::EventFactory.request_response_tree }
 
   describe '#redraw' do
@@ -32,6 +35,7 @@ RSpec.describe Rain::Stream do
     end
   end
 
+  # Because cursors can increment at most by one cell per render, only test the first cell or render multiple times.
   describe '#render' do
     before do
       stream.redraw(cell_count: 20)
@@ -39,42 +43,67 @@ RSpec.describe Rain::Stream do
 
     context 'on first frame' do
       it 'returns nil' do
-        expect(stream.render(cell_index: 0, duration: 0)).to eq(nil)
+        expect(stream.outputs[0]).to eq(nil)
       end
     end
 
-    context 'on second frame' do
+    context 'after 1 delay' do
       it 'returns a character' do
-        expect(stream.render(cell_index: 0, duration: 34)).to eq('R')
+        stream.render(duration: 75)
+        expect(stream.outputs[0]).to eq('R')
       end
     end
 
-    context 'on third frame' do
+    context 'after 2 delays' do
       it 'returns 2 characters' do
-        expect(stream.render(cell_index: 0, duration: 34)).to eq('R')
-        expect(stream.render(cell_index: 1, duration: 34)).to eq('e')
+        stream.render(duration: 75)
+        stream.render(duration: 75)
+
+        expect(stream.outputs[0..1]).to eq(['R', 'e'])
       end
     end
 
-    context 'before 1 second' do
+    context 'before 5 seconds' do
       it 'keeps characters' do
-        stream = described_class.new(index: 0, event_tree:)
+        stream = described_class.new(index: 0, config:, event_tree:)
         stream.redraw(cell_count: 20)
+        stream.render(duration: 4999)
 
-        sleep(0.5)
+        expect(stream.outputs[0]).to eq('R')
+      end
 
-        expect(stream.render(cell_index: 0)).to eq('R')
+      context 'with fade' do
+        let(:overrides) { { fade: true } }
+
+        it 'keeps characters' do
+          stream = described_class.new(index: 0, config:, event_tree:)
+          stream.redraw(cell_count: 20)
+          stream.render(duration: 4999)
+
+          expect(stream.outputs[0]).to eq('R')
+        end
       end
     end
 
-    context 'after 1 second' do
-      it 'removes characters' do
-        stream = described_class.new(index: 0, event_tree:)
+    context 'after 10 seconds' do
+      it 'keeps characters' do
+        stream = described_class.new(index: 0, config:, event_tree:)
         stream.redraw(cell_count: 20)
+        stream.render(duration: 10_001)
 
-        sleep(1.1)
+        expect(stream.outputs[0]).to eq('R')
+      end
 
-        expect(stream.render(cell_index: 0)).to eq(nil)
+      context 'with fade' do
+        let(:overrides) { { fade: true } }
+
+        it 'removes characters' do
+          stream = described_class.new(index: 0, config:, event_tree:)
+          stream.redraw(cell_count: 20)
+          stream.render(duration: 10_001)
+
+          expect(stream.outputs[0]).to eq(nil)
+        end
       end
     end
   end

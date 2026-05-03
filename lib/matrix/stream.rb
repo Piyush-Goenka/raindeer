@@ -25,6 +25,7 @@ module Rain
       @tail_cursor = Cursor.new
     end
 
+    # Layout cells to fit the current cell count. Called on matrix initialization, screen size changes and on new events.
     def redraw(cell_count:)
       @inputs.fill(nil, 0...cell_count)[0...cell_count]
       @delays.fill(@config.min_delay, 0...cell_count)[0...cell_count]
@@ -41,7 +42,7 @@ module Rain
       @inputs
     end
 
-    # Render a cell's input as output after a delay, using cursors.
+    # Render a cell's input as output after a delay, using cursors. Called on every frame.
     # ┌─┐
     # │R│ <-- Each cell is represented as an input, delay and output.
     # │e│
@@ -49,12 +50,13 @@ module Rain
     # │ │
     # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
     # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
+    #
+    # Unit tests use "duration" to skip forwards in time, while matrix spec and the real world use old fashioned linear time.
     def render(duration: nil)
-      @head_cursor.increment(delays:, inputs:) do |index|
+      @head_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = (index - 1).clamp(0, nil)
         next_index = index >= @inputs.count ? 0 : index + 1
 
-        # Head cursor iterates over every cell, but only affects cells with visible output.
         if @inputs[index]
           @outputs[index] = @inputs[index]
           @delays[index] = @config.fade_delay
@@ -64,10 +66,18 @@ module Rain
         end
       end
 
-      if (now - @head_cursor.first_update) >= rand(5_000..10_000)
-        @tail_cursor.increment(delays:, inputs:) do |index|
-          
-          # Tail cursor iterates over every cell, but only affects cells with empty input and visible output.
+      fade(duration:) if @config.fade
+    end
+
+    private
+
+    attr_reader :inputs, :delays
+
+    def fade(duration: nil)
+      fade_start = rand(5_000..10_000)
+
+      if (now - @head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
+        @tail_cursor.increment(delays:, inputs:, duration:) do |index|
           if @inputs[index].nil? && @outputs[index]
             @outputs[index] = @inputs[index]
             @delays[index] = 0
@@ -76,10 +86,6 @@ module Rain
       end
     end
 
-    private
-
-    attr_reader :inputs, :delays
-
     def now
       Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
     end
@@ -87,7 +93,7 @@ module Rain
     # A column of cells representing sequential events.
     # ┌─┐
     # │R│  FIRST EVENT
-    # │e│  Each cell will render input as output after a delay (that is just above frame rate) since there's no prior event.
+    # │e│  Each cell will render input as output after a minimum delay (since there's no prior event).
     # │q│
     # │u│ 
     # │e│
@@ -97,11 +103,11 @@ module Rain
     # ┌─┐
     # │││  SECOND EVENT
     # │▼│  The next event has data to work with, it can represent the time it took to get from the previous event to the next.
-    # │R│  Each cell will render for the following delay; the time elapsed between events divided by the number of inputs.
-    # │o│
-    # │u│ <-- A cursor moves to the next cell after a delay and colors the leading cell white.
+    # │R│  Each cell will render after the largest duration of the following values:
+    # │o│   1. The minimum delay
+    # │u│   2. The time elapsed between events divided by the number of inputs
     # │t│
-    # │e│
+    # │e│ <-- A cursor moves to the next cell after a delay and colors the leading cell white.
     # └─┘
     def redraw_event(current_event:, past_event:)
       if @event_cursor == 0
