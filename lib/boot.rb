@@ -24,7 +24,7 @@ LowDependency.provide('rain.router') do
 end
 
 LowDependency.provide('rain.matrix') do
-  Rain::Matrix.new(event_pool: Low::Providers['low.event.pool']) # Provider defined in LowEvent.
+  Rain::Matrix.new(event_pool: Low::Providers['low.event.pool'])
 end
 
 LowDependency.provide('low.loop') do
