@@ -9,7 +9,7 @@ module Rain
     ARROW = ['│', '▼']
     CELL_COLOR = '#0098fc'
     LEADING_CELL_COLOR = '#fff'
-    FADE_DELAY = 1000
+    FADE_DELAY = 250
 
     # @param min_delay: Slightly longer than the 33.33 miliseconds of each frame (30fps).
     def initialize(index:, min_delay: 34, fade: false, event_tree:)
@@ -62,6 +62,7 @@ module Rain
         prev_index = (index - 1).clamp(0, nil)
         next_index = index >= @inputs.count ? 0 : index + 1
 
+        # Head cursor iterates over every cell, but only affects cells with visible output.
         if @inputs[index]
           @outputs[index] = @inputs[index]
           @delays[index] = FADE_DELAY
@@ -71,7 +72,16 @@ module Rain
         end
       end
 
-      # @tail_cursor = move_cursor(cursor: @tail_cursor, duration: duration || now - @tail_last_update)
+      if (now - @head_cursor.first_update) >= rand(5_000..10_000)
+        @tail_cursor.increment(delays:, inputs:) do |index|
+          
+          # Tail cursor iterates over every cell, but only affects cells with empty input and visible output.
+          if @inputs[index].nil? && @outputs[index]
+            @outputs[index] = @inputs[index]
+            @delays[index] = 0
+          end
+        end
+      end
     end
 
     private

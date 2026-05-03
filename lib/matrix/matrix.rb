@@ -63,7 +63,7 @@ module Rain
         end
 
         output = cell_outputs.zip(cell_colors).map do |cell, color|
-          cell ? Paint[cell, color] : Paint['', nil]
+          cell ? Paint[cell, color] : Paint[' ', nil]
         end.join(' ')
 
         puts output

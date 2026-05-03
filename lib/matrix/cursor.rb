@@ -2,12 +2,12 @@
 
 module Rain
   class Cursor
-    attr_accessor :index, :last_update
+    attr_accessor :index, :first_update, :last_update
 
     def initialize
       @index = -1
-      @last_update = now
       @first_update = now
+      @last_update = now
     end
 
     def increment(delays:, inputs:, duration: now - @last_update)
