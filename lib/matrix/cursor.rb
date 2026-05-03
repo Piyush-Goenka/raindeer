@@ -10,8 +10,9 @@ module Rain
       @last_update = now
     end
 
-    def increment(delays:, inputs:, duration: now - @last_update)
+    def increment(delays:, inputs:, duration: nil)
       next_index = @index + 1
+      duration = now - @last_update if duration.nil?
 
       if delays[next_index] && duration >= delays[next_index]
         @index += 1
