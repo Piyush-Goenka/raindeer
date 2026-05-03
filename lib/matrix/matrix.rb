@@ -48,7 +48,7 @@ module Rain
     end
 
     def render_streams
-      @streams.each_value { it.render }
+      @streams.each_value { |stream| stream.render }
 
       (0...@screen_size[:row_count]).each do |row_index|
         cell_outputs = []
