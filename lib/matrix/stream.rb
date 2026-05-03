@@ -113,6 +113,7 @@ module Rain
       if @event_cursor == 0
         inputs = event_name(current_event:)
         delay = @config.min_delay
+        randomize_start_row
       else
         inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
@@ -130,6 +131,14 @@ module Rain
 
     def event_name(current_event:)
       current_event.class.name.split('::').last.delete_suffix('Event').chars
+    end
+
+    def randomize_start_row
+      return unless @config.start_row == :random
+
+      random_index = rand(0..2) 
+      @redraw_cursor = random_index
+      @head_cursor.index = random_index - 1 # Head cursor always 1 index behind to make "increment" method's logic simple.
     end
   end
 end
