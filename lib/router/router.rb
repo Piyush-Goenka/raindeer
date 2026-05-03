@@ -65,5 +65,3 @@ module Rain
     end
   end
 end
-
-RainRouter = Rain::Router

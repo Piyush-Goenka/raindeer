@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require 'pry'
-require 'pry-nav'
 require 'low_type'
+require 'timecop'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -21,4 +20,20 @@ end
 LowType.configure do |config|
   config.output_mode = :value
   config.output_size = 100
+end
+
+def render_frames(frames = 100, fps = 30)
+  frame_duration = 1.0 / fps
+
+  frames.times do
+    system 'clear' if ENV['SHOW_OUTPUT'] == '1'
+    yield
+    sleep(frame_duration)
+  end
+end
+
+class Array
+  def paint_columns
+    self.map { ::Paint[it[0], it[1]] }.join(' ')
+  end
 end

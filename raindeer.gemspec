@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
 
   spec.add_dependency 'ostruct'
+  spec.add_dependency 'paint'
 
   spec.add_dependency 'low_dependency'
   spec.add_dependency 'low_event'

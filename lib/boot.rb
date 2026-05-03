@@ -7,6 +7,7 @@ require 'low_node'
 require 'low_type'
 require 'lowload'
 
+require_relative 'matrix/matrix'
 require_relative 'support/config_loader'
 
 env = {
@@ -20,11 +21,15 @@ env = {
 config = Rain::ConfigLoader.load('./config/config.yaml', env)
 
 LowDependency.provide('rain.router') do
-  RainRouter.new
+  Rain::Router.new
+end
+
+LowDependency.provide('rain.matrix') do
+  Rain::Matrix.new(event_pool: Low::Providers['low.event.pool'])
 end
 
 LowDependency.provide('low.loop') do
-  LowLoop.new(config:, router: Low::Providers['rain.router'])
+  LowLoop.new(config:, router: Low::Providers['rain.router'], renderer: Low::Providers['rain.matrix'])
 end
 
 LowLoad.dirload(File.expand_path('../system', __FILE__))
