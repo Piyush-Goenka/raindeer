@@ -7,13 +7,15 @@ require_relative '../../../lib/matrix/matrix'
 require_relative '../../factories/event_factory'
 require_relative '../../fixtures/mock_events'
 
-def loop_output
+def render_frames(frames = 100, fps = 30)
   return if ENV['CI']
 
-  100.times do
+  frame_duration = 1.0 / fps
+
+  frames.times do
     system 'clear'
     matrix.render(screen_size:)
-    sleep(0.03333)
+    sleep(frame_duration)
   end
 end
 
@@ -68,7 +70,7 @@ RSpec.describe Rain::Matrix do
     end
   
     it 'returns a matrix' do
-      loop_output
+      render_frames
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
@@ -103,7 +105,7 @@ RSpec.describe Rain::Matrix do
     end
   
     it 'returns a matrix' do
-      loop_output
+      render_frames
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
@@ -147,7 +149,7 @@ RSpec.describe Rain::Matrix do
     end
 
     it 'returns a matrix' do
-      loop_output
+      render_frames
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
     end
   end
