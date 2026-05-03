@@ -56,7 +56,7 @@ module Rain
     def render(duration: nil)
       move_cursor(cursor: @head_cursor, duration: duration || now - @head_last_update) do |cursor|
         @head_cursor = cursor
-        @head_last_update = 0
+        @head_last_update = now
 
         prev_cursor = (cursor - 1).clamp(0, nil)
         next_cursor = cursor >= @inputs.count ? 0 : cursor + 1
