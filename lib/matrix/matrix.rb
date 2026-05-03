@@ -33,14 +33,10 @@ module Rain
       render_streams(show_output:)
     end
 
-    def update(stream_id:, event_tree:)
-      upsert_stream(stream_id:, event_tree:)
-    end
-
-    private
-
     def redraw_streams
       @event_pool.event_trees.each do |stream_id, event_tree|
+        Fiber.blocking { binding.irb }
+
         stream = upsert_stream(stream_id:, event_tree:)
         stream.redraw(cell_count: @screen_size[:row_count])
 
@@ -48,7 +44,9 @@ module Rain
       end
     end
 
-    def render_streams(show_output:)
+    private
+
+    def render_streams(show_output: true)
       @streams.each_value { |stream| stream.render }
 
       (0...@screen_size[:row_count]).each do |row_index|
