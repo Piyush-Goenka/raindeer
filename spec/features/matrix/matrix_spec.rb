@@ -12,13 +12,6 @@ RSpec.describe Rain::Matrix do
   subject(:matrix) { described_class.new(event_pool:, config:) }
 
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
-  let(:event_trees) do
-    {
-      1 => Fixtures::EventFactory.request_response_tree,
-      2 => Fixtures::EventFactory.request_response_tree,
-      3 => Fixtures::EventFactory.request_response_tree,
-    }
-  end
   let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
   let(:overrides) { {} }
   let(:show_output) { ENV['SHOW_OUTPUT'] == '1' ? true : false }
@@ -26,7 +19,18 @@ RSpec.describe Rain::Matrix do
   let(:cell_color) { '#0098fc' }
   let(:lead_color) { '#ffffff' }
 
+  before do
+    Observers::Keys.reset
+  end
+
   context 'when 1 column' do
+    let(:event_trees) do
+      {
+        1 => Fixtures::EventFactory.request_response_tree,
+        2 => Fixtures::EventFactory.request_response_tree,
+        3 => Fixtures::EventFactory.request_response_tree,
+      }
+    end
     let(:screen_size) { { column_count: 1, row_count: 20 } }
     let(:overrides) { { start_col: :random } }
 
@@ -62,6 +66,13 @@ RSpec.describe Rain::Matrix do
   end
 
   context 'when 2 columns' do
+    let(:event_trees) do
+      {
+        1 => Fixtures::EventFactory.request_response_tree,
+        2 => Fixtures::EventFactory.request_response_tree,
+        3 => Fixtures::EventFactory.request_response_tree,
+      }
+    end
     let(:screen_size) { { column_count: 2, row_count: 20 } }
 
     let(:lines) do
@@ -96,7 +107,6 @@ RSpec.describe Rain::Matrix do
   end
 
   context 'when events created seconds apart' do
-    let(:screen_size) { { column_count: 3, row_count: 20 } }
     let(:event_trees) do
       {
         1 => Fixtures::EventFactory.request_response_tree(created_at: created_at),
@@ -104,8 +114,8 @@ RSpec.describe Rain::Matrix do
         3 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 2000),
       }
     end
-
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
+    let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:lines) do
       <<~BASH
@@ -139,9 +149,6 @@ RSpec.describe Rain::Matrix do
   end
 
   context 'when events fade' do
-    let(:overrides) { { fade: :true } }
-    let(:screen_size) { { column_count: 3, row_count: 20 } }
-
     let(:event_trees) do
       {
         1 => Fixtures::EventFactory.request_response_tree(created_at: created_at),
@@ -150,6 +157,8 @@ RSpec.describe Rain::Matrix do
       }
     end
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
+    let(:overrides) { { fade: :true } }
+    let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:lines) do
       <<~BASH

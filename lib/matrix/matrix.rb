@@ -11,8 +11,6 @@ module Rain
   class Matrix
     include Observers
 
-    observe Low::Events::EventPool
-
     def initialize(event_pool:, config: Rain::ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
@@ -22,6 +20,8 @@ module Rain
       @last_stream_index = -1
       @streams = {}
       @columns = []
+
+      observe Low::Events::EventPool
     end
 
     def render(screen_size:, show_output: true)
@@ -35,8 +35,6 @@ module Rain
 
     def redraw_streams
       @event_pool.event_trees.each do |stream_id, event_tree|
-        Fiber.blocking { binding.irb }
-
         stream = upsert_stream(stream_id:, event_tree:)
         stream.redraw(cell_count: @screen_size[:row_count])
 
