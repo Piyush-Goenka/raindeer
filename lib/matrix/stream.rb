@@ -27,9 +27,11 @@ module Rain
 
     # Layout cells to fit the current cell count. Called on matrix initialization, screen size changes and on new events.
     def redraw(cell_count:)
-      @inputs.fill(nil, 0...cell_count)[0...cell_count]
-      @delays.fill(@config.min_delay, 0...cell_count)[0...cell_count]
-      @colors.fill(@config.cell_color, 0...cell_count)[0...cell_count]
+      old_index = (@inputs.count - 1).clamp(0, nil)
+
+      @inputs.fill(nil, old_index...cell_count)[0...cell_count]
+      @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
+      @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
