@@ -32,9 +32,9 @@ The RainRouter accepts `RequestEvent`s and directs the request to the appropriat
 
 Instead of the model defining relationships and associated queries to the database, LowData follows the repository pattern with a twist; [Expressions](https://github.com/raindeer-rb/expressions). An expression like `data(Table[:username] > Table[:title | :body)]` builds a SQL query to RIGHT JOIN the user table into the articles table and results in a list of articles with the user's username in each row.
 
-## Raindeer
+### Raindeer
 
-Raindeer pulls it all together with a router, pipelines and JS integrations. It's decoupled and event-driven via observers in a way that's deceptively simple whilst catering to the needs of complex applications with scalable architectures.
+Raindeer pulls it all together with a router, pipelines and JS integrations. It's decoupled and event-driven via observers in a way that's deceptively simple whilst catering to the needs of complex applications and scalable architectures.
 
 ## Architecture
 
@@ -46,20 +46,19 @@ Raindeer pulls it all together with a router, pipelines and JS integrations. It'
 
 ### It can be made simpler
 
-Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people new to a framework; they shouldn't have to learn much. One way to do this is by removing things, things you held dear and thought you needed are the best things to remove. Complexity can be hidden in a way where the surface is simple.
+Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people new to a framework; they shouldn't have to learn much. One way to do this is by removing things:
 
-**Some of the things we removed:**
-- *Namespaces* - Namespace are confusing to new and old developers alike and the `::` syntax just doesn't look right. You can add them in later and they are still used internally by Raindeer, but not exposed to the application layer.
+- *Namespaces* - Namespace are confusing to new and the `::` syntax just doesn't look right. You can add them in later and they are still used internally by Raindeer
 - *Heredoc* - If you want to write multi-line HTML then you can just write it directly into a LowNode via RBX, Raindeer handles the technical hurdles
-- *MVC* - You shouldn't have to learn the 5 places to put particular files in and the order in which they're called. Just `observe` an event in a node and render output, or call more code
+- *MVC* - You shouldn't have to learn the 5 particular locations to put files in and the order in which they are called. Just `observe` an event in a node and render output, or call more code
 
-### No build steps
+### Build steps are optional
 
-Your files should just work out of the box. Internally this can create a "less clean" isolation between concerns, but with a bit of extra thinking we can still isolate these "mixed" concerns. Frameworks are here to make application developers lives easier, not our own.
+Your files should just work out of the box. Internally this can create a less clean isolation between concerns, but with extra effort we can still isolate these "mixed" concerns. Frameworks are there to make application developers lives easier, add structure and abstractions where needed then get out of the way
 
-### It's okay to be dynamic
+### Living infrastructure
 
-An application is a living organism and so is the framework below it. Raindeer does a lot of dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelisation of low nodes via Antlers syntax. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic". Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of things that you don't know about.
+An application is a living organism and so is the framework below it. Raindeer does dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelisation of LowNodes via Antlers. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic". Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of things that you don't know about.
 
 ## Getting Started
 
