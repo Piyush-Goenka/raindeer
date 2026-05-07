@@ -21,7 +21,7 @@ module Rain
       @streams = {} # TODO: Could be a "stream pool" like event pool (a pool hash).
       @columns = []
 
-      observe Low::Events::EventPool
+      observe Low::Events::BranchEvent
     end
 
     def redraw
@@ -37,6 +37,9 @@ module Rain
       end
 
       render_streams(show_output:)
+    end
+
+    def branch(event:)
     end
 
     private

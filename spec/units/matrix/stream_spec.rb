@@ -35,6 +35,12 @@ RSpec.describe Rain::Stream do
     end
   end
 
+  describe '#branch' do
+    context 'when triggered by event pool' do
+      
+    end
+  end
+
   # Remember: Cursors increment at most by one cell per render, so only test the first cell or render multiple times.
   describe '#render' do
     before do
