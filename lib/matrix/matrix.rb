@@ -18,28 +18,25 @@ module Rain
       @screen_size = nil
 
       @last_stream_index = -1
-      @streams = {}
+      @streams = {} # TODO: Could be a "stream pool" like event pool (a pool hash).
       @columns = []
 
       observe Low::Events::EventPool
     end
 
+    def redraw
+      @event_pool.event_trees.each do |stream_id, event_tree|
+        redraw_stream(stream_id:, event_tree:)
+      end
+    end
+
     def render(screen_size:, show_output: true)
       if screen_size != @screen_size
         @screen_size = screen_size
-        redraw_streams
+        redraw
       end
 
       render_streams(show_output:)
-    end
-
-    def redraw_streams
-      @event_pool.event_trees.each do |stream_id, event_tree|
-        stream = upsert_stream(stream_id:, event_tree:)
-        stream.redraw(cell_count: @screen_size[:row_count])
-
-        @columns[stream.index] = upsert_stream(stream_id:, event_tree:)
-      end
     end
 
     private
@@ -51,7 +48,7 @@ module Rain
         cell_outputs = []
         cell_colors = []
 
-        # Rendering streams can happen before redrawing streams and @columns haven't been populated yet (empty event pool).
+        # Rendering streams can happen before redrawing streams, so @columns may not be populated yet.
         (0...@screen_size[:column_count]).each do |column_index|
           cell_colors << (@columns[column_index].nil? ? nil : @columns[column_index].colors[row_index])
           cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
@@ -65,8 +62,10 @@ module Rain
       end
     end
 
-    def upsert_stream(stream_id:, event_tree:)
-      @streams[stream_id] ||= Stream.new(index:, config: @config, event_tree:)
+    def redraw_stream(stream_id:, event_tree:)
+      stream = @streams[stream_id] ||= Stream.new(index:, config: @config, event_tree:)
+      stream.redraw(cell_count: @screen_size[:row_count])
+      @columns[stream.index] = stream
     end
 
     def index
