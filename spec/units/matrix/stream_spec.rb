@@ -35,7 +35,7 @@ RSpec.describe Rain::Stream do
     end
   end
 
-  # Because cursors can increment at most by one cell per render, only test the first cell or render multiple times.
+  # Remember: Cursors increment at most by one cell per render, so only test the first cell or render multiple times.
   describe '#render' do
     before do
       stream.redraw(cell_count: 20)
