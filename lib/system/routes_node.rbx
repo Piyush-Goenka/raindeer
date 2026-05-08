@@ -4,7 +4,7 @@ class RoutesNode < LowNode
   observe '/system/routes'
 
   def initialize(event:)
-    @routes = Low::Providers['rain.router'].routes
+    @routes = Providers['rain.router'].routes
   end
 
   def render(event:)

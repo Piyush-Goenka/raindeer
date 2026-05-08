@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ostruct'
   spec.add_dependency 'paint'
 
-  spec.add_dependency 'low_dependency'
   spec.add_dependency 'low_event'
   spec.add_dependency 'low_loop'
   spec.add_dependency 'low_node'
@@ -39,4 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'antlers'
   spec.add_dependency 'expressions'
   spec.add_dependency 'observers'
+  spec.add_dependency 'providers'
 end

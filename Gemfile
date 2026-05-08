@@ -6,7 +6,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'low_dependency', path: '../low_dependency'
   gem 'low_event', path: '../low_event'
   gem 'low_loop', path: '../low_loop'
   gem 'low_node', path: '../lownode'
@@ -17,6 +16,7 @@ group :development do
   gem 'antlers', path: '../antlers'
   gem 'expressions', path: '../expressions'
   gem 'observers', path: '../observers'
+  gem 'providers', path: '../providers'
 
   gem 'irb'
   gem 'rake', '~> 13.0'
