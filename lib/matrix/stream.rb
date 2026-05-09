@@ -4,7 +4,7 @@ require_relative 'cursor'
 
 module Rain
   class Stream
-    attr_reader :index, :colors, :outputs
+    attr_reader :index, :inputs, :outputs, :colors
 
     ARROW = ['│', '▼']
 
@@ -40,8 +40,6 @@ module Rain
         redraw_event(current_event:, past_event:)
         @event_cursor += 1
       end
-
-      @inputs
     end
 
     # Render a cell's input as output after a delay, using cursors. Called on every frame.
@@ -73,7 +71,7 @@ module Rain
 
     private
 
-    attr_reader :inputs, :delays
+    attr_reader :delays
 
     def fade(duration: nil)
       fade_start = rand(5_000..10_000)

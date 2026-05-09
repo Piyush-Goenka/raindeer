@@ -14,11 +14,15 @@ RSpec.describe Rain::Stream do
   let(:event_tree) { Fixtures::EventFactory.request_response_tree }
 
   describe '#redraw' do
+    before do
+      stream.redraw(cell_count:)
+    end
+
     context 'when screen larger than stream' do
       let(:cell_count) { 20 }
 
-      it 'returns full stream' do
-        expect(stream.redraw(cell_count:)).to eq(
+      it 'inputs full stream' do
+        expect(stream.inputs).to eq(
           ["R", "e", "q", "u", "e", "s", "t", "│", "▼", "R", "e", "s", "p", "o", "n", "s", "e", nil, nil, nil]
         )
       end
@@ -27,9 +31,9 @@ RSpec.describe Rain::Stream do
     context 'when screen smaller than stream' do
       let(:cell_count) { 10 }
 
-      it 'returns overwritten stream' do
-        expect(stream.redraw(cell_count:)).to eq(
-          ["e", "s", "p", "o", "n", "s", "e", "│", "▼", "R"]
+      it 'inputs overwritten stream' do
+        expect(stream.inputs).to eq(
+          ['e', 's', 'p', 'o', 'n', 's', 'e', '│', '▼', 'R']
         )
       end
     end
