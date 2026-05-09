@@ -11,7 +11,7 @@ module Rain
   class Matrix
     include Observers
 
-    def initialize(event_pool:, config: Rain::ConfigLoader.load('./config/matrix.yaml'))
+    def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
 
