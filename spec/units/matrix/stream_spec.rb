@@ -9,8 +9,8 @@ require_relative '../../factories/event_factory'
 RSpec.describe Rain::Stream do
   subject(:stream) { described_class.new(index: 0, config:, event_tree:) }
 
-  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
-  let(:overrides) { {} }
+  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', config_overrides) }
+  let(:config_overrides) { {} }
   let(:event_tree) { Fixtures::EventFactory.request_response_tree }
 
   describe '#redraw' do
@@ -40,8 +40,21 @@ RSpec.describe Rain::Stream do
   end
 
   describe '#branch' do
-    context 'when triggered by event pool' do
-      
+    let(:cell_count) { 20 }
+
+    before do
+      stream.redraw(cell_count:)
+    end
+
+    context 'when event tree branches' do
+      before do
+        # Normal flow is for an event to branch and event pool to return the correct event tree. Instead we branch event tree directly.
+        event_tree.branch(event: Fixtures::EventFactory.route_event)
+      end
+
+      it 'inputs third event' do
+        expect(stream.inputs).to eq(['o', 'u', 't', 'e', 'e', 's', 't', '│', '▼', 'R', 'e', 's', 'p', 'o', 'n', 's', 'e', '│', '▼', 'R'])
+      end
     end
   end
 
@@ -83,7 +96,7 @@ RSpec.describe Rain::Stream do
       end
 
       context 'with fade' do
-        let(:overrides) { { fade: true } }
+        let(:config_overrides) { { fade: true } }
 
         it 'keeps characters' do
           stream = described_class.new(index: 0, config:, event_tree:)
@@ -105,7 +118,7 @@ RSpec.describe Rain::Stream do
       end
 
       context 'with fade' do
-        let(:overrides) { { fade: true } }
+        let(:config_overrides) { { fade: true } }
 
         it 'removes characters' do
           stream = described_class.new(index: 0, config:, event_tree:)

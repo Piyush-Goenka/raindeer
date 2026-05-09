@@ -12,6 +12,18 @@ module Fixtures
         event_tree.branch(event: ResponseEvent.new(created_at:))
         event_tree
       end
+
+      # TODO: Replace above method (and test expectations) with this more realistic order of events.
+      def request_route_tree(created_at: nil)
+        event_tree = Low::Events::EventTree.new
+        event_tree.branch(event: RequestEvent.new(created_at:))
+        event_tree.branch(event: RouteEvent.new(created_at:))
+        event_tree
+      end
+
+      def route_event(created_at: nil)
+        RouteEvent.new(created_at:)
+      end
     end
   end
 end

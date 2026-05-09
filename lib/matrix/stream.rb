@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
+require 'low_event'
+require 'observers'
+
 require_relative 'cursor'
 
 module Rain
   class Stream
+    include Observers
+
     attr_reader :index, :inputs, :outputs, :colors
 
     ARROW = ['│', '▼']
@@ -11,21 +16,29 @@ module Rain
     def initialize(index:, config:, event_tree:)
       @index = index
       @config = config
-
       @event_tree = event_tree
-      @event_cursor = 0
-      @redraw_cursor = 0
 
       @inputs = []
       @delays = []
       @colors = []
       @outputs = []
 
+      # Redraw.
+      @event_cursor = 0
+      @redraw_cursor = 0
+
+      # Render.
       @head_cursor = Cursor.new
       @tail_cursor = Cursor.new
+
+      observe event_tree
     end
 
-    # Layout cells to fit the current cell count. Called on matrix initialization, screen size changes and on new events.
+    def branch(event: Low::Events::BranchEvent)
+      redraw(cell_count: @inputs.count)
+    end
+
+    # Layout cells to fit the current cell count. Called on first matrix render, matrix screen size change and event tree branch.
     def redraw(cell_count:)
       old_index = (@inputs.count - 1).clamp(0, nil)
 

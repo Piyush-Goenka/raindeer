@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 require 'paint'
-require 'low_event'
-require 'observers'
 
 require_relative '../support/config_loader'
 require_relative 'stream'
 
 module Rain
   class Matrix
-    include Observers
-
     def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
@@ -20,8 +16,6 @@ module Rain
       @last_stream_index = -1
       @streams = {} # TODO: Could be a "stream pool" like event pool (a pool hash).
       @columns = []
-
-      observe Low::Events::BranchEvent
     end
 
     def redraw
@@ -37,9 +31,6 @@ module Rain
       end
 
       render_streams(show_output:)
-    end
-
-    def branch(event:)
     end
 
     private
