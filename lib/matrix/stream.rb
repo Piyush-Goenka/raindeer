@@ -38,7 +38,7 @@ module Rain
       redraw(cell_count: @inputs.count)
     end
 
-    # Layout cells to fit the current cell count. Called on first matrix render, matrix screen size change and event tree branch.
+    # Draw event names onto the current amount of cells in a stream.
     def redraw(cell_count:)
       old_index = (@inputs.count - 1).clamp(0, nil)
 
