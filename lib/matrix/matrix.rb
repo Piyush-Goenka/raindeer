@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'low_event'
+require 'observers'
 require 'paint'
 
 require_relative '../support/config_loader'
@@ -7,6 +9,8 @@ require_relative 'stream'
 
 module Rain
   class Matrix
+    include Observers
+
     def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
@@ -18,22 +22,44 @@ module Rain
       @columns = []
     end
 
-    def redraw
-      @event_pool.event_trees.each do |stream_id, event_tree|
-        redraw_stream(stream_id:, event_tree:)
+    def redraw(screen_size:)
+      @setup ||= setup
+
+      @streams.each_value do |stream|
+        stream.redraw(cell_count: screen_size[:row_count])
       end
     end
 
     def render(screen_size:, show_output: true)
       if screen_size != @screen_size
         @screen_size = screen_size
-        redraw
+        redraw(screen_size:)
       end
 
       render_streams(show_output:)
     end
 
+    # TODO: Introduce "on :new_event_tree do |event|" block construct in LowEvent for making event handlers more obvious.
+    def new_event_tree(event: Low::Events::EventTree)
+      stream = upsert_stream(event_tree:)
+      stream.redraw(cell_count: screen_size[:row_count])
+    end
+
     private
+
+    def setup
+      @event_pool.event_trees.each_value do |event_tree|
+        upsert_stream(event_tree:)
+      end
+
+      observe @event_pool
+    end
+
+    def upsert_stream(event_tree:)
+      stream = @streams[event_tree.request_id] ||= Stream.new(index: generate_index, config: @config, event_tree:)
+      @columns[stream.index] = stream
+      stream
+    end
 
     def render_streams(show_output: true)
       @streams.each_value { |stream| stream.render }
@@ -56,13 +82,7 @@ module Rain
       end
     end
 
-    def redraw_stream(stream_id:, event_tree:)
-      stream = @streams[stream_id] ||= Stream.new(index:, config: @config, event_tree:)
-      stream.redraw(cell_count: @screen_size[:row_count])
-      @columns[stream.index] = stream
-    end
-
-    def index
+    def generate_index
       case @config.start_col
       when :random
         rand(0...@screen_size[:column_count])
