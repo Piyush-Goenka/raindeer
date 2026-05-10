@@ -68,9 +68,9 @@ RSpec.describe Rain::Matrix do
   context 'when 2 columns' do
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree,
-        2 => Fixtures::EventFactory.request_response_tree,
-        3 => Fixtures::EventFactory.request_response_tree,
+        1 => Fixtures::EventFactory.request_response_tree(request_id: 1),
+        2 => Fixtures::EventFactory.request_response_tree(request_id: 2),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3),
       }
     end
     let(:screen_size) { { column_count: 2, row_count: 20 } }
@@ -109,9 +109,9 @@ RSpec.describe Rain::Matrix do
   context 'when events created seconds apart' do
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree(created_at: created_at),
-        2 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 1000),
-        3 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 2000),
+        1 => Fixtures::EventFactory.request_response_tree(request_id: 1, created_at: created_at),
+        2 => Fixtures::EventFactory.request_response_tree(request_id: 2, created_at: created_at + 1000),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000),
       }
     end
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
@@ -151,9 +151,9 @@ RSpec.describe Rain::Matrix do
   context 'when events fade' do
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree(created_at: created_at),
-        2 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 1000),
-        3 => Fixtures::EventFactory.request_response_tree(created_at: created_at + 2000),
+        1 => Fixtures::EventFactory.request_response_tree(request_id: 1, created_at: created_at),
+        2 => Fixtures::EventFactory.request_response_tree(request_id: 2, created_at: created_at + 1000),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000),
       }
     end
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }

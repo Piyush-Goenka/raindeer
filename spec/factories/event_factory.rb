@@ -6,16 +6,16 @@ require_relative '../fixtures/mock_events'
 module Fixtures
   class EventFactory
     class << self
-      def request_response_tree(created_at: nil)
-        event_tree = Low::Events::EventTree.new
+      def request_response_tree(created_at: nil, request_id: nil)
+        event_tree = Low::Events::EventTree.new(request_id:)
         event_tree.branch(event: RequestEvent.new(created_at:))
         event_tree.branch(event: ResponseEvent.new(created_at:))
         event_tree
       end
 
       # TODO: Replace above method (and test expectations) with this more realistic order of events.
-      def request_route_tree(created_at: nil)
-        event_tree = Low::Events::EventTree.new
+      def request_route_tree(created_at: nil, request_id: nil)
+        event_tree = Low::Events::EventTree.new(request_id:)
         event_tree.branch(event: RequestEvent.new(created_at:))
         event_tree.branch(event: RouteEvent.new(created_at:))
         event_tree
