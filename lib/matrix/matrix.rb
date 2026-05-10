@@ -40,9 +40,10 @@ module Rain
     end
 
     # TODO: Introduce "on :new_event_tree do |event|" block construct in LowEvent for making event handlers more obvious.
+    # TODO: Observers should allow arbitrary params when triggering and observing.
     def new_event_tree(event: Low::Events::EventTree)
-      stream = upsert_stream(event_tree:)
-      stream.redraw(cell_count: screen_size[:row_count])
+      stream = upsert_stream(event_tree: event)
+      stream.redraw(cell_count: @screen_size[:row_count])
     end
 
     private
@@ -53,6 +54,8 @@ module Rain
       end
 
       observe @event_pool
+
+      true
     end
 
     def upsert_stream(event_tree:)
