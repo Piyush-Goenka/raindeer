@@ -67,8 +67,8 @@ module Rain
     # Unit tests use "duration" to skip forwards in time, while matrix spec and the real world use old fashioned linear time.
     def render(duration: nil)
       @head_cursor.increment(delays:, inputs:, duration:) do |index|
-        prev_index = (index - 1).clamp(0, nil)
-        next_index = index >= @inputs.count ? 0 : index + 1
+        prev_index = index == 0 ? @inputs.count - 1 : index - 1
+        next_index = index + 1 >= @inputs.count ? 0 : index + 1
 
         if @inputs[index]
           @outputs[index] = @inputs[index]
