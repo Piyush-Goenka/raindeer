@@ -42,9 +42,10 @@ module Rain
     def redraw(cell_count:)
       old_index = (@inputs.count - 1).clamp(0, nil)
 
-      @inputs.fill(nil, old_index...cell_count)[0...cell_count]
-      @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
-      @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
+      # TODO: Test that these arrays are correctly being resized.
+      @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
+      @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
+      @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
