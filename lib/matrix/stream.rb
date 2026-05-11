@@ -142,6 +142,9 @@ module Rain
         @redraw_cursor += 1
         @redraw_cursor = 0 if @redraw_cursor >= @inputs.count
       end
+
+      # TODO: Redraw cursor should be a head and a tail cursor like render so that we can mimic a start to end that wraps around.
+      @head_cursor.index = @redraw_cursor
     end
 
     def event_name(current_event:)
