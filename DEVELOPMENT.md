@@ -1,11 +1,15 @@
 # Development
 
-## Installation
+## Setup
 
+In your terminal run:
 ```shell
-gem install raindeer
-rain new :application_name
+bundle install
+bin/server
 ```
+
+ℹ️ In iTerm you may need to press `Option + A` to accept screen refreshing.
+ℹ️ In Ghostty the matrix flickers a little but it adds to the effect. Ghostty it's only 10fps!
 
 ## Development
 
