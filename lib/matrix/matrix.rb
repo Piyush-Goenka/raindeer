@@ -79,7 +79,7 @@ module Rain
           cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
         end
 
-        output = cell_outputs.zip(cell_colors).map do |cell, color|
+        output << "\n" + cell_outputs.zip(cell_colors).map do |cell, color|
           cell ? Paint[cell, color] : Paint[' ']
         end.join(' ')
       end
