@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'low_dependency'
 require 'low_event'
+require 'providers'
 
 require_relative 'route'
 require_relative 'route_event'

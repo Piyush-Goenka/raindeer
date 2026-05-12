@@ -3,4 +3,4 @@
 
 require_relative '../lib/boot'
 
-Low::Providers['low.loop'].start
+Providers['low.loop'].start

@@ -34,6 +34,6 @@ end
 
 class Array
   def paint_columns
-    self.map { ::Paint[it[0], it[1]] }.join(' ')
+    map { ::Paint[it[0], it[1]] }.join(' ')
   end
 end

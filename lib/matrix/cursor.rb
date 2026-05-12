@@ -5,22 +5,22 @@ module Rain
     attr_accessor :index, :first_update, :last_update
 
     def initialize
-      @index = -1
+      @index = 0
       @first_update = now
       @last_update = now
     end
 
     def increment(delays:, inputs:, duration: nil)
-      next_index = @index + 1
       duration = now - @last_update if duration.nil?
 
-      if delays[next_index] && duration >= delays[next_index]
-        @index += 1
-        @index = 0 if index >= inputs.count
+      return unless delays[index] && duration >= delays[index]
+
         @last_update = now
 
         yield index
-      end
+
+        @index += 1
+        @index = 0 if @index >= inputs.count
     end
 
     private

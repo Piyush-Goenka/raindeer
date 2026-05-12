@@ -47,7 +47,7 @@ RSpec.describe Rain::Router do
 
       it 'triggers route event on observer' do
         rain_router.handle(event: request_event)
-        expect(MockObserver).to have_received(:render).with({event: an_instance_of(Rain::RouteEvent)})
+        expect(MockObserver).to have_received(:render).with({ event: an_instance_of(Rain::RouteEvent) })
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe Rain::Router do
 
       it 'triggers status event on observer' do
         rain_router.handle(event: request_event)
-        expect(MockObserver).to have_received(:render).with({event: an_instance_of(Low::Events::StatusEvent)})
+        expect(MockObserver).to have_received(:render).with({ event: an_instance_of(Low::Events::StatusEvent) })
       end
     end
   end

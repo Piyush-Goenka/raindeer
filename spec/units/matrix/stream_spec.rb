@@ -9,17 +9,21 @@ require_relative '../../factories/event_factory'
 RSpec.describe Rain::Stream do
   subject(:stream) { described_class.new(index: 0, config:, event_tree:) }
 
-  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
-  let(:overrides) { {} }
+  let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', config_overrides) }
+  let(:config_overrides) { {} }
   let(:event_tree) { Fixtures::EventFactory.request_response_tree }
 
   describe '#redraw' do
+    before do
+      stream.redraw(cell_count:)
+    end
+
     context 'when screen larger than stream' do
       let(:cell_count) { 20 }
 
-      it 'returns full stream' do
-        expect(stream.redraw(cell_count:)).to eq(
-          ["R", "e", "q", "u", "e", "s", "t", "│", "▼", "R", "e", "s", "p", "o", "n", "s", "e", nil, nil, nil]
+      it 'inputs full stream' do
+        expect(stream.inputs).to eq(
+          ['R', 'e', 'q', 'u', 'e', 's', 't', '│', '▼', 'R', 'e', 's', 'p', 'o', 'n', 's', 'e', nil, nil, nil]
         )
       end
     end
@@ -27,15 +31,34 @@ RSpec.describe Rain::Stream do
     context 'when screen smaller than stream' do
       let(:cell_count) { 10 }
 
-      it 'returns overwritten stream' do
-        expect(stream.redraw(cell_count:)).to eq(
-          ["e", "s", "p", "o", "n", "s", "e", "│", "▼", "R"]
+      it 'inputs overwritten stream' do
+        expect(stream.inputs).to eq(
+          ['e', 's', 'p', 'o', 'n', 's', 'e', '│', '▼', 'R']
         )
       end
     end
   end
 
-  # Because cursors can increment at most by one cell per render, only test the first cell or render multiple times.
+  describe '#branch' do
+    let(:cell_count) { 20 }
+
+    before do
+      stream.redraw(cell_count:)
+    end
+
+    context 'when event tree branches' do
+      before do
+        # Normal flow is for an event to branch and event pool to return the correct event tree. Instead we branch event tree directly.
+        event_tree.branch(event: Fixtures::EventFactory.route_event)
+      end
+
+      it 'inputs third event' do
+        expect(stream.inputs).to eq(['o', 'u', 't', 'e', 'e', 's', 't', '│', '▼', 'R', 'e', 's', 'p', 'o', 'n', 's', 'e', '│', '▼', 'R'])
+      end
+    end
+  end
+
+  # Remember: Cursors increment at most by one cell per render, so only test the first cell or render multiple times.
   describe '#render' do
     before do
       stream.redraw(cell_count: 20)
@@ -59,7 +82,7 @@ RSpec.describe Rain::Stream do
         stream.render(duration: 75)
         stream.render(duration: 75)
 
-        expect(stream.outputs[0..1]).to eq(['R', 'e'])
+        expect(stream.outputs[0..1]).to eq(%w[R e])
       end
     end
 
@@ -73,7 +96,7 @@ RSpec.describe Rain::Stream do
       end
 
       context 'with fade' do
-        let(:overrides) { { fade: true } }
+        let(:config_overrides) { { fade: true } }
 
         it 'keeps characters' do
           stream = described_class.new(index: 0, config:, event_tree:)
@@ -95,7 +118,7 @@ RSpec.describe Rain::Stream do
       end
 
       context 'with fade' do
-        let(:overrides) { { fade: true } }
+        let(:config_overrides) { { fade: true } }
 
         it 'removes characters' do
           stream = described_class.new(index: 0, config:, event_tree:)
