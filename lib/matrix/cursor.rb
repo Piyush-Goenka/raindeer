@@ -13,14 +13,14 @@ module Rain
     def increment(delays:, inputs:, duration: nil)
       duration = now - @last_update if duration.nil?
 
-      if delays[index] && duration >= delays[index]
+      return unless delays[index] && duration >= delays[index]
+
         @last_update = now
-        
+
         yield index
 
         @index += 1
         @index = 0 if @index >= inputs.count
-      end
     end
 
     private

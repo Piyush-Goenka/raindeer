@@ -14,7 +14,7 @@ RSpec.describe Rain::Matrix do
   let(:event_pool) { instance_double(Low::Events::EventPool, event_trees:) }
   let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', overrides) }
   let(:overrides) { {} }
-  let(:show_output) { ENV['SHOW_OUTPUT'] == '1' ? true : false }
+  let(:show_output) { ENV['SHOW_OUTPUT'] == '1' }
 
   let(:cell_color) { '#0098fc' }
   let(:lead_color) { '#ffffff' }
@@ -28,7 +28,7 @@ RSpec.describe Rain::Matrix do
       {
         1 => Fixtures::EventFactory.request_response_tree,
         2 => Fixtures::EventFactory.request_response_tree,
-        3 => Fixtures::EventFactory.request_response_tree,
+        3 => Fixtures::EventFactory.request_response_tree
       }
     end
     let(:screen_size) { { column_count: 1, row_count: 20 } }
@@ -53,12 +53,12 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color]].paint_columns}
         #{[['s', cell_color]].paint_columns}
         #{[['e', lead_color]].paint_columns}
-        #{[[' ',           ]].paint_columns}
-        #{[[' ',           ]].paint_columns}
-        #{[[' ',           ]].paint_columns}
+        #{[[' '            ]].paint_columns}
+        #{[[' '            ]].paint_columns}
+        #{[[' '            ]].paint_columns}
       BASH
     end
-  
+
     it 'renders a matrix' do
       render_frames { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
@@ -70,7 +70,7 @@ RSpec.describe Rain::Matrix do
       {
         1 => Fixtures::EventFactory.request_response_tree(request_id: 1),
         2 => Fixtures::EventFactory.request_response_tree(request_id: 2),
-        3 => Fixtures::EventFactory.request_response_tree(request_id: 3),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3)
       }
     end
     let(:screen_size) { { column_count: 2, row_count: 20 } }
@@ -94,12 +94,12 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color], ['n', cell_color]].paint_columns}
         #{[['s', cell_color], ['s', cell_color]].paint_columns}
         #{[['e', lead_color], ['e', lead_color]].paint_columns}
-        #{[[' ',           ], [' ',           ]].paint_columns}
-        #{[[' ',           ], [' ',           ]].paint_columns}
-        #{[[' ',           ], [' ',           ]].paint_columns}
+        #{[[' '            ], [' '            ]].paint_columns}
+        #{[[' '            ], [' '            ]].paint_columns}
+        #{[[' '            ], [' '            ]].paint_columns}
       BASH
     end
-  
+
     it 'renders a matrix' do
       render_frames { matrix.render(screen_size:, show_output:) }
       expect { matrix.render(screen_size:) }.to output(lines).to_stdout
@@ -111,7 +111,7 @@ RSpec.describe Rain::Matrix do
       {
         1 => Fixtures::EventFactory.request_response_tree(request_id: 1, created_at: created_at),
         2 => Fixtures::EventFactory.request_response_tree(request_id: 2, created_at: created_at + 1000),
-        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000)
       }
     end
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
@@ -136,9 +136,9 @@ RSpec.describe Rain::Matrix do
         #{[['n', cell_color], ['n', cell_color], ['n', cell_color]].paint_columns}
         #{[['s', cell_color], ['s', cell_color], ['s', cell_color]].paint_columns}
         #{[['e', lead_color], ['e', lead_color], ['e', lead_color]].paint_columns}
-        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
-        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
-        #{[[' ',           ], [' ',           ], [' ',           ]].paint_columns}
+        #{[[' '            ], [' '            ], [' '            ]].paint_columns}
+        #{[[' '            ], [' '            ], [' '            ]].paint_columns}
+        #{[[' '            ], [' '            ], [' '            ]].paint_columns}
       BASH
     end
 
@@ -153,11 +153,11 @@ RSpec.describe Rain::Matrix do
       {
         1 => Fixtures::EventFactory.request_response_tree(request_id: 1, created_at: created_at),
         2 => Fixtures::EventFactory.request_response_tree(request_id: 2, created_at: created_at + 1000),
-        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3, created_at: created_at + 2000)
       }
     end
     let(:created_at) { Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond) }
-    let(:overrides) { { fade: :true } }
+    let(:overrides) { { fade: true } }
     let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:lines) do

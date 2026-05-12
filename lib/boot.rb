@@ -33,4 +33,4 @@ Providers.define('low.loop') do
 end
 
 require 'lowload'
-LowLoad.dirload(File.expand_path('../system', __FILE__))
+LowLoad.dirload(File.expand_path('system', __dir__))

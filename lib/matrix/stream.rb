@@ -11,7 +11,7 @@ module Rain
 
     attr_reader :index, :inputs, :outputs, :colors
 
-    ARROW = ['│', '▼']
+    ARROW = ['│', '▼'].freeze
 
     def initialize(index:, config:, event_tree:)
       @index = index
@@ -34,7 +34,7 @@ module Rain
       observe event_tree
     end
 
-    def branch(event: Low::Events::BranchEvent)
+    def branch(event: Low::Events::BranchEvent) # rubocop:disable Lint/UnusedMethodArgument
       redraw(cell_count: @inputs.count)
     end
 
@@ -68,7 +68,7 @@ module Rain
     # Unit tests use "duration" to skip forwards in time, while matrix spec and the real world use old fashioned linear time.
     def render(duration: nil)
       @head_cursor.increment(delays:, inputs:, duration:) do |index|
-        prev_index = index == 0 ? @inputs.count - 1 : index - 1
+        prev_index = index.zero? ? @inputs.count - 1 : index - 1
         next_index = index + 1 >= @inputs.count ? 0 : index + 1
 
         if @inputs[index]
@@ -90,14 +90,14 @@ module Rain
     def fade(duration: nil)
       fade_start = rand(5_000..10_000)
 
-      if (now - @head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
+      return unless (now - @head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
+
         @tail_cursor.increment(delays:, inputs:, duration:) do |index|
           if @inputs[index].nil? && @outputs[index]
             @outputs[index] = @inputs[index]
             @delays[index] = 0
           end
         end
-      end
     end
 
     def now
@@ -109,7 +109,7 @@ module Rain
     # │R│  FIRST EVENT
     # │e│  Each cell will render input as output after a minimum delay (since there's no prior event).
     # │q│
-    # │u│ 
+    # │u│
     # │e│
     # │s│
     # │t│
@@ -124,7 +124,7 @@ module Rain
     # │e│ <-- A cursor moves to the next cell after a delay and colors the leading cell white.
     # └─┘
     def redraw_event(current_event:, past_event:)
-      if @event_cursor == 0
+      if @event_cursor.zero?
         inputs = event_name(current_event:)
         delay = @config.min_delay
 
@@ -132,12 +132,12 @@ module Rain
       else
         inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
-        delay = difference == 0 ? @config.min_delay : (difference / inputs.count).to_i.clamp(@config.min_delay, nil)
+        delay = difference.zero? ? @config.min_delay : (difference / inputs.count).to_i.clamp(@config.min_delay, nil)
       end
 
       inputs.each do |character|
         @inputs[@redraw_cursor] = character
-        @delays[@redraw_cursor] = @redraw_cursor == 0 ? 0 : delay # Don't add delay to the first cell, looks stuck.
+        @delays[@redraw_cursor] = @redraw_cursor.zero? ? 0 : delay # Don't add delay to the first cell, looks stuck.
 
         @redraw_cursor += 1
         @redraw_cursor = 0 if @redraw_cursor >= @inputs.count
@@ -152,7 +152,7 @@ module Rain
     end
 
     def randomize_start_row
-      random_index = rand(0..2) 
+      random_index = rand(0..2)
       @redraw_cursor = random_index
       @head_cursor.index = random_index - 1 # Head cursor always 1 index behind to make "increment" method's logic simple.
     end

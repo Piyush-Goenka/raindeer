@@ -23,7 +23,7 @@ RSpec.describe Rain::Stream do
 
       it 'inputs full stream' do
         expect(stream.inputs).to eq(
-          ["R", "e", "q", "u", "e", "s", "t", "│", "▼", "R", "e", "s", "p", "o", "n", "s", "e", nil, nil, nil]
+          ['R', 'e', 'q', 'u', 'e', 's', 't', '│', '▼', 'R', 'e', 's', 'p', 'o', 'n', 's', 'e', nil, nil, nil]
         )
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe Rain::Stream do
         stream.render(duration: 75)
         stream.render(duration: 75)
 
-        expect(stream.outputs[0..1]).to eq(['R', 'e'])
+        expect(stream.outputs[0..1]).to eq(%w[R e])
       end
     end
 

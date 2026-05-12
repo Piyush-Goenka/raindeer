@@ -65,7 +65,7 @@ module Rain
     end
 
     def render_streams(show_output: true)
-      @streams.each_value { |stream| stream.render }
+      @streams.each_value(&:render)
 
       output = ''.dup
 
@@ -79,15 +79,15 @@ module Rain
           cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
         end
 
-        output << "\n" + cell_outputs.zip(cell_colors).map do |cell, color|
+        output << "\n" + cell_outputs.zip(cell_colors).map do |cell, color| # rubocop:disable Style/StringConcatenation
           cell ? Paint[cell, color] : Paint[' ']
         end.join(' ')
       end
 
-      if show_output
+      return unless show_output
+
         system 'clear'
         print output
-      end
     end
 
     def generate_index
@@ -97,6 +97,7 @@ module Rain
       when :latest
         @last_stream_index += 1
         return @last_stream_index = 0 if @last_stream_index >= column_count
+
         @last_stream_index
       end
     end
