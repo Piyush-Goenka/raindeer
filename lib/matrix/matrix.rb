@@ -74,7 +74,7 @@ module Rain
         cell_colors = []
 
         # Rendering streams can happen before redrawing streams, so @columns may not be populated yet.
-        (0...(@screen_size[:column_count] / 2).to_i).each do |column_index|
+        (0...column_count).each do |column_index|
           cell_colors << (@columns[column_index].nil? ? nil : @columns[column_index].colors[row_index])
           cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
         end
@@ -93,12 +93,16 @@ module Rain
     def generate_index
       case @config.start_col
       when :random
-        rand(0...@screen_size[:column_count])
+        rand(0...column_count)
       when :latest
         @last_stream_index += 1
-        return @last_stream_index = 0 if @last_stream_index >= @screen_size[:column_count]
+        return @last_stream_index = 0 if @last_stream_index >= column_count
         @last_stream_index
       end
+    end
+
+    def column_count
+      (@screen_size[:column_count] / 2).to_i
     end
   end
 end
