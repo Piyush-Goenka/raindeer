@@ -142,11 +142,13 @@ module Rain
 
       characters = event_name(current_event:)
       characters = [*ARROW, *characters] if @event_cursor > 0
-      
+
       @redraw_head_cursor.iterate(inputs: characters, loop_count: @inputs.count) do |index, input|
         @inputs[index] = input
         @delays[index] = first_cell_redraw? ? 0 : variable_delay # Don't add delay to the first cell, looks stuck.
       end
+
+      @render_hide_cursor.index = @redraw_head_cursor.index # Everything after me is old so it can fade away.
     end
 
     def variable_delay(current_event:, past_event:)
@@ -173,7 +175,6 @@ module Rain
       @redraw_head_cursor.index = random_index
       @redraw_tail_cursor.index = random_index
 
-      @render_tail_cursor.index = random_index - 1 # Waits behind the delay set by the render head cursor.
       @render_show_cursor.index = random_index
     end
   end
