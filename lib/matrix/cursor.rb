@@ -15,12 +15,12 @@ module Rain
 
       return unless delays[index] && duration >= delays[index]
 
-        @last_update = now
+      @last_update = now
 
-        yield index
-
-        @index += 1
-        @index = 0 if @index >= inputs.count
+      yield index
+    ensure
+      @index += 1
+      @index = 0 if @index >= inputs.count
     end
 
     private
