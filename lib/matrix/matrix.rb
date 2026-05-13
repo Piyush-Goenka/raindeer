@@ -86,8 +86,8 @@ module Rain
         end.join(' ')
       end
 
-        system 'clear'
-        print output
+      system 'clear'
+      print output.delete_prefix("\n").delete_suffix("\n")
     end
 
     def generate_index
