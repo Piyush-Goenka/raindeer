@@ -26,9 +26,9 @@ RSpec.describe Rain::Matrix do
   context 'when 1 column' do
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree,
-        2 => Fixtures::EventFactory.request_response_tree,
-        3 => Fixtures::EventFactory.request_response_tree
+        1 => Fixtures::EventFactory.request_response_tree(request_id: 1),
+        2 => Fixtures::EventFactory.request_response_tree(request_id: 2),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3)
       }
     end
     let(:screen_size) { { column_count: 1, row_count: 20 } }
