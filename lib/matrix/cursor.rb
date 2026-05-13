@@ -11,9 +11,7 @@ module Rain
     end
 
     def increment(delays:, inputs:, duration: nil)
-      duration = now - @last_update if duration.nil?
-
-      return unless delays[index] && duration >= delays[index]
+      return unless delays[index] && (duration || now - @last_update) >= delays[index]
 
       @last_update = now
 
