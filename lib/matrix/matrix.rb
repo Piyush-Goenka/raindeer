@@ -103,7 +103,9 @@ module Rain
     end
 
     def column_count
-      (@screen_size[:column_count] / 2).to_i
+      return @screen_size[:column_count] if @screen_size[:column_count] < 10
+
+      (@screen_size[:column_count] / 2).to_i.clamp(1, nil)
     end
   end
 end
