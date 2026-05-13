@@ -34,6 +34,8 @@ end
 
 class Array
   def paint_columns
-    map { ::Paint[it[0], it[1]] }.join(' ')
+    map do
+      it[1] ? ::Paint[it[0], it[1]] : ::Paint[it[0]]
+    end.join(' ')
   end
 end
