@@ -27,8 +27,8 @@ module Rain
       @redraw_head_cursor = Cursor.new
       @redraw_tail_cursor = Cursor.new
 
-      @render_head_cursor = Cursor.new
-      @render_tail_cursor = Cursor.new
+      @render_show_cursor = Cursor.new
+      @render_hide_cursor = Cursor.new
 
       observe event_tree
     end
@@ -44,11 +44,11 @@ module Rain
     # ┌─────┬─────┬─────┐
     # │  R  │  75 │     │ ◀── 2. Redraw tail cursor begins at index zero or a random starting index.
     # │  e  │  75 │     │        A redraw head cursor that wraps around will push the redraw tail cursor down to be just beneath it.
-    # │  q  │  75 │     │        The render head cursor will start at the redraw tail cursor index.
+    # │  q  │  75 │     │        The render show cursor will start at the redraw tail cursor index.
     # │  u  │  75 │     │ 
     # │     │  75 │     │ ◀── 1. Redraw head cursor begins at index zero or a random starting index.
     # │     │  75 │     │        It populates input for every character in an event name.
-    # │     │  75 │     │        Then sets a "75" delay for the render head cursor.
+    # │     │  75 │     │        Then sets a "75" delay for the render show cursor.
     # └─────┴─────┴─────┘
     def redraw(cell_count:)
       randomize_start_index if first_cell_redraw? && @config.start_row == :random
@@ -73,16 +73,16 @@ module Rain
     #
     #  INPUT DELAY OUTPUT
     # ┌─────┬─────┬─────┐
-    # │     │   0 │     │ ◀── 2. Render tail cursor moves the input to the output after a delay.
+    # │     │   0 │     │ ◀── 2. Render hide cursor moves the input to the output after a delay.
     # │     │ 250 │  e  │        The nil input replaces the previous output of "R".
     # │     │ 250 │  q  │
-    # │     │  75 │  u  │ ◀── 1. Render head cursor moves the input to the output after a delay.
+    # │     │  75 │  u  │ ◀── 1. Render show cursor moves the input to the output after a delay.
     # │  e  │  75 │     │        Leaving behind nil input.
-    # │  s  │  75 │     │        Then sets a "250" delay for the render tail cursor.
+    # │  s  │  75 │     │        Then sets a "250" delay for the render hide cursor.
     # │  t  │  75 │     │
     # └─────┴─────┴─────┘
     def render(duration: nil)
-      @render_head_cursor.increment(delays:, inputs:, duration:) do |index|
+      @render_show_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = index.zero? ? @inputs.count - 1 : index - 1
         next_index = index + 1 >= @inputs.count ? 0 : index + 1
 
@@ -104,9 +104,9 @@ module Rain
 
     def fade(duration: nil)
       fade_start_delay = rand(5_000..10_000)
-      return unless (now - @render_head_cursor.first_update) >= fade_start_delay || duration
+      return unless (now - @render_show_cursor.first_update) >= fade_start_delay || duration
 
-      @render_tail_cursor.increment(delays:, inputs:, duration:) do |index|
+      @render_hide_cursor.increment(delays:, inputs:, duration:) do |index|
         if @inputs[index].nil? && @outputs[index]
           @outputs[index] = @inputs[index]
           @delays[index] = 0
@@ -173,8 +173,8 @@ module Rain
       @redraw_head_cursor.index = random_index
       @redraw_tail_cursor.index = random_index
 
-      @render_head_cursor.index = random_index
       @render_tail_cursor.index = random_index - 1 # Waits behind the delay set by the render head cursor.
+      @render_show_cursor.index = random_index
     end
   end
 end
