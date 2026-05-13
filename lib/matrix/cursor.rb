@@ -10,6 +10,7 @@ module Rain
       @last_update = now
     end
 
+    # Unit tests use "duration" to skip forward in time, while feature tests and the real world use old fashioned linear time.
     def increment(delays:, inputs:, duration: nil)
       return unless delays[index] && (duration || now - @last_update) >= delays[index]
 

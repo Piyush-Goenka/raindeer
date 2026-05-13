@@ -81,8 +81,6 @@ module Rain
     # │  s  │  75 │     │        Then sets a "250" delay for the render tail cursor.
     # │  t  │  75 │     │
     # └─────┴─────┴─────┘
-    #
-    # Unit tests use "duration" to skip forward in time, while feature tests and the real world use old fashioned linear time.
     def render(duration: nil)
       @render_head_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = index.zero? ? @inputs.count - 1 : index - 1
