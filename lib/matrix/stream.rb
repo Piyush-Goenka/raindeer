@@ -50,13 +50,13 @@ module Rain
     # │     │  75 │     │        It populates input for every character in an event name.
     # │     │  75 │     │        Then sets a "75" delay for the render head cursor.
     # └─────┴─────┴─────┘
-    #
     def redraw(cell_count:)
       randomize_start_index if first_cell_redraw? && @config.start_row == :random
 
-      # TODO: Test that these arrays are correctly being resized.
+      # Resize cells to cell count.
       old_index = (@inputs.count - 1).clamp(0, nil)
       @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
+      @outputs = @outputs.fill(nil, old_index...cell_count)[0...cell_count]
       @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
       @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
 
@@ -73,7 +73,7 @@ module Rain
     #
     #  INPUT DELAY OUTPUT
     # ┌─────┬─────┬─────┐
-    # │     │ 250 │     │ ◀── 2. Render tail cursor moves the input to the output after a delay.
+    # │     │   0 │     │ ◀── 2. Render tail cursor moves the input to the output after a delay.
     # │     │ 250 │  e  │        The nil input replaces the previous output of "R".
     # │     │ 250 │  q  │
     # │     │  75 │  u  │ ◀── 1. Render head cursor moves the input to the output after a delay.
@@ -103,9 +103,8 @@ module Rain
     attr_reader :delays
 
     def fade(duration: nil)
-      fade_start = rand(5_000..10_000)
-
-      return unless (now - @render_head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
+      fade_start_delay = rand(5_000..10_000)
+      return unless (now - @render_head_cursor.first_update) >= fade_start_delay || duration
 
       @render_tail_cursor.increment(delays:, inputs:, duration:) do |index|
         if @inputs[index].nil? && @outputs[index]
