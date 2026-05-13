@@ -5,3 +5,13 @@ start_row: :random # Options are :random, 0
 min_delay: 75
 fade: true
 fade_delay: 250
+leet: false
+leet_keys:
+  a: 4
+  b: 8
+  e: 3
+  g: 9
+  i: 1
+  o: 0
+  s: 5
+  t: 7
