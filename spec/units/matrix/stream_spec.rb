@@ -11,7 +11,7 @@ RSpec.describe Rain::Stream do
 
   let(:config) { Rain::ConfigLoader.load('./spec/fixtures/config/matrix.yaml', config_overrides) }
   let(:config_overrides) { {} }
-  let(:event_tree) { Fixtures::EventFactory.request_response_tree }
+  let(:event_tree) { Fixtures::EventFactory.request_response_tree(request_id: 1) }
 
   describe '#redraw' do
     before do
