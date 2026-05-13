@@ -67,6 +67,8 @@ module Rain
     def render_streams(show_output: true)
       @streams.each_value(&:render)
 
+      return unless show_output
+
       output = ''.dup
 
       (0...@screen_size[:row_count]).each do |row_index|
@@ -83,8 +85,6 @@ module Rain
           cell ? Paint[cell, color] : Paint[' ']
         end.join(' ')
       end
-
-      return unless show_output
 
         system 'clear'
         print output
