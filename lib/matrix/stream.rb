@@ -23,26 +23,39 @@ module Rain
       @colors = []
       @outputs = []
 
-      # Redraw.
       @event_cursor = 0
-      @redraw_cursor = 0
+      @redraw_head_cursor = Cursor.new
+      @redraw_tail_cursor = Cursor.new
 
-      # Render.
-      @head_cursor = Cursor.new
-      @tail_cursor = Cursor.new
+      @render_head_cursor = Cursor.new
+      @render_tail_cursor = Cursor.new
 
       observe event_tree
     end
 
+    # TODO: Use "on :branch do |event|" syntax.
     def branch(event: Low::Events::BranchEvent) # rubocop:disable Lint/UnusedMethodArgument
       redraw(cell_count: @inputs.count)
     end
 
-    # Draw event names onto the current amount of cells in a stream.
+    # Draw event names onto the current amount of cells in a stream, using cursors. Called when there's a new event.
+    #
+    #  INPUT DELAY OUTPUT
+    # ┌─────┬─────┬─────┐
+    # │  R  │  75 │     │ ◀── 2. Redraw tail cursor begins at index zero or a random starting index.
+    # │  e  │  75 │     │        A redraw head cursor that wraps around will push the redraw tail cursor down to be just beneath it.
+    # │  q  │  75 │     │        The render head cursor will start at the redraw tail cursor index.
+    # │  u  │  75 │     │ 
+    # │     │  75 │     │ ◀── 1. Redraw head cursor begins at index zero or a random starting index.
+    # │     │  75 │     │        It populates input for every character in an event name.
+    # │     │  75 │     │        Then sets a "75" delay for the render head cursor.
+    # └─────┴─────┴─────┘
+    #
     def redraw(cell_count:)
-      old_index = (@inputs.count - 1).clamp(0, nil)
+      randomize_start_index if first_cell_redraw? && @config.start_row == :random
 
       # TODO: Test that these arrays are correctly being resized.
+      old_index = (@inputs.count - 1).clamp(0, nil)
       @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
       @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
       @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
@@ -57,17 +70,21 @@ module Rain
     end
 
     # Render a cell's input as output after a delay, using cursors. Called on every frame.
-    # ┌─┐
-    # │R│ <-- Each cell is represented as an input, delay and output.
-    # │e│
-    # │q│ <-- The head cursor outputs the cell's input after a delay and colors the leading cell white.
-    # │ │
-    # │ │ <-- The tail cursor does the same thing but the input (and therefore output) will be empty.
-    # └─┘     The tail cursor can be before or after the head cursor depending on whether events wrap around.
     #
-    # Unit tests use "duration" to skip forwards in time, while matrix spec and the real world use old fashioned linear time.
+    #  INPUT DELAY OUTPUT
+    # ┌─────┬─────┬─────┐
+    # │     │ 250 │     │ ◀── 2. Render tail cursor moves the input to the output after a delay.
+    # │     │ 250 │  e  │        The nil input replaces the previous output of "R".
+    # │     │ 250 │  q  │
+    # │     │  75 │  u  │ ◀── 1. Render head cursor moves the input to the output after a delay.
+    # │  e  │  75 │     │        Leaving behind nil input.
+    # │  s  │  75 │     │        Then sets a "250" delay for the render tail cursor.
+    # │  t  │  75 │     │
+    # └─────┴─────┴─────┘
+    #
+    # Unit tests use "duration" to skip forward in time, while feature tests and the real world use old fashioned linear time.
     def render(duration: nil)
-      @head_cursor.increment(delays:, inputs:, duration:) do |index|
+      @render_head_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = index.zero? ? @inputs.count - 1 : index - 1
         next_index = index + 1 >= @inputs.count ? 0 : index + 1
 
@@ -90,14 +107,14 @@ module Rain
     def fade(duration: nil)
       fade_start = rand(5_000..10_000)
 
-      return unless (now - @head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
+      return unless (now - @render_head_cursor.first_update) >= fade_start || (duration && duration >= fade_start)
 
-        @tail_cursor.increment(delays:, inputs:, duration:) do |index|
-          if @inputs[index].nil? && @outputs[index]
-            @outputs[index] = @inputs[index]
-            @delays[index] = 0
-          end
+      @render_tail_cursor.increment(delays:, inputs:, duration:) do |index|
+        if @inputs[index].nil? && @outputs[index]
+          @outputs[index] = @inputs[index]
+          @delays[index] = 0
         end
+      end
     end
 
     def now
@@ -113,48 +130,54 @@ module Rain
     # │e│
     # │s│
     # │t│
-    # └─┘ <-- Time has passed between events.
+    # └─┘ ◀── Time has passed between events.
     # ┌─┐
     # │││  SECOND EVENT
     # │▼│  The next event has data to work with, it can represent the time it took to get from the previous event to the next.
-    # │R│  Each cell will render after the largest duration of the following values:
+    # │R│  Each cell will delay render for the larger duration of either:
     # │o│   1. The minimum delay
-    # │u│   2. The time elapsed between events divided by the number of inputs
+    # │u│   2. The time elapsed between events divided by the number of cells
     # │t│
-    # │e│ <-- A cursor moves to the next cell after a delay and colors the leading cell white.
+    # │e│ ◀── A cursor moves to the next cell after a delay and colors the leading cell white.
     # └─┘
     def redraw_event(current_event:, past_event:)
+      variable_delay = variable_delay(current_event:, past_event:)
+
+      characters = event_name(current_event:)
+      characters = [*ARROW, *characters] if @event_cursor > 0
+      
+      @redraw_head_cursor.iterate(inputs: characters, loop_count: @inputs.count) do |index, input|
+        @inputs[index] = input
+        @delays[index] = first_cell_redraw? ? 0 : variable_delay # Don't add delay to the first cell, looks stuck.
+      end
+    end
+
+    def variable_delay(current_event:, past_event:)
       if @event_cursor.zero?
-        inputs = event_name(current_event:)
-        delay = @config.min_delay
-
-        randomize_start_row if @config.start_row == :random
+        @config.min_delay
       else
-        inputs = [*ARROW, *event_name(current_event:)]
         difference = current_event.created_at - past_event.created_at
-        delay = difference.zero? ? @config.min_delay : (difference / inputs.count).to_i.clamp(@config.min_delay, nil)
+        difference.zero? ? @config.min_delay : (difference / inputs.count).to_i.clamp(@config.min_delay, nil)
       end
-
-      inputs.each do |character|
-        @inputs[@redraw_cursor] = character
-        @delays[@redraw_cursor] = @redraw_cursor.zero? ? 0 : delay # Don't add delay to the first cell, looks stuck.
-
-        @redraw_cursor += 1
-        @redraw_cursor = 0 if @redraw_cursor >= @inputs.count
-      end
-
-      # TODO: Redraw cursor should be a head and a tail cursor like render so that we can mimic a start to end that wraps around.
-      @head_cursor.index = @redraw_cursor
     end
 
     def event_name(current_event:)
       current_event.class.name.split('::').last.delete_suffix('Event').chars
     end
 
-    def randomize_start_row
+    def first_cell_redraw?
+      # Once redraw head cursor gets away from redraw tail cursor, they should never be equal again.
+      @redraw_head_cursor.index == @redraw_tail_cursor.index
+    end
+
+    def randomize_start_index
       random_index = rand(0..2)
-      @redraw_cursor = random_index
-      @head_cursor.index = random_index - 1 # Head cursor always 1 index behind to make "increment" method's logic simple.
+
+      @redraw_head_cursor.index = random_index
+      @redraw_tail_cursor.index = random_index
+
+      @render_head_cursor.index = random_index
+      @render_tail_cursor.index = random_index - 1 # Waits behind the delay set by the render head cursor.
     end
   end
 end

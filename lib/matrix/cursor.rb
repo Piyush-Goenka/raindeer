@@ -21,6 +21,15 @@ module Rain
       @index = 0 if @index >= inputs.count
     end
 
+    def iterate(inputs:, loop_count:)
+      inputs.each do |input|
+        yield @index, input
+      ensure
+        @index += 1
+        @index = 0 if @index >= loop_count
+      end
+    end
+
     private
 
     def now

@@ -64,7 +64,7 @@ RSpec.describe Rain::Stream do
       stream.redraw(cell_count: 20)
     end
 
-    context 'on first frame' do
+    context 'before first render' do
       it 'returns nil' do
         expect(stream.outputs[0]).to eq(nil)
       end
