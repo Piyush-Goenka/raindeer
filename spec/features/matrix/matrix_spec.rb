@@ -26,16 +26,16 @@ RSpec.describe Rain::Matrix do
   context 'when 1 column' do
     let(:event_trees) do
       {
-        1 => Fixtures::EventFactory.request_response_tree,
-        2 => Fixtures::EventFactory.request_response_tree,
-        3 => Fixtures::EventFactory.request_response_tree
+        1 => Fixtures::EventFactory.request_response_tree(request_id: 1),
+        2 => Fixtures::EventFactory.request_response_tree(request_id: 2),
+        3 => Fixtures::EventFactory.request_response_tree(request_id: 3)
       }
     end
     let(:screen_size) { { column_count: 1, row_count: 20 } }
     let(:overrides) { { start_col: :random } }
 
     let(:lines) do
-      <<~BASH
+      <<~BASH.delete_prefix("\n").delete_suffix("\n")
         #{[['R', cell_color]].paint_columns}
         #{[['e', cell_color]].paint_columns}
         #{[['q', cell_color]].paint_columns}
@@ -76,7 +76,7 @@ RSpec.describe Rain::Matrix do
     let(:screen_size) { { column_count: 2, row_count: 20 } }
 
     let(:lines) do
-      <<~BASH
+      <<~BASH.delete_prefix("\n").delete_suffix("\n")
         #{[['R', cell_color], ['R', cell_color]].paint_columns}
         #{[['e', cell_color], ['e', cell_color]].paint_columns}
         #{[['q', cell_color], ['q', cell_color]].paint_columns}
@@ -118,7 +118,7 @@ RSpec.describe Rain::Matrix do
     let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:lines) do
-      <<~BASH
+      <<~BASH.delete_prefix("\n").delete_suffix("\n")
         #{[['R', cell_color], ['R', cell_color], ['R', cell_color]].paint_columns}
         #{[['e', cell_color], ['e', cell_color], ['e', cell_color]].paint_columns}
         #{[['q', cell_color], ['q', cell_color], ['q', cell_color]].paint_columns}
@@ -161,7 +161,7 @@ RSpec.describe Rain::Matrix do
     let(:screen_size) { { column_count: 3, row_count: 20 } }
 
     let(:lines) do
-      <<~BASH
+      <<~BASH.delete_prefix("\n").delete_suffix("\n")
         #{[[' '], [' '], [' ']].paint_columns}
         #{[[' '], [' '], [' ']].paint_columns}
         #{[[' '], [' '], [' ']].paint_columns}

@@ -16,6 +16,10 @@ Metrics/PerceivedComplexity:
 Metrics/CyclomaticComplexity:
   Max: 10
 
+# Disables "Use @event_cursor.positive? instead of @event_cursor > 0".
+Style/NumericPredicate:
+  Enabled: false
+
 # Support LowType return value "-> { T }" syntax.
 Style/TrailingBodyOnMethodDefinition:
   Enabled: false

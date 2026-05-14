@@ -22,7 +22,7 @@ LowType.configure do |config|
   config.output_size = 100
 end
 
-def render_frames(frames = 100, fps = 30)
+def render_frames(frames = 100, fps = 10)
   frame_duration = 1.0 / fps
 
   frames.times do
@@ -34,6 +34,8 @@ end
 
 class Array
   def paint_columns
-    map { ::Paint[it[0], it[1]] }.join(' ')
+    map do
+      it[1] ? ::Paint[it[0], it[1]] : ::Paint[it[0]]
+    end.join(' ')
   end
 end

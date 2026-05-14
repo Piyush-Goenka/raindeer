@@ -64,8 +64,10 @@ module Rain
       stream
     end
 
-    def render_streams(show_output: true)
+    def render_streams(show_output: true) # rubocop:disable Metrics/AbcSize
       @streams.each_value(&:render)
+
+      return unless show_output
 
       output = ''.dup
 
@@ -84,10 +86,8 @@ module Rain
         end.join(' ')
       end
 
-      return unless show_output
-
-        system 'clear'
-        print output
+      system 'clear'
+      print output.delete_prefix("\n").delete_suffix("\n")
     end
 
     def generate_index
@@ -103,7 +103,9 @@ module Rain
     end
 
     def column_count
-      (@screen_size[:column_count] / 2).to_i
+      return @screen_size[:column_count] if @screen_size[:column_count] < 10
+
+      (@screen_size[:column_count] / 2).to_i.clamp(1, nil)
     end
   end
 end
