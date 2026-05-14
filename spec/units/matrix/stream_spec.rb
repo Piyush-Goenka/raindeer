@@ -38,6 +38,14 @@ RSpec.describe Rain::Stream do
           ['e', 's', 'p', 'o', 'n', 's', 'e', '│', '▼', 'R']
         )
       end
+
+      it 'moves the head cursor to the latest cell' do
+        expect(stream.head_cursor.index).to be(6)
+      end
+
+      it 'moves the tail cursor to the oldest cell' do
+        expect(stream.tail_cursor.index).to be(7)
+      end
     end
   end
 

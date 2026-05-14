@@ -10,6 +10,7 @@ module Rain
     include Observers
 
     attr_reader :index, :inputs, :outputs, :delays, :colors
+    attr_reader :head_cursor, :tail_cursor
 
     ARROW = ['│', '▼'].freeze
 
@@ -26,6 +27,7 @@ module Rain
       @event_cursor = 0
       @head_cursor = Cursor.new
       @tail_cursor = Cursor.new
+      @tail_cursor.index = 0
 
       @show_cursor = Cursor.new
       @hide_cursor = Cursor.new
@@ -144,8 +146,10 @@ module Rain
       @head_cursor.iterate(inputs: characters, loop_count: @inputs.count) do |index, input|
         @inputs[index] = input
         @delays[index] = first_cell_redraw? ? 0 : variable_delay # Don't add delay to the first cell, looks stuck.
-      end
 
+        @tail_cursor.increase_index(loop_count: @inputs.count) if @head_cursor.index == @tail_cursor.index
+      end
+      
       @hide_cursor.index = @head_cursor.index # Everything after me is old so it can fade away.
     end
 
