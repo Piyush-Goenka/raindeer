@@ -163,7 +163,7 @@ module Rain
 
     def first_cell_redraw?
       # Once redraw head cursor gets away from redraw tail cursor, they should never be equal again.
-      @head_cursor.index == @tail_cursor.index
+      @head_cursor.index == -1 && @tail_cursor.index == 0
     end
 
     def resize_cells(cell_count:)
