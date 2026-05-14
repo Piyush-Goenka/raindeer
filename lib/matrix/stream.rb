@@ -9,7 +9,7 @@ module Rain
   class Stream
     include Observers
 
-    attr_reader :index, :inputs, :outputs, :colors
+    attr_reader :index, :inputs, :outputs, :delays, :colors
 
     ARROW = ['│', '▼'].freeze
 
@@ -99,8 +99,6 @@ module Rain
     end
 
     private
-
-    attr_reader :delays
 
     def fade(duration: nil)
       fade_start_delay = rand(5_000..10_000)
