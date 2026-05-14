@@ -146,7 +146,7 @@ module Rain
         @delays[index] = first_cell_redraw? ? 0 : variable_delay # Don't add delay to the first cell, looks stuck.
       end
 
-      @render_hide_cursor.index = @redraw_head_cursor.index # Everything after me is old so it can fade away.
+      @hide_cursor.index = @head_cursor.index # Everything after me is old so it can fade away.
     end
 
     def variable_delay(current_event:, past_event:)

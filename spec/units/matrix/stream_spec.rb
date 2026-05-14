@@ -91,7 +91,7 @@ RSpec.describe Rain::Stream do
     context 'without fade' do
       let(:config_overrides) { { min_delay: 1 } }
 
-      it 'keeps characters' do
+      it 'shows characters' do
         stream = described_class.new(index: 0, config:, event_tree:)
         stream.redraw(cell_count: 20)
 
@@ -107,7 +107,7 @@ RSpec.describe Rain::Stream do
     context 'with fade' do
       let(:config_overrides) { { min_delay: 1, fade: true, fade_delay: 1 } }
 
-      it 'removes characters' do
+      it 'hides characters' do
         stream = described_class.new(index: 0, config:, event_tree:)
         stream.redraw(cell_count: 20)
 
