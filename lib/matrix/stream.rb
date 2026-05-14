@@ -76,7 +76,7 @@ module Rain
     # │     │   0 │     │ ◀── 2. Render hide cursor moves the input to the output after a delay.
     # │     │ 250 │  e  │        The nil input replaces the previous output of "R".
     # │     │ 250 │  q  │
-    # │     │  75 │  u  │ ◀── 1. Render show cursor moves the input to the output after a delay.
+    # │     │ 250 │  u  │ ◀── 1. Render show cursor moves the input to the output after a delay.
     # │  e  │  75 │     │        Leaving behind nil input.
     # │  s  │  75 │     │        Then sets a "250" delay for the render hide cursor.
     # │  t  │  75 │     │
