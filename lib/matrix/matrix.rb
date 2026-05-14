@@ -64,7 +64,7 @@ module Rain
       stream
     end
 
-    def render_streams(show_output: true)
+    def render_streams(show_output: true) # rubocop:disable Metrics/AbcSize
       @streams.each_value(&:render)
 
       return unless show_output

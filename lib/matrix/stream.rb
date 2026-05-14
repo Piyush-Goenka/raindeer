@@ -8,9 +8,7 @@ require_relative 'cursor'
 module Rain
   class Stream
     include Observers
-
-    attr_reader :index, :inputs, :outputs, :delays, :colors
-    attr_reader :head_cursor, :tail_cursor
+    attr_reader :index, :inputs, :outputs, :delays, :colors, :head_cursor, :tail_cursor
 
     ARROW = ['│', '▼'].freeze
 
@@ -47,20 +45,14 @@ module Rain
     # │  R  │  75 │     │ ◀── 2. Tail Cursor begins at index zero or a random starting index.
     # │  e  │  75 │     │        A Head Cursor that wraps around will push the Tail Cursor down to be just beneath it.
     # │  q  │  75 │     │        The Show Cursor will start at the Tail Cursor index.
-    # │  u  │  75 │     │ 
+    # │  u  │  75 │     │
     # │     │  75 │     │ ◀── 1. Head Cursor begins at index zero or a random starting index.
     # │     │  75 │     │        It populates input for every character in an event name.
     # │     │  75 │     │        Then sets a "75" delay for the Show Cursor.
     # └─────┴─────┴─────┘
     def redraw(cell_count:)
       randomize_start_index if first_cell_redraw? && @config.start_row == :random
-
-      # Resize cells to cell count.
-      old_index = (@inputs.count - 1).clamp(0, nil)
-      @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
-      @outputs = @outputs.fill(nil, old_index...cell_count)[0...cell_count]
-      @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
-      @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
+      resize_cells(cell_count:) if cell_count != @inputs.count
 
       (@event_cursor...@event_tree.sequence.count).each do |event_index|
         current_event = @event_tree.sequence[event_index]
@@ -83,7 +75,10 @@ module Rain
     # │  s  │  75 │     │        Then sets a "250" delay for the Hide Cursor.
     # │  t  │  75 │     │
     # └─────┴─────┴─────┘
-    def render(duration: nil)
+    #
+    # TODO: Refactor "@colors" into an Effect that happens dynamically on render rather than stored as a column of data.
+    #       This will reduce the "Metrics/AbcSize" complexity.
+    def render(duration: nil) # rubocop:disable Metrics/AbcSize
       @show_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = index.zero? ? @inputs.count - 1 : index - 1
         next_index = index + 1 >= @inputs.count ? 0 : index + 1
@@ -149,7 +144,7 @@ module Rain
 
         @tail_cursor.increase_index(loop_count: @inputs.count) if @head_cursor.index == @tail_cursor.index
       end
-      
+
       @hide_cursor.index = @head_cursor.index # Everything after me is old so it can fade away.
     end
 
@@ -169,6 +164,15 @@ module Rain
     def first_cell_redraw?
       # Once redraw head cursor gets away from redraw tail cursor, they should never be equal again.
       @head_cursor.index == @tail_cursor.index
+    end
+
+    def resize_cells(cell_count:)
+      old_index = (@inputs.count - 1).clamp(0, nil)
+
+      @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
+      @outputs = @outputs.fill(nil, old_index...cell_count)[0...cell_count]
+      @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
+      @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
     end
 
     def randomize_start_index
