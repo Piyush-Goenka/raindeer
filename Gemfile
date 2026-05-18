@@ -6,17 +6,29 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'low_event', path: '../low_event'
-  gem 'lowkey', path: '../lowkey'
-  gem 'lowload', path: '../lowload'
-  gem 'low_loop', path: '../low_loop'
-  gem 'low_node', path: '../low_node'
-  gem 'low_type', path: '../low_type'
+  local_gems = {
+    'low_event' => '../low_event',
+    'lowkey' => '../lowkey',
+    'lowload' => '../lowload',
+    'low_loop' => '../low_loop',
+    'low_node' => '../low_node',
+    'low_type' => '../low_type',
 
-  gem 'antlers', path: '../antlers'
-  gem 'expressions', path: '../expressions'
-  gem 'observers', path: '../observers'
-  gem 'providers', path: '../providers'
+    'antlers' => '../antlers',
+    'expressions' => '../expressions',
+    'observers' => '../observers',
+    'providers' => '../providers',
+  }
+
+  local_gems.each do |name, relative_path|
+    path = File.expand_path(relative_path, __dir__)
+
+    if File.exist?(path)
+      gem name, path:
+    else
+      gem name
+    end
+  end
 
   gem 'irb'
   gem 'rake', '~> 13.0'
