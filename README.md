@@ -2,7 +2,10 @@
 
 # Raindeer
 
-<a href="https://rubygems.org/gems/raindeer" title="Install gem"><img src="https://badge.fury.io/rb/raindeer.svg" alt="Gem version" height="18"></a> <a href="https://github.com/raindeer-rb/raindeer" title="GitHub"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub repo" height="18"></a> <a href="https://codeberg.org/raindeer/raindeer" title="Codeberg"><img src="https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white" alt="Codeberg repo" height="18"></a>
+<a href="https://rubygems.org/gems/raindeer" title="Install gem"><img src="https://badge.fury.io/rb/raindeer.svg" alt="Gem version" height="18"></a>
+<a href="https://github.com/raindeer-rb/raindeer" title="GitHub"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub repo" height="18"></a>
+<a href="https://codeberg.org/raindeer/raindeer" title="Codeberg"><img src="https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white" alt="Codeberg repo" height="18"></a>
+<a href="https://discord.gg/UBex4JQgnX"><img alt="Discord" src="https://img.shields.io/discord/1501858220224937997?logo=discord" height="18"></a>
 
 Raindeer is a new web framework using the dynamic features and latest async improvements in Ruby + some weird ideas, to build a new breed of web application. Each Raindeer component can be used individually in your exisiting application, or all together as a cohesive framework. **Deer to be different.**
 
