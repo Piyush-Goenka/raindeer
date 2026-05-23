@@ -45,29 +45,47 @@ Raindeer glues [Low](https://github.com/low-rb) components together with a route
 
 ## Philosophy
 
-### It can be made simpler
+> 🙏 I don't want to be a priest. If you see any opinions here that are too preachy then please let me know. I want my opinions to be opinionless
 
-Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people new to a framework; they shouldn't have to learn much. One way to do this is by removing things:
+### 🥚 Less is more
+
+Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people learning a new framework; they shouldn't have to learn much. One way to do this is by removing things:
 
 - **Namespaces** - Namespaces are confusing to new developers and the `::` syntax just doesn't look right. You can add them in later and they are still used internally by Raindeer
-- **Heredoc** - If you want to write multi-line HTML then you can just write it directly into a LowNode via RBX. Raindeer handles the technical hurdles
-- **MVC** - You shouldn't have to learn the 5 particular locations to put files in and the order in which they are called. Just `observe` an event in a node and render output, or call more code
+- **Heredoc** - If you want to write multi-line HTML then you can just be able to write it directly into a LowNode via RBX. Raindeer lets you do this via [LowLoad](https://github.com/low-rb/lowload)
+- **MVC** - You shouldn't have to learn the 5 exact locations to put files in and know the order in which they are called by the framework. Just `observe` an event in a [node](https://github.com/low-rb/low_node) and render output, or call more code
 
-### Optional build steps
+### 🧩 The Pattern Anti-Pattern
 
-Your files should just work out of the box. Internally this can create issues such as:
-- Extra runtime processing, which can be mitigated by processing once on class load and cleaning up at the end of the boot step
-- Less isolation between concerns, but with extra effort we can still isolate these "mixed" concerns.
+Developers will use patterns applicable to their application's domain that are different to the framework's patterns. This results in a tension between highly rigid framework patterns (MVC) and an application's. We shouldn't fight that but provide designated entities and events to glue the framework and the application together. Raindeer uses [LowNode](https://github.com/low-rb/low_node) to intercept the "request and response" layer then gets out of the way and let's the application structure itself from there.
 
-### Living infrastructure
+### 👣 No build steps
 
-An application is a living organism and so is the framework below it. Raindeer does dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelisation of nodes via Antlers. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic".
+Your files should just work out of the box. No one ever asked for a build step and it takes you out of your flow. Why are they considered "modern"?
 
-### Less Hydra-headed magic
+**No build steps can internally create issues such as:**
+- Extra runtime processing, which can be mitigated by processing once on class load and cleaning up at the end of the application's boot stage
+- Less isolation between concerns, but with extra effort we can still isolate these "mixed" concerns internally.
 
-Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of things that you don't know about. A has_many adds "association" methods to a model, then hides how databases do joins on tables, and locks you in to a particular structure. You will have to do a join eventually on a related table. There has to be a more compositional way that exposes the database structure while letting you query that structure easily.
+### 🌲 Living framework
 
-Frameworks are there to make application developers lives easier, add structure and abstractions where needed then get out of the way
+An application is a living organism and so is the framework below it. Raindeer does dynamic processing of previously static elements; from type checking and [expressions](https://github.com/raindeer-rb/expressions) to parallelization of nodes. This is okay, the framework should do more and feel alive. That being said, dynamic doesn't mean "magic"...
+
+### 🪆 Composition over convention
+
+Methods and classes should be *compositional*, so that you can understand their hidden complexity by drilling down into them as they go, rather than calling one magic method that does a bunch of side quests. APIs should be less magical and more compositional.
+
+A perfect example is the `has_many` helper method provided by various ORMs. This method adds "association" methods to a model, then hides the fact that databases do joins on tables. You will have to do a `JOIN` on a table eventually, so it's better to represent tables as being merged together from the start. There has to be a more compositional way that exposes the database structure while letting you query that structure easily. Raindeer uses [LowData](https://github.com/low-rb/low_data) to represent table structure compositionally:
+
+```ruby
+class PostsData < LowData
+  def all
+    Users[:username] + Posts[:title, :body]
+  end
+end
+```
+
+ℹ️ This data expression generates SQL to `OUTER JOIN` the user table with the posts table and results in a list of posts with the user's username included in each row.
 
 ## Getting Started
 
