@@ -33,13 +33,11 @@ The RainRouter accepts `RequestEvent`s and directs the request to the appropriat
 
 ### LowData
 
-Instead of the model defining relationships and associated queries to the database, LowData follows the repository pattern with a twist; [Expressions](https://github.com/raindeer-rb/expressions). An expression like `data(Table[:username] > Table[:title | :body)]` builds a SQL query to RIGHT JOIN the user table into the articles table and results in a list of articles with the user's username in each row.
-
-### Raindeer
-
-Raindeer pulls it all together with a router, pipelines and client-side integrations. It's decoupled and event-driven via observers in a way that's deceptively simple whilst enabling scalable architectures.
+[LowData](https://github.com/low-rb/low_data) follows the repository pattern with a twist; [Data Expressions](https://github.com/raindeer-rb/expressions). A data expression like `Users[:username] + Posts[:title, :body]` builds a SQL query to `OUTER JOIN` the `Users` table into the `Posts` table and results in a list of posts with the user's username in each row.
 
 ## Architecture
+
+Raindeer glues [Low](https://github.com/low-rb) components together with a router, observers, pipelines and client-side integrations. It's decoupled and event-driven in a way that's deceptively simple whilst enabling scalable architectures.
 
 <p align="center">
   <img src="assets/Architecture.svg" alt="Raindeer architecture diagram" style="max-width: 800px;">
