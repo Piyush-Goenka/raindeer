@@ -61,11 +61,15 @@ Developers will use patterns applicable to their application's domain that are d
 
 ### 👣 No build steps
 
-Your files should just work out of the box. No one ever asked for a build step and it takes you out of your flow. Why are they considered "modern"?
+<details>
+  <summary>Your files should just work out of the box. No one ever asked for a build step and it takes you out of your flow.</summary>
 
-**No build steps can internally create issues such as:**
-- Extra runtime processing, which can be mitigated by processing once on class load and cleaning up at the end of the application's boot stage
-- Less isolation between concerns, but with extra effort we can still isolate these "mixed" concerns internally.
+  **No build steps can internally create issues:**
+  | **Problem**                     | **Solution**                                                                         |
+  |---------------------------------|--------------------------------------------------------------------------------------|
+  | Extra runtime processing        | Process once on "Class Load" and clean up at the end of the application's boot stage |
+  | Less isolation between concerns | With extra effort we can still isolate these "mixed" concerns internally             |
+</details>
 
 ### 🌲 Living framework
 
