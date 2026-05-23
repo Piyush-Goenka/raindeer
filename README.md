@@ -73,4 +73,7 @@ Frameworks are there to make application developers lives easier, add structure 
 
 ## Getting Started
 
-Clone the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) to begin developing your own Raindeer application.
+Currently the best way to get a feel for Raindeer is to clone this repo and run `bin/server`.
+Look inside `lib/system` to see Raindeer's internal application, which you use as a template for your own application.
+
+In the future the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) will be a better way to begin developing your own Raindeer application.
