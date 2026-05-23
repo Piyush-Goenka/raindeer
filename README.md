@@ -90,6 +90,18 @@ end
 ## Getting Started
 
 Currently the best way to get a feel for Raindeer is to clone this repo and run `bin/server`.
-Look inside `lib/system` to see Raindeer's internal application, which you use as a template for your own application.
+Look inside `lib/system` to see Raindeer's internal application, which you can use as a template for your own application.
 
-In the future the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) will be a better way to begin developing your own Raindeer application.
+In the future the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) will be the better way to begin developing your own Raindeer application.
+
+Then in the far future we'll probably have an app generator command... could that future be you?
+
+## Contributing
+
+Raindeer needs developer contributions around:
+- Database layer - SQL generation, performance, migrations
+- Deployment layer - Credential management, authentication
+- Tooling
+- Performance testing and fixing
+
+If you have a love for code first then AI second, please consider making a contribution.
