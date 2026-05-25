@@ -19,16 +19,13 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Debugging
 
-### Debug Mode [UNRELEASED]
+### Debug Mode
 
-Set `RAIN_DEBUG_MODE=1` to switch Raindeer to a non-asynchronous server which well you debug with standard methods such as:
-```ruby
-p variable
-puts variable
-binding.pry # Debug mode requires pry for you
-```
+Set `RAIN_DEBUG_MODE=1` to block the current asynchronous fiber and show the backtrace when an exception is raised.
 
-### Async Mode
+ℹ️ This will make your development experience much better.
+
+### Asynchronous Mode
 
 `RAIN_ASYNC_MODE=1` is the default. In this async environment we must first block the fiber:
 ```ruby
@@ -36,6 +33,15 @@ Fiber.blocking { binding.irb }
 ```
 
 https://socketry.github.io/async/guides/debugging/index
+
+### Synchronous Mode
+
+Set `RAIN_ASYNC_MODE=0` to run the server synchronously, making normal debugging techniques easy:
+```ruby
+p variable
+puts variable
+binding.pry # Debug mode requires pry for you
+```
 
 ## Testing
 

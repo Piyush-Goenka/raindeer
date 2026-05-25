@@ -1,77 +1,4 @@
 PATH
-  remote: ../antlers
-  specs:
-    antlers (0.2.0)
-      erb
-      low_event
-
-PATH
-  remote: ../expressions
-  specs:
-    expressions (0.1.0)
-
-PATH
-  remote: ../low_event
-  specs:
-    low_event (0.6.0)
-      low_type (~> 1.0)
-      observers
-      protocol-http
-      providers
-
-PATH
-  remote: ../low_loop
-  specs:
-    low_loop (0.5.1)
-      async
-      async-http
-      io-stream
-      low_event
-      low_type (~> 1.0)
-      protocol-http
-      protocol-url
-
-PATH
-  remote: ../low_node
-  specs:
-    low_node (0.2.1)
-      antlers
-      low_event
-      low_loop
-      low_type (~> 1.0)
-      observers
-
-PATH
-  remote: ../low_type
-  specs:
-    low_type (1.3.0)
-      expressions (~> 0.1)
-      lowkey (~> 0.4)
-
-PATH
-  remote: ../lowkey
-  specs:
-    lowkey (0.4.2)
-      prism
-
-PATH
-  remote: ../lowload
-  specs:
-    lowload (0.4.1)
-      lowkey
-
-PATH
-  remote: ../observers
-  specs:
-    observers (0.7.0)
-
-PATH
-  remote: ../providers
-  specs:
-    providers (0.4.0)
-      expressions (~> 0.1)
-
-PATH
   remote: .
   specs:
     raindeer (0.3.0)
@@ -91,6 +18,9 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    antlers (0.2.0)
+      erb
+      low_event
     ast (2.4.3)
     async (2.39.0)
       console (~> 1.29)
@@ -111,13 +41,14 @@ GEM
       traces (~> 0.10)
     async-pool (0.11.2)
       async (>= 2.0)
-    console (1.34.3)
+    console (1.35.1)
       fiber-annotation
       fiber-local (~> 1.1)
       json
     date (3.5.1)
     diff-lcs (1.6.2)
     erb (6.0.4)
+    expressions (0.1.0)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
@@ -134,8 +65,35 @@ GEM
     json (2.19.5)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
+    low_event (0.6.0)
+      low_type (~> 1.0)
+      observers
+      protocol-http
+      providers
+    low_loop (0.5.1)
+      async
+      async-http
+      io-stream
+      low_event
+      low_type (~> 1.0)
+      protocol-http
+      protocol-url
+    low_node (0.2.2)
+      antlers
+      low_event
+      low_loop
+      low_type (~> 1.0)
+      observers
     low_state (0.2.0)
+    low_type (1.3.0)
+      expressions (~> 0.1)
+      lowkey (~> 0.4)
+    lowkey (0.4.2)
+      prism
+    lowload (0.4.1)
+      lowkey
     metrics (0.15.0)
+    observers (0.7.0)
     ostruct (0.6.3)
     paint (2.3.0)
     parallel (2.1.0)
@@ -154,6 +112,8 @@ GEM
       protocol-hpack (~> 1.4)
       protocol-http (~> 0.62)
     protocol-url (0.4.0)
+    providers (0.4.0)
+      expressions (~> 0.1)
     psych (5.3.1)
       date
       stringio
@@ -208,18 +168,18 @@ PLATFORMS
   x86_64-darwin-25
 
 DEPENDENCIES
-  antlers!
-  expressions!
+  antlers
+  expressions
   irb
-  low_event!
-  low_loop!
-  low_node!
-  low_type!
-  lowkey!
-  lowload!
-  observers!
+  low_event
+  low_loop
+  low_node
+  low_type
+  lowkey
+  lowload
+  observers
   protocol-http
-  providers!
+  providers
   raindeer!
   rake (~> 13.0)
   rspec (~> 3.0)
@@ -227,16 +187,17 @@ DEPENDENCIES
   timecop
 
 CHECKSUMS
-  antlers (0.2.0)
+  antlers (0.2.0) sha256=cb0ec2a53a168fd442f2bdd451291d8ed53af87670889413dd3566cd2fa35255
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   async (2.39.0) sha256=df18730073f2bbb45788077dfa20cb365ecc1b9453969f44de6796b5191a00aa
   async-http (0.95.1) sha256=0c3dd458c204c06d5c4b20b01bbec4794a1203db627fb2ce536e1799ec14786c
   async-pool (0.11.2) sha256=0a43a17b02b04d9c451b7d12fafa9a50e55dc6dd00d4369aca00433f16a7e3ed
-  console (1.34.3) sha256=869fbd74697efc4c606f102d2812b0b008e4e7fd738a91c591e8577140ec0dcc
+  bundler (4.0.12) sha256=7f8b757d28dfb636e7b24fba2344ac6dd13b5b24f4b46d62573d483f211825ac
+  console (1.35.1) sha256=6d2bfdd0bc7e57830540a6c0ce3bc83fff471844db44be89a38aef9f95df296a
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   erb (6.0.4) sha256=38e3803694be357fe2bfe312487c74beaf9fb4e5beb3e22498952fe1645b95d9
-  expressions (0.1.0)
+  expressions (0.1.0) sha256=9fc860c824d4a62ba230fb6dc2676223641f3992a6ae66901bd95c7f37d42a31
   fiber-annotation (0.2.0) sha256=7abfadf1d119f508867d4103bf231c0354d019cc39a5738945dec2edadaf6c03
   fiber-local (1.1.0) sha256=c885f94f210fb9b05737de65d511136ea602e00c5105953748aa0f8793489f06
   fiber-storage (1.0.1) sha256=f48e5b6d8b0be96dac486332b55cee82240057065dc761c1ea692b2e719240e1
@@ -248,15 +209,15 @@ CHECKSUMS
   json (2.19.5) sha256=218a18553e4801d579ca7e0f5bc72bafd776d7397238a1fb4e74db5b0a812c59
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
-  low_event (0.6.0)
-  low_loop (0.5.1)
-  low_node (0.2.1)
+  low_event (0.6.0) sha256=1c01e0925ab6d273aff095af03028596f12e2114dd91071152320b69bc3396d7
+  low_loop (0.5.1) sha256=3f8bbb796ada879d6a26d873ec2df319fd5021b4e1ab011fc5d2158ee034da2d
+  low_node (0.2.2) sha256=75585003aa7e37c6d7bdc559e1d6fc1876e6f0229bbe35dae8a6b49b176193ec
   low_state (0.2.0) sha256=549c626e389bd6bb3d2244cbde08ed0ac287cc76559617ae7e869d36e860ad7a
-  low_type (1.3.0)
-  lowkey (0.4.2)
-  lowload (0.4.1)
+  low_type (1.3.0) sha256=b54d67353fa755b4be0e7d041be007d68faf40062449d7c86bee23c21ec060a0
+  lowkey (0.4.2) sha256=e41cbaaf01332646ad45180834e14f39006fdb4ead80ba38a37db1b3d4eb8fac
+  lowload (0.4.1) sha256=9c1867264770797271dcabef17a21371639db1f4de8691f0778ad0693b76cbfd
   metrics (0.15.0) sha256=61ded5bac95118e995b1bc9ed4a5f19bc9814928a312a85b200abbdac9039072
-  observers (0.7.0)
+  observers (0.7.0) sha256=df4ccad0db9d6eb43b9a9dd8fc56a4132107bc8c5cf2f6a0de0b1cc9077552e3
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   paint (2.3.0) sha256=327d623e4038619d5bd99ae5db07973859cd78400c7f0329eea283cef8e83be5
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
@@ -269,7 +230,7 @@ CHECKSUMS
   protocol-http1 (0.39.0) sha256=e49b3f4cda6f5d94c76a323d2b7f6977cba3ebd082d2da437039594da77ad8eb
   protocol-http2 (0.26.0) sha256=bac89cd78082b241ccd0cf7246f5160e4bb0c9c975fb4bf7deef5f88cc317486
   protocol-url (0.4.0) sha256=64d4c03b6b51ad815ac6fdaf77a1d91e5baf9220d26becb846c5459dacdea9e1
-  providers (0.4.0)
+  providers (0.4.0) sha256=b2da32e1672d5a6549b73ded125171a93ae428dc6e3a03798d235284ddd7e027
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
@@ -294,4 +255,4 @@ CHECKSUMS
   unicode-emoji (4.2.0) sha256=519e69150f75652e40bf736106cfbc8f0f73aa3fb6a65afe62fefa7f80b0f80f
 
 BUNDLED WITH
-  4.0.8
+  4.0.12

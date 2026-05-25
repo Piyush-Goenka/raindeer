@@ -11,6 +11,7 @@ env = {
   host: ENV.fetch('RAIN_HOST', nil),
   port: ENV.fetch('RAIN_PORT', nil),
   web_root: ENV.fetch('RAIN_WEB_ROOT', nil),
+  debug_mode: Rain::ConfigLoader.parse_boolean(ENV.fetch('RAIN_DEBUG_MODE', true)),
   matrix_mode: Rain::ConfigLoader.parse_boolean(ENV.fetch('RAIN_MATRIX', nil)),
   mirror_mode: Rain::ConfigLoader.parse_boolean(ENV.fetch('RAIN_MIRROR', nil))
 }
