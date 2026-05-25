@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'low_event'
+require 'low_type'
 require 'observers'
 require 'paint'
 
@@ -9,6 +10,7 @@ require_relative 'stream'
 
 module Rain
   class Matrix
+    include LowType
     include Observers
 
     def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
