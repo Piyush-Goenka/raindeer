@@ -11,8 +11,6 @@ class RoutesNode < LowNode
     <{ LayoutNode: }>
       <h1>{"Routes"}</h1>
 
-      {@routes}
-
       <table>
         <thead>
           <tr>
@@ -22,11 +20,13 @@ class RoutesNode < LowNode
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-          </tr>
+          <{ for: path, route in: @routes }>
+            <tr>
+              <td>{path}</td>
+              <td>{route}</td>
+              <td>3</td>
+            </tr>
+          <{ :for }>
         </tbody>
       </table>
     <{ :LayoutNode }>
