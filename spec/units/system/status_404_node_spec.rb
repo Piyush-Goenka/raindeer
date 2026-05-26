@@ -4,21 +4,21 @@ require 'observers'
 require 'low_node'
 require 'lowload'
 
-LowLoad.lowload(File.join(Dir.pwd, '/lib/system/error_404_node.rbx'))
+LowLoad.lowload(File.join(Dir.pwd, '/lib/system/status_404_node.rbx'))
 LowLoad.lowload(File.join(Dir.pwd, '/lib/system/layout_node.rbx'))
 
 require_relative '../../factories/request_factory'
 require_relative '../../fixtures/mock_router'
 
-RSpec.describe Error404Node do
+RSpec.describe Status404Node do
   subject(:page_not_found) { described_class }
 
   let(:mock_router) { MockRouter.new }
 
   before do
     Observers::Keys.reset
-    Object.send(:remove_const, 'Error404Node') unless defined?(Error404Node)
-    LowLoad.lowload(File.join(Dir.pwd, '/lib/system/error_404_node.rbx'))
+    Object.send(:remove_const, 'Status404Node') unless defined?(Status404Node)
+    LowLoad.lowload(File.join(Dir.pwd, '/lib/system/status_404_node.rbx'))
   end
 
   context 'when a 404 status event is triggered' do
