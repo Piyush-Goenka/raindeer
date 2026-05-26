@@ -16,7 +16,7 @@ Metrics/PerceivedComplexity:
 Metrics/CyclomaticComplexity:
   Max: 10
 
-# Disables "Use @event_cursor.positive? instead of @event_cursor > 0".
+# Disable "Use value.positive? instead of value > 0".
 Style/NumericPredicate:
   Enabled: false
 
