@@ -8,23 +8,21 @@ gemspec
 group :development do
   local_gems = {
     'low_event' => '../low_event',
-    'lowkey' => '../lowkey',
-    'lowload' => '../lowload',
     'low_loop' => '../low_loop',
     'low_node' => '../low_node',
     'low_type' => '../low_type',
+    'lowkey' => '../lowkey',
+    'lowload' => '../lowload',
 
     'antlers' => '../antlers',
     'expressions' => '../expressions',
     'observers' => '../observers',
-    'providers' => '../providers',
+    'providers' => '../providers'
   }
 
   local_gems.each do |name, relative_path|
-    path = File.expand_path(relative_path, __dir__)
-
-    if File.exist?(path)
-      gem name, path:
+    if File.exist?(File.expand_path(relative_path, __dir__))
+      gem name, path: relative_path
     else
       gem name
     end
