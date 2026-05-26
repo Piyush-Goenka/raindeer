@@ -21,7 +21,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ### Debug Mode
 
-Set `RAIN_DEBUG_MODE=1` to block the current asynchronous fiber and show the backtrace when an exception is raised.
+Set `RAIN_DEBUG=1` to block the current asynchronous fiber and show the backtrace when an exception is raised.
 
 ℹ️ This will make your development experience much better.
 
