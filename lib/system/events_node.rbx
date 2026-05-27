@@ -4,29 +4,27 @@ class EventsNode < LowNode
   observe '/system/events'
 
   def initialize(event:)
-    @events = 'TODO: Populate via LowEvent inherited hook.'
+    @events = LowEvent.events
   end
 
   def render(event:)
     <{ LayoutNode: }>
       <h1>{"Events"}</h1>
 
-      {@events}
-
       <table>
         <thead>
           <tr>
-            <th scope="col">HTTP Verbs</th>
-            <th scope="col">Route</th>
+            <th scope="col">Event</th>
             <th scope="col">Observers</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-          </tr>
+          <{ for: event in: @events }>
+            <tr>
+              <td>{event}</td>
+              <td></td>
+            </tr>
+          <{ :for }>
         </tbody>
       </table>
     <{ :LayoutNode }>
