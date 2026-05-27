@@ -5,7 +5,7 @@ require 'low_node'
 require 'lowload'
 
 LowLoad.lowload(File.join(Dir.pwd, '/lib/system/status_404_node.rbx'))
-LowLoad.lowload(File.join(Dir.pwd, '/lib/system/layout_node.rbx'))
+LowLoad.lowload(File.join(Dir.pwd, '/lib/system/layouts/layout_node.rbx'))
 
 require_relative '../../factories/request_factory'
 require_relative '../../fixtures/mock_router'
