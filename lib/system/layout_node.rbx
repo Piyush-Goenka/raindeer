@@ -6,6 +6,7 @@ class LayoutNode < LowNode
       <head>
         <link rel="stylesheet" href="/assets/pico.min.css">
         <link rel="stylesheet" href="/assets/system.css">
+        <link rel="stylesheet" href="/assets/stats.css">
       </head>
       <body>
         <header>
