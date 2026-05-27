@@ -4,7 +4,8 @@ class EventsNode < LowNode
   observe '/system/events'
 
   def initialize(event:)
-    @events = LowEvent.events
+    # TODO: Include types that can be observed keys too like Status and Status[404].
+    @event_types = LowEvent.events
   end
 
   def render(event:)
@@ -19,10 +20,12 @@ class EventsNode < LowNode
           </tr>
         </thead>
         <tbody>
-          <{ for: event in: @events }>
+          <{ for: observer_key in: @event_types }>
             <tr>
-              <td>{event}</td>
-              <td></td>
+              <td>{observer_key}</td>
+              <td>
+                <{ ObserversFormatter observer_key=observer_key }>
+              </td>
             </tr>
           <{ :for }>
         </tbody>
