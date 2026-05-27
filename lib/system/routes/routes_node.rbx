@@ -24,7 +24,7 @@ class RoutesNode < LowNode
             <tr>
               <td><{ LabelFormatter labels=route.verbs }></td>
               <td>{route.path}</td>
-              <td></td>
+              <td><{ ObserversCount route=route.path }></td>
             </tr>
           <{ :for }>
         </tbody>
