@@ -24,8 +24,7 @@ module Rain
 
       @event_cursor = 0
       @head_cursor = Cursor.new
-      @tail_cursor = Cursor.new
-      @tail_cursor.index = 0
+      @tail_cursor = Cursor.new(index: 0)
 
       @show_cursor = Cursor.new
       @hide_cursor = Cursor.new

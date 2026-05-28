@@ -4,8 +4,8 @@ module Rain
   class Cursor
     attr_accessor :index, :first_update, :last_update
 
-    def initialize
-      @index = -1
+    def initialize(index: -1)
+      @index = index
       @first_update = now
       @last_update = now
     end
