@@ -8,7 +8,7 @@ require_relative 'cursor'
 module Rain
   class Stream
     include Observers
-    attr_reader :index, :inputs, :outputs, :delays, :colors, :head_cursor, :tail_cursor
+    attr_reader :index, :inputs, :outputs, :delays, :head_cursor, :tail_cursor
 
     ARROW = ['│', '▼'].freeze
 
@@ -19,13 +19,11 @@ module Rain
 
       @inputs = []
       @delays = []
-      @colors = []
       @outputs = []
 
       @event_cursor = 0
       @head_cursor = Cursor.new
-      @tail_cursor = Cursor.new
-      @tail_cursor.index = 0
+      @tail_cursor = Cursor.new(index: 0)
 
       @show_cursor = Cursor.new
       @hide_cursor = Cursor.new
@@ -75,10 +73,7 @@ module Rain
     # │  s  │  75 │     │        Then sets a "250" delay for the Hide Cursor.
     # │  t  │  75 │     │
     # └─────┴─────┴─────┘
-    #
-    # TODO: Refactor "@colors" into an Effect that happens dynamically on render rather than stored as a column of data.
-    #       This will reduce the "Metrics/AbcSize" complexity.
-    def render(duration: nil) # rubocop:disable Metrics/AbcSize
+    def render(duration: nil)
       @show_cursor.increment(delays:, inputs:, duration:) do |index|
         prev_index = index.zero? ? @inputs.count - 1 : index - 1
         next_index = index + 1 >= @inputs.count ? 0 : index + 1
@@ -86,8 +81,6 @@ module Rain
         if @inputs[index]
           @outputs[index] = @inputs[index]
           @delays[index] = @config.fade_delay
-          @colors[prev_index] = @config.cell_color if @colors[prev_index]
-          @colors[index] = @outputs[next_index] ? @config.cell_color : @config.lead_color
           @inputs[index] = nil
         end
       end
@@ -130,7 +123,7 @@ module Rain
     # │o│   1. The minimum delay
     # │u│   2. The time elapsed between events divided by the number of cells
     # │t│
-    # │e│ ◀── A cursor moves to the next cell after a delay and colors the leading cell white.
+    # │e│ ◀── A cursor moves to the next cell after a delay.
     # └─┘
     def redraw_event(current_event:, past_event:)
       variable_delay = variable_delay(current_event:, past_event:)
@@ -171,7 +164,6 @@ module Rain
       @inputs = @inputs.fill(nil, old_index...cell_count)[0...cell_count]
       @outputs = @outputs.fill(nil, old_index...cell_count)[0...cell_count]
       @delays = @delays.fill(@config.min_delay, old_index...cell_count)[0...cell_count]
-      @colors = @colors.fill(@config.cell_color, old_index...cell_count)[0...cell_count]
     end
 
     def randomize_start_index
