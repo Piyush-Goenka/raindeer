@@ -6,6 +6,7 @@ require 'observers'
 require 'paint'
 
 require_relative '../support/config_loader'
+require_relative 'effects/color_effect'
 require_relative 'stream'
 
 module Rain
@@ -74,17 +75,17 @@ module Rain
       output = ''.dup
 
       (0...@screen_size[:row_count]).each do |row_index|
-        cell_outputs = []
-        cell_colors = []
+        row_outputs = []
 
         # Rendering streams can happen before redrawing streams, so @columns may not be populated yet.
         (0...column_count).each do |column_index|
-          cell_colors << (@columns[column_index].nil? ? nil : @columns[column_index].colors[row_index])
-          cell_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
+          row_outputs << (@columns[column_index].nil? ? nil : @columns[column_index].outputs[row_index])
         end
 
-        output << "\n" + cell_outputs.zip(cell_colors).map do |cell, color| # rubocop:disable Style/StringConcatenation
-          cell ? Paint[cell, color] : Paint[' ']
+        output << "\n" + row_outputs.map.with_index do |output, col_index| # rubocop:disable Style/StringConcatenation
+          @effects.reduce(output) do |out, effect|
+            effect.render(output: out, next_output: @columns[col_index].nil? ? nil : @columns[col_index].outputs[row_index + 1])
+          end
         end.join(' ')
       end
 
