@@ -7,6 +7,7 @@ module Rain
     def render(output:, next_output:, **)
       color = next_output ? @config.cell_color : @config.lead_color
 
+      return Paint[output, '#4ab7ff'] if @config.leet_keys.invert.key?(output)
       output ? Paint[output, color] : Paint[' ']
     end
   end
