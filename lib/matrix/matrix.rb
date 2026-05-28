@@ -5,9 +5,10 @@ require 'low_type'
 require 'observers'
 require 'paint'
 
-require_relative '../support/config_loader'
 require_relative 'effects/color_effect'
+require_relative 'effects/leet_effect'
 require_relative 'stream'
+require_relative '../support/config_loader'
 
 module Rain
   class Matrix
@@ -17,6 +18,7 @@ module Rain
     def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
       @event_pool = event_pool
       @config = config
+      @effects = [LeetEffect.new(config:), ColorEffect.new(config:)]
 
       @screen_size = nil
 
@@ -67,6 +69,8 @@ module Rain
       stream
     end
 
+    # Where streams become the final output on the matrix.
+    # @columns - A column contains a particular stream
     def render_streams(show_output: true) # rubocop:disable Metrics/AbcSize
       @streams.each_value(&:render)
 
@@ -84,7 +88,8 @@ module Rain
 
         output << "\n" + row_outputs.map.with_index do |output, col_index| # rubocop:disable Style/StringConcatenation
           @effects.reduce(output) do |out, effect|
-            effect.render(output: out, next_output: @columns[col_index].nil? ? nil : @columns[col_index].outputs[row_index + 1])
+            next_output = @columns[col_index].nil? ? nil : @columns[col_index].outputs[row_index + 1]
+            effect.render(output: out, next_output:, x: row_index, y: col_index)
           end
         end.join(' ')
       end
