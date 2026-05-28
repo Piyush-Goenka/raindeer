@@ -24,8 +24,8 @@ module Rain
       character = output.downcase
       last_character = @last_output.dig(x, y)
 
-      return @leet_numbers[character] if @leet_letters.key?(last_character) && rand < 0.99
-      return @leet_numbers[character] if @leet_numbers.key?(character) && rand < 0.0025
+      return @leet_numbers[character] if @leet_letters.key?(last_character) && rand < 0.75
+      return @leet_numbers[character] if @leet_numbers.key?(character) && rand < 0.005
         
       output
     end
