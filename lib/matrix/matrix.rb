@@ -15,7 +15,7 @@ module Rain
     include LowType
     include Observers
 
-    def initialize(event_pool:, config: ConfigLoader.load('./config/matrix.yaml'))
+    def initialize(event_pool:, config: ConfigLoader.load('matrix.yaml'))
       @event_pool = event_pool
       @config = config
       @effects = [LeetEffect.new(config:), ColorEffect.new(config:)]
