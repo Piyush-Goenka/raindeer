@@ -45,5 +45,6 @@ module Raindeer
   end
 end
 
+require 'antlers' # LowLoad supports antlers but doesn't make it a hard dependency.
 require 'lowload'
 LowLoad.dirload(File.expand_path('../system', __dir__))
