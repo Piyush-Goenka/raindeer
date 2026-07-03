@@ -6,6 +6,7 @@ require 'providers'
 require_relative 'route'
 require_relative 'route_event'
 require_relative 'trie'
+require_relative 'wildcard_route_event'
 
 module Rain
   class Router
@@ -58,8 +59,13 @@ module Rain
       @trie.match(path: event.request.path.delete_suffix('/')).each do |route_event|
         response_event = route_event.trigger
       end
-
       return response_event if response_event
+
+      if @routes['/*']
+        route = Route.new(path: event.request.path, verbs: @routes['/*'].verbs)
+        wildcard_event = WildcardRouteEvent.trigger(key: '/*', action: :render, route:)
+        return wildcard_event if wildcard_event
+      end
 
       Low::Events::StatusEvent.trigger(status: Low::Types::Status[404], request: event.request)
     end

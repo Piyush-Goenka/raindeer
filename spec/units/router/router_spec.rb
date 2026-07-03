@@ -7,56 +7,87 @@ require_relative '../../../lib/router/router'
 require_relative '../../factories/request_factory'
 
 RSpec.describe Rain::Router do
-  subject(:rain_router) { described_class.new }
+  subject(:router) { described_class.new }
 
   before do
     Observers::Keys.reset
   end
 
   describe '#route' do
+    it 'creates wildcard route' do
+      router.get '*'
+
+      expect(router.routes['*']).to have_attributes(path: '*', verbs: ['GET'])
+    end
+
     it 'creates combinatorial routes' do
-      rain_router.get '/users' do
-        rain_router.get '/:id'
+      router.get '/users' do
+        router.get '/:id'
       end
 
-      expect(rain_router.routes['/users']).to have_attributes(path: '/users', verbs: ['GET'])
-      expect(rain_router.routes['/users/:id']).to have_attributes(path: '/users/:id', verbs: ['GET'])
+      expect(router.routes['/users']).to have_attributes(path: '/users', verbs: ['GET'])
+      expect(router.routes['/users/:id']).to have_attributes(path: '/users/:id', verbs: ['GET'])
     end
   end
 
   describe '#handle' do
     let(:request_event) { Low::Events::RequestEvent.new(request:) }
 
-    before do
-      class MockObserver
-        include Observers
-        observe '/users'
-        observe Low::Types::Status[404]
-        def self.render = nil
+    context 'with "/*" route' do
+      let(:request) { Low::Support::RequestFactory.request(path: '/anything') }
+
+      before do
+        router.get '/*'
       end
 
-      allow(MockObserver).to receive(:render)
+      context 'with "/*" observer' do
+        before do
+          class WildcardRouteObserver
+            include Observers
+            observe '/*'
+          end
+
+          allow(WildcardRouteObserver).to receive(:render).and_return('mock response')
+        end
+
+        it 'triggers route event on observer' do
+          expect(router.handle(event: request_event)).to be('mock response')
+          expect(WildcardRouteObserver).to have_received(:render).with({ event: an_instance_of(Rain::WildcardRouteEvent) })
+        end
+      end
     end
 
-    context 'when the route is found' do
+    context 'with "/users" observer' do
       let(:request) { Low::Support::RequestFactory.request(path: '/users') }
 
       before do
-        rain_router.get '/users'
+        class UsersRouteObserver
+          include Observers
+          observe '/users'
+          observe Low::Types::Status[404]
+        end
+
+        allow(UsersRouteObserver).to receive(:render).and_return(true)
       end
 
-      it 'triggers route event on observer' do
-        rain_router.handle(event: request_event)
-        expect(MockObserver).to have_received(:render).with({ event: an_instance_of(Rain::RouteEvent) })
+      context 'with "/users" route' do
+        before do
+          router.get '/users'
+        end
+        
+        it 'triggers route event on observer' do
+          router.handle(event: request_event)
+          expect(UsersRouteObserver).to have_received(:render).with({ event: an_instance_of(Rain::RouteEvent) })
+        end
       end
-    end
 
-    context 'when the route is missing' do
-      let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
+      context 'without /users route' do
+        let(:request) { Low::Support::RequestFactory.request(path: '/missing-path') }
 
-      it 'triggers status event on observer' do
-        rain_router.handle(event: request_event)
-        expect(MockObserver).to have_received(:render).with({ event: an_instance_of(Low::Events::StatusEvent) })
+        it 'triggers status event on observer' do
+          router.handle(event: request_event)
+          expect(UsersRouteObserver).to have_received(:render).with({ event: an_instance_of(Low::Events::StatusEvent) })
+        end
       end
     end
   end
