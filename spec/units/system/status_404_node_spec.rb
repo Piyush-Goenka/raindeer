@@ -3,6 +3,7 @@
 require 'observers'
 require 'low_node'
 require 'lowload'
+require 'antlers' # lownode doesn't automatically require antlers.
 
 LowLoad.lowload(File.join(Dir.pwd, '/lib/system/status_404_node.rbx'))
 LowLoad.lowload(File.join(Dir.pwd, '/lib/system/layouts/layout_node.rbx'))
