@@ -27,6 +27,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'ostruct'
   spec.add_dependency 'paint'
+  spec.add_dependency 'kramdown'
+  spec.add_dependency 'kramdown-parser-gfm'
 
   spec.add_dependency 'low_event', '~> 0.5'
   spec.add_dependency 'lowload', '~> 0.5'

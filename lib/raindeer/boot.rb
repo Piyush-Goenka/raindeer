@@ -6,8 +6,13 @@ require 'low_type'
 require 'observers'
 require 'providers'
 
+require_relative '../pages/pages'
 require_relative '../router/router'
 require_relative '../support/config_loader'
+
+#################################################
+# INTERNAL API
+#################################################
 
 module Rain
   env = {
@@ -37,6 +42,10 @@ module Rain
   end
 end
 
+#################################################
+# EXTERNAL API
+#################################################
+
 module Raindeer
   class << self
     def router(&block)
@@ -45,6 +54,20 @@ module Raindeer
   end
 end
 
+#################################################
+# USER CODE
+#################################################
+
 require 'antlers' # LowLoad supports antlers but doesn't make it a hard dependency.
 require 'lowload'
-metadata = LowLoad.dirload(File.expand_path('../system', __dir__))
+LowLoad.dirload(File.expand_path('../system', __dir__))
+
+application_path = File.expand_path('app', Dir.pwd)
+return unless Dir.exist?(application_path)
+
+metadata = LowLoad.dirload(application_path)
+return unless Dir.exist?(File.expand_path('pages', application_path))
+
+Providers.define('rain.pages', eager: true) do
+  Rain::Pages.new(url_paths: metadata.url_paths)
+end
