@@ -51,7 +51,7 @@ Raindeer glues [Low](https://github.com/low-rb) components together with a route
 
 Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people learning a new framework; they shouldn't have to learn much. One way to do this is by removing things:
 
-- **Namespaces** - Namespaces are confusing to new developers and the `::` syntax just doesn't look right. You can add them in later and they are still used internally by Raindeer
+- **Namespaces** - Namespaces are confusing to new developers and the `::` syntax just doesn't look right. They are optional (and still used internally by Raindeer)
 - **Heredoc** - If you want to write multi-line HTML then you can just be able to write it directly into a LowNode via RBX. Raindeer lets you do this via [LowLoad](https://github.com/low-rb/lowload)
 - **MVC** - You shouldn't have to learn the 5 exact locations to put files in and know the order in which they are called by the framework. Just `observe` an event in a [node](https://github.com/low-rb/low_node) and render output, or call more code
 
