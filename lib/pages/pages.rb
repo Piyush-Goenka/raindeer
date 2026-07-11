@@ -2,6 +2,7 @@
 
 require 'kramdown'
 require 'kramdown-parser-gfm'
+require 'rouge'
 
 module Rain
   class Pages
@@ -15,7 +16,7 @@ module Rain
 
     def render(file_path:)
       text = File.read(file_path).sub(/\A---\s*[\r\n]+.*?\s*[\r\n]+---\s*[\r\n]+/m, '')
-      Kramdown::Document.new(text, input: 'GFM').to_html
+      html = Kramdown::Document.new(text, input: 'GFM', syntax_highlighter: 'rouge').to_html
     end
   end
 end
