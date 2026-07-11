@@ -10,13 +10,39 @@ module Rain
 
     attr_reader :url_paths
 
-    def initialize(url_paths:)
-      @url_paths = url_paths
+    Result = Struct.new(:metadata, :html)
+
+    def initialize(metadata:)
+      @url_paths = metadata.url_paths
     end
 
-    def render(file_path:)
-      text = File.read(file_path).sub(/\A---\s*[\r\n]+.*?\s*[\r\n]+---\s*[\r\n]+/m, '')
+    def process(file_path:)
+      metadata, text = parse_file(file_path:)
       html = Kramdown::Document.new(text, input: 'GFM', syntax_highlighter: 'rouge').to_html
+
+      Result.new(metadata, html)
+    end
+
+    private
+
+    def parse_file(file_path:)
+      dash_lines = []
+      data_lines = []
+      text_lines = []
+
+      File.foreach(file_path).with_index do |line, index|
+        if line.strip == '---' && dash_lines.count < 2
+          dash_lines << line
+          next
+        elsif dash_lines.count > 0 && dash_lines.count < 2
+          data_lines << line
+          next
+        end
+
+        text_lines << line
+      end
+
+      [YAML.safe_load(data_lines.join, symbolize_names: true), text_lines.join.strip]
     end
   end
 end
