@@ -39,3 +39,10 @@ class Array
     end.join(' ')
   end
 end
+
+class String
+  # Delete whitespace at the start of a new line, then delete new lines.
+  def squish
+    gsub(/^\s*/, '').delete("\n")
+  end
+end
