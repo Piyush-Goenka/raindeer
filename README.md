@@ -11,6 +11,8 @@ Raindeer is a new web framework using the dynamic features and latest async impr
 
 ## Components
 
+See: 🎬 **[Video Overview](https://www.youtube.com/watch?v=p9E5INAwK_4)** of Raindeer
+
 ### LowType
 
 [LowType](https://github.com/low-rb/low_type) introduces the concept of "type expressions", allowing you to add inline types in your code, only when you need them. LowType is an elegant type checking system with the most minimal DSL possible. It looks like if Ruby had native types; `def method(var: String)`.
