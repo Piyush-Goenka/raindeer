@@ -1,10 +1,11 @@
 PATH
   remote: ../antlers
   specs:
-    antlers (0.8.1)
+    antlers (0.8.2)
       erb
       low_event
       lowkey
+      plugs
 
 PATH
   remote: ../expressions
@@ -68,6 +69,11 @@ PATH
     observers (0.8.0)
 
 PATH
+  remote: ../plugs
+  specs:
+    plugs (0.4.0)
+
+PATH
   remote: ../providers
   specs:
     providers (0.6.2)
@@ -90,6 +96,7 @@ PATH
       observers
       ostruct
       paint
+      plugs
       providers
       rouge
 
@@ -232,6 +239,7 @@ DEPENDENCIES
   lowkey!
   lowload!
   observers!
+  plugs!
   protocol-http
   providers!
   raindeer!
@@ -241,7 +249,7 @@ DEPENDENCIES
   timecop
 
 CHECKSUMS
-  antlers (0.8.1)
+  antlers (0.8.2)
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   async (2.42.0) sha256=536078293b8c95d5b5679fa01bf7d2458bcc65cd46dec2c4cb3580feaeb965c6
   async-http (0.95.1) sha256=0c3dd458c204c06d5c4b20b01bbec4794a1203db627fb2ce536e1799ec14786c
@@ -278,6 +286,7 @@ CHECKSUMS
   paint (2.3.0) sha256=327d623e4038619d5bd99ae5db07973859cd78400c7f0329eea283cef8e83be5
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
+  plugs (0.4.0)
   pp (0.6.4) sha256=dfcb0fce700c41456265922884f9fe195d7fbb0674a3578e6c0f69588e82b570
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
   prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85

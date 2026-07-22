@@ -41,5 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'antlers'
   spec.add_dependency 'expressions'
   spec.add_dependency 'observers'
+  spec.add_dependency 'plugs'
   spec.add_dependency 'providers'
 end
