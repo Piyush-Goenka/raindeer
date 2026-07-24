@@ -10,7 +10,9 @@ module Rain
     end
 
     def render(template:)
-      ast = Antlers.ast(template:, elements: Antlers::Elements[:html, :prop] + Rain::Elements[:toc])
+      return template unless template.include?('<{') || template.include?('{')
+
+      ast = Antlers.ast(template:, elements: Antlers::Elements[:html, :prop, :var] + Rain::Elements[:toc])
 
       Antlers.render(ast:, current_binding: binding)
     end
