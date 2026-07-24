@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'antlers'
+require 'nokogiri'
 
 module Rain
   class TOCNode < Antlers::LeafNode
@@ -11,9 +12,17 @@ module Rain
     end
 
     def render(current_binding: nil, parent_binding: nil, slot_node: nil)
-      output = "<div id=\"toc\">\n"
-      output += "</div>\n"
-      output
+      doc = Nokogiri::HTML(@template)
+
+      output = <<~HTML
+        <ul id="toc">
+          <h2>Table of contents</h2>
+
+          #{doc.css('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').map { |h|
+            "<li><a class='#{h.name}' href='\##{h['id']}'>#{h.text.strip}</a></li>"
+          }.join("\n")}
+        </ul>
+      HTML
     end
 
     class << self

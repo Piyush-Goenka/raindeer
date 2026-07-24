@@ -22,6 +22,7 @@ module Rain
     def process(file_path:)
       metadata, markdown = parse_file(file_path:)
       template = Kramdown::Document.new(markdown, input: 'GFM', syntax_highlighter: 'rouge').to_html
+      template = template.gsub('&lt;{', '<{').gsub('}&gt;', '}>')
       raindown = @raindown.render(template:)
 
       Result.new(metadata, raindown)
