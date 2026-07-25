@@ -4,6 +4,8 @@ require 'kramdown'
 require 'kramdown-parser-gfm'
 require 'rouge'
 
+require_relative 'raindown/raindown'
+
 module Rain
   class Pages
     include LowType
@@ -14,13 +16,16 @@ module Rain
 
     def initialize(metadata:)
       @url_paths = metadata.url_paths
+      @raindown = Raindown.new(metadata:)
     end
 
     def process(file_path:)
-      metadata, text = parse_file(file_path:)
-      html = Kramdown::Document.new(text, input: 'GFM', syntax_highlighter: 'rouge').to_html
+      metadata, markdown = parse_file(file_path:)
+      template = Kramdown::Document.new(markdown, input: 'GFM', syntax_highlighter: 'rouge').to_html
+      template = template.gsub('&lt;{', '<{').gsub('}&gt;', '}>')
+      raindown = @raindown.render(template:)
 
-      Result.new(metadata, html)
+      Result.new(metadata, raindown)
     end
 
     private

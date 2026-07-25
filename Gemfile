@@ -17,7 +17,8 @@ group :development do
     'antlers' => '../antlers',
     'expressions' => '../expressions',
     'observers' => '../observers',
-    'providers' => '../providers'
+    'plugs' => '../plugs',
+    'providers' => '../providers',
   }
 
   local_gems.each do |name, relative_path|
