@@ -15,15 +15,14 @@ module Rain
       doc = Nokogiri::HTML(@template)
 
       output = <<~HTML
-        <div id="toc">
-          <h2>Table of contents</h2>
-
+        <details id="toc" open>
+          <summary>Table of contents</summary>
           <ul>
             #{doc.css('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').map { |h|
               "<li class='#{h.name}'><a href='\##{h['id']}'>#{h.text.strip}</a></li>"
             }.join("\n")}
           </ul>
-        </div>
+        </details>
       HTML
     end
 
