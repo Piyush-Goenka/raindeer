@@ -27,8 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'ostruct'
   spec.add_dependency 'paint'
-  spec.add_dependency 'kramdown'
-  spec.add_dependency 'kramdown-parser-gfm'
+  spec.add_dependency 'commonmarker'
   spec.add_dependency 'rouge'
   spec.add_dependency 'nokogiri'
 

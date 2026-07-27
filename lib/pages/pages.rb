@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'kramdown'
-require 'kramdown-parser-gfm'
-require 'rouge'
-
 require_relative 'raindown/raindown'
 
 module Rain
@@ -21,9 +17,7 @@ module Rain
 
     def process(file_path:)
       metadata, markdown = parse_file(file_path:)
-      template = Kramdown::Document.new(markdown, input: 'GFM', syntax_highlighter: 'rouge').to_html
-      template = template.gsub('&lt;{', '<{').gsub('}&gt;', '}>')
-      raindown = @raindown.render(template:)
+      raindown = @raindown.render(markdown:)
 
       Result.new(metadata, raindown)
     end

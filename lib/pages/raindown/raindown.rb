@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'commonmarker'
 require 'antlers/elements'
 require_relative 'elements'
 
@@ -9,10 +10,22 @@ module Rain
       @metadata = metadata
     end
 
-    def render(template:)
+    def render(markdown:)
+      template = markdown.gsub('<{', '<!-- ANTLERS').gsub('}>', 'ANTLERS -->')
+
+      doc = Commonmarker.parse(template)
+      doc.walk do |node|
+        if node.type == :code || node.type == :code_block
+          node.string_content = node.string_content.gsub('<!-- ANTLERS', '<{').gsub('ANTLERS -->', '}>')
+        end
+      end
+
+      template = doc.to_html(options: { render: { unsafe: true } })
+      template = template.gsub('<!-- ANTLERS', '<{').gsub('ANTLERS -->', '}>')
+
       return template unless template.include?('<{') || template.include?('{')
 
-      ast = Antlers.ast(template:, elements: Antlers::Elements[:html, :prop, :var] + Rain::Elements[:toc])
+      ast = Antlers.ast(template:, elements: Antlers::Elements[:html, :prop] + Rain::Elements[:toc])
 
       Antlers.render(ast:, current_binding: binding)
     end
