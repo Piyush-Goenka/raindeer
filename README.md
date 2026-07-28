@@ -6,6 +6,8 @@
 <a href="https://github.com/raindeer-rb/raindeer" title="GitHub"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub repo" height="18"></a>
 <a href="https://codeberg.org/raindeer/raindeer" title="Codeberg"><img src="https://img.shields.io/badge/Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white" alt="Codeberg repo" height="18"></a>
 <a href="https://discord.gg/UBex4JQgnX"><img alt="Discord" src="https://img.shields.io/discord/1501858220224937997?logo=discord" height="18"></a>
+<a href="https://www.rubyforum.org/tag/raindeer"><img alt="Ruby Users Forum" src="https://img.shields.io/discourse/topics?server=https%3A%2F%2Fwww.rubyforum.org&style=flat&logo=discourse&label=Ruby%20Users%20Forum" height="18"></a>
+
 
 Raindeer is a new web framework using the dynamic features and latest async improvements in Ruby + some weird ideas, to build a new breed of web application. Each Raindeer component can be used individually in your exisiting application, or all together as a cohesive framework. **Deer to be different.**
 
@@ -101,6 +103,10 @@ Look inside `lib/system` to see Raindeer's internal application, which you can u
 In the future the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) will be the better way to begin developing your own Raindeer application.
 
 Then in the far future we'll probably have an app generator command... could that future be you?
+
+## Community
+
+Join us in the `raindeer` tag on the [Ruby Users Forum](https://www.rubyforum.org/tag/raindeer).
 
 ## Contributing
 
