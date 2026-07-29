@@ -15,6 +15,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://codeberg.org/raindeer/raindeer/src/branch/main'
+  spec.metadata["mailing_list_uri"]   = "https://www.rubyforum.org/tag/raindeer"
 
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
