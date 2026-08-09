@@ -19,6 +19,7 @@ group :development do
     'observers' => '../observers',
     'plugs' => '../plugs',
     'providers' => '../providers',
+    'trees' => '../trees',
   }
 
   local_gems.each do |name, relative_path|

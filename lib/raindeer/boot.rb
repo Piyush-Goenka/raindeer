@@ -6,14 +6,14 @@ require 'low_type'
 require 'observers'
 require 'providers'
 
-require_relative '../router/router'
-require_relative '../support/config_loader'
+# File paths are relative to the directory where the process is run from, so the app can just require this boot file.
 
 #################################################
 # FRAMEWORK INTERNAL API
 #################################################
 
 module Rain
+  require_relative '../support/config_loader'
   env = {
     host: ENV.fetch('RAIN_HOST', nil),
     port: ENV.fetch('RAIN_PORT', nil),
@@ -22,8 +22,8 @@ module Rain
     matrix_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_MATRIX', nil)),
     mirror_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_MIRROR', nil))
   }
-
-  config = ConfigLoader.load('config.yaml', env)
+  config_path = File.expand_path('config/config.yaml', Dir.pwd)
+  config = ConfigLoader.load(config_path, env)
 
   Providers.define('rain.router') do
     require_relative '../router/router'

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require 'trees'
+require_relative 'static/static'
 
 module Rain
   module CLI
@@ -16,7 +19,7 @@ module Rain
       summary { 'Static site generation' }
 
       line('build') do
-        execute { puts 'yes' }
+        execute { Static.build(application_path: Dir.pwd) }
       end
     end
   end
