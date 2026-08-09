@@ -107,9 +107,9 @@ Join us in the `raindeer` tag on the [Ruby Users Forum](https://www.rubyforum.or
 ## Contributing
 
 Raindeer needs developer contributions around:
-- Database layer - SQL generation, performance, migrations
+- Database layer - [SQL generation](https://github.com/low-rb/low_data), performance, migrations
 - Deployment layer - Credential management, authentication
-- Tooling
+- Tooling - [CLI](https://github.com/raindeer-rb/raindeer/blob/main/lib/cli/cli.rb), [Static-site generation](https://raindeer.dev/docs/static)
 - Performance testing and fixing
 
-If you have a love for code first then AI second, please consider making a contribution.
+If you have a love for human-written code that's easy to understand then please consider [making a contribution](https://github.com/raindeer-rb/raindeer/issues/1).
