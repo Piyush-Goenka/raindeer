@@ -8,13 +8,17 @@ Gem::Specification.new do |spec|
   spec.authors = ['maedi']
   spec.email = ['maediprichard@gmail.com']
 
-  spec.summary = 'Deer to be different'
-  spec.description = 'A new Ruby framework. Coming soon...'
-  spec.homepage = 'https://codeberg.org/raindeer/raindeer'
-  spec.required_ruby_version = '>= 3.3.0'
+  spec.summary = "An event-driven and compositional web framework that's easy to use. Deer to be different."
+  spec.description = <<~TEXT
+    Raindeer is an event-driven framework using the dynamic features and latest async improvements in Ruby + some weird ideas, 
+    to build a new breed of web application. Each Raindeer component can be used individually in your exisiting application, 
+    or all together as a cohesive framework. Deer to be different.
+  TEXT
 
+  spec.required_ruby_version = '>= 3.3.0'
+  spec.homepage = 'https://github.com/raindeer-rb/raindeer'
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://codeberg.org/raindeer/raindeer/src/branch/main'
+  spec.metadata['source_code_uri'] = 'https://github.com/raindeer-rb/raindeer/src/branch/main'
   spec.metadata["mailing_list_uri"]   = "https://www.rubyforum.org/tag/raindeer"
 
   # Specify which files should be added to the gem when it is released.
