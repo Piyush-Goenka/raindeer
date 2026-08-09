@@ -65,9 +65,10 @@ application_path = File.expand_path('app', Dir.pwd)
 return unless Dir.exist?(application_path)
 
 metadata = LowLoad.dirload(application_path)
-return unless Dir.exist?(File.expand_path('pages', application_path))
 
-Providers.define('rain.pages', eager: true) do
-  require_relative '../pages/pages'
-  Rain::Pages.new(metadata:)
+if Dir.exist?(File.expand_path('pages', application_path))
+  Providers.define('rain.pages', eager: true) do
+    require_relative '../pages/pages'
+    Rain::Pages.new(metadata:)
+  end
 end
