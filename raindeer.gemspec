@@ -25,10 +25,10 @@ Gem::Specification.new do |spec|
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir.glob('lib/**/*').select { |f| File.file?(f) }
   end
-
   spec.require_paths = ['lib']
-  spec.bindir = 'exe'
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+
+  spec.bindir = 'bin'
+  spec.executables = ['rain']
 
   spec.add_dependency 'ostruct'
   spec.add_dependency 'paint'
