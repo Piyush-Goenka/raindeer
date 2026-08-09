@@ -8,6 +8,10 @@ module Rain
       execute { 'TODO' }
     end
 
+    line('server') do
+      execute { system('bin/server') }
+    end
+
     line('static') do
       summary { 'Static site generation' }
 

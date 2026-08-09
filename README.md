@@ -49,8 +49,6 @@ Raindeer glues [Low](https://github.com/low-rb) components together with a route
 
 ## Philosophy
 
-> 🙏 I don't want to be a priest. If you see any opinions here that are too preachy then please let me know. I want my opinions to be opinionless
-
 ### 🥚 Less is more
 
 Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people learning a new framework; they shouldn't have to learn much. One way to do this is by removing things:
@@ -97,7 +95,11 @@ end
 
 ## Getting Started
 
-Clone [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) and run `bin/server`.
+1. Clone [Raindeer Template](https://github.com/raindeer-rb/raindeer-template)
+2. Run `bundle install`
+3. Run `rain server`
+4. Visit http://127.0.0.1:4133/
+
 Soon we'll have a `rain new :app_name` generator command. Could that future be you? It's currently [stubbed](https://github.com/raindeer-rb/raindeer/blob/main/lib/cli/cli.rb).
 
 ## Community
