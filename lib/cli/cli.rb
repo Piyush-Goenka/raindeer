@@ -4,6 +4,10 @@ module Rain
   module CLI
     extend Trees
 
+    line('new :app_name') do |app_name|
+      execute { 'TODO' }
+    end
+
     line('static') do
       summary { 'Static site generation' }
 

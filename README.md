@@ -97,12 +97,8 @@ end
 
 ## Getting Started
 
-Currently the best way to get a feel for Raindeer is to clone this repo and run `bin/server`.
-Look inside `lib/system` to see Raindeer's internal application, which you can use as a template for your own application.
-
-In the future the [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) will be the better way to begin developing your own Raindeer application.
-
-Then in the far future we'll probably have an app generator command... could that future be you?
+Clone [Raindeer Template](https://github.com/raindeer-rb/raindeer-template) and run `bin/server`.
+Soon we'll have a `rain new :app_name` generator command. Could that future be you? It's currently [stubbed](https://github.com/raindeer-rb/raindeer/blob/main/lib/cli/cli.rb).
 
 ## Community
 
