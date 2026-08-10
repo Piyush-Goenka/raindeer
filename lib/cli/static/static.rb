@@ -3,14 +3,75 @@
 require 'antlers'
 require 'lowload'
 
+require 'async'
+require 'async/http/internet'
+require 'fileutils'
+
 module Rain
   module CLI
     module Static
       extend self
 
+      Result = Data.define(:path, :html)
+
       def build(application_path:)
         metadata = LowLoad.dirload(File.expand_path('app', application_path))
-        # TODO: Use metadata.url_paths to HTTP Request and export the response to a build folder of HTML.
+
+        build_path = File.expand_path('build', application_path)
+        FileUtils.rm_rf(build_path)
+        FileUtils.mkdir_p(build_path)
+        FileUtils.cp_r(File.expand_path('public', application_path), File.expand_path('public', build_path))
+
+        request_paths(metadata:, application_path:).each do |result|
+          path = File.expand_path(result.path, build_path)
+          FileUtils.mkdir_p(path)
+          File.write(File.expand_path('index.html', path), result.html)
+        end
+      end
+
+      private
+
+      def request_paths(metadata:, application_path:)
+        tasks = metadata.url_paths.keys.compact.map do |file_path|
+          Async do
+            request_path = request_path(application_path:, file_path:)
+            request_url = endpoint + request_path
+
+            response = client.get(request_url)
+            response_html = response.read
+            response.close
+
+            Result.new(path: request_path, html: response_html)
+          end
+        end
+
+        tasks.map(&:result)
+      end
+
+      def request_path(application_path:, file_path:)
+        file_path.delete_prefix("#{application_path}/app/pages/")
+      end
+
+      def client
+        Async::HTTP::Internet.new
+      end
+
+      def endpoint
+        "http://#{config.host}:#{config.port}/"
+      end
+
+      def config
+        env = {
+          host: ENV.fetch('RAIN_HOST', nil),
+          port: ENV.fetch('RAIN_PORT', nil),
+          web_root: ENV.fetch('RAIN_WEB_ROOT', nil),
+          debug_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_DEBUG', true)),
+          matrix_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_MATRIX', nil)),
+          mirror_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_MIRROR', nil)),
+        }
+        config_path = File.expand_path('config/config.yaml', Dir.pwd)
+
+        ConfigLoader.load(config_path, env)
       end
     end
   end

@@ -12,6 +12,8 @@ require 'providers'
 #################################################
 
 module Rain
+  require_relative '../support/config_loader'
+
   Providers.define('rain.router') do
     require_relative '../router/router'
     Router.new
