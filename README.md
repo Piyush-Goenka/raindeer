@@ -51,15 +51,15 @@ Raindeer glues [Low](https://github.com/low-rb) components together with a route
 
 ### 🥚 Less is more
 
-Anything that just "is how it is" can be made simpler. It may take lots of time to find a way how but it's worth it. We should really care about people learning a new framework; they shouldn't have to learn much. One way to do this is by removing things:
+Anything that just "is how it is" can be made simpler. It can take a lot of time to find a way how but it's worth it. Having grown up dumb; we should really care about people learning new things. We should be simplifying the foundations themselves rather than providing a simple explanation over the hidden complexity. People shouldn't have to learn much and one way to do this is by removing things:
 
-- **Namespaces** - Namespaces are confusing to new developers and the `::` syntax just doesn't look right. They are optional (and still used internally by Raindeer)
-- **Heredoc** - If you want to write multi-line HTML then you can just be able to write it directly into a LowNode via RBX. Raindeer lets you do this via [LowLoad](https://github.com/low-rb/lowload)
-- **MVC** - You shouldn't have to learn the 5 exact locations to put files in and know the order in which they are called by the framework. Just `observe` an event in a [node](https://github.com/low-rb/low_node) and render output, or call more code
+- **Namespaces** - Lexical scopes can be confusing and the `::` syntax just doesn't look right. They are optional (and still used internally by Raindeer)
+- **Heredoc** - Multi-line HTML can be written directly inside a Ruby class via RBX. See [LowLoad](https://github.com/low-rb/lowload)
+- **MVC** - Arbitrary files in arbitrary locations called in an arbitrary order. Just `observe` an event in a [node](https://github.com/low-rb/low_node) and render output, or call more code
 
-### 🧩 The Pattern Anti-Pattern
+### 🧩 The Framework Anti-Pattern
 
-Developers will use patterns applicable to their application's domain that are different to the framework's patterns. This results in a tension between highly rigid framework patterns (MVC) and an application's. We shouldn't fight that but provide designated entities and events to glue the framework and the application together. Raindeer uses [LowNode](https://github.com/low-rb/low_node) to intercept the "request and response" layer then gets out of the way and let's the application structure itself from there.
+Developers will use patterns applicable to their application that are different to the framework's. This results in a tension between highly rigid framework patterns (MVC) and an application's. We shouldn't fight this but provide compositional entities and events that glue the application together. Raindeer uses [LowNode](https://github.com/low-rb/low_node) to intercept the "request and response" layer then gets out of the way and let's the application structure itself from there.
 
 ### 👣 No build steps
 
