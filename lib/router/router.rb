@@ -56,7 +56,7 @@ module Rain
       response_event = nil
 
       # The last route event will render a response event which we want to return to the request event.
-      @trie.match(path: event.request.path.delete_suffix('/')).each do |route_event|
+      @trie.match(path: event.request.path).each do |route_event|
         response_event = route_event.trigger
       end
       return response_event if response_event
