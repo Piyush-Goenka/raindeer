@@ -8,10 +8,12 @@ module Rain
     extend Trees
 
     line('new :app_name') do |app_name|
+      summary { "Generates a Raindeer application with the specified name." }
       execute { 'TODO' }
     end
 
     line('server') do
+      summary { "Starts a Raindeer application. Once run visit http://127.0.0.1:4133" }
       execute { system('bin/server') }
     end
 
