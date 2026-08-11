@@ -70,7 +70,6 @@ module Rain
           mirror_mode: ConfigLoader.parse_boolean(ENV.fetch('RAIN_MIRROR', nil)),
         }
         config_path = File.expand_path('config/config.yaml', Dir.pwd)
-
         ConfigLoader.load(config_path, env)
       end
     end
