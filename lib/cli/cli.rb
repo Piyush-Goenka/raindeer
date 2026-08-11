@@ -15,12 +15,9 @@ module Rain
       execute { system('bin/server') }
     end
 
-    line('static') do
-      summary { 'Static site generation' }
-
-      line('build') do
-        execute { Static.build(application_path: Dir.pwd) }
-      end
+    line('build') do
+      summary { 'Exports your static site at "app/pages" to the "build" folder.' }
+      execute { Static.build(application_path: Dir.pwd) }
     end
   end
 end
