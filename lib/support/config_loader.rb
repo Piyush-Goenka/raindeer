@@ -7,7 +7,7 @@ module Rain
   class ConfigLoader
     class << self
       def load(file_path, overrides = {})
-        file_path = File.expand_path("../../../config/#{file_path}", __FILE__) unless File.exist?(file_path)
+        file_path = File.expand_path("config/#{file_path}", Dir.pwd) unless File.exist?(file_path)
         config_file = YAML.safe_load_file(file_path, permitted_classes: [Symbol], symbolize_names: true)
 
         # Environment variables override config file.
