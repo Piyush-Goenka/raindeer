@@ -8,7 +8,7 @@ module Rain
 
     attr_reader :url_paths
 
-    Result = Struct.new(:metadata, :html)
+    Page = Struct.new(:metadata, :html)
 
     def initialize(metadata:)
       @url_paths = metadata.url_paths
@@ -23,7 +23,7 @@ module Rain
       metadata, markdown = parse_file(file_path:)
       raindown = @raindown.render(markdown:)
 
-      Result.new(metadata, raindown)
+      Page.new(metadata, raindown)
     end
 
     private
