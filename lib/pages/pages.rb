@@ -15,7 +15,11 @@ module Rain
       @raindown = Raindown.new(metadata:)
     end
 
-    def process(file_path:)
+    def page(path:)
+      path = '/home' if path == '/'
+      url_path = File.expand_path("app/pages#{path}", Dir.pwd)
+      file_path = @url_paths[url_path] || return
+
       metadata, markdown = parse_file(file_path:)
       raindown = @raindown.render(markdown:)
 
