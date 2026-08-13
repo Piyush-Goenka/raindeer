@@ -9,7 +9,6 @@ bin/server
 ```
 
 ℹ️ In iTerm you may need to press `Option + A` to accept screen refreshing.
-ℹ️ In Ghostty the matrix flickers a little but it adds to the effect. Ghostty it's only 10fps!
 
 ## Development
 
@@ -46,7 +45,7 @@ binding.pry # Debug mode requires pry for you
 ## Testing
 
 Run all tests with `bundle exec rspec`.
-Add the `SHOW_OUTPUT=1` flag to see the terminal output of some of the feature tests.
+Add the `SHOW_OUTPUT=1` flag to see the terminal output from some of the feature tests.
 
 ## Contributing
 
