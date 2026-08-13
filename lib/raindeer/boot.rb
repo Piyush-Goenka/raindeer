@@ -45,13 +45,7 @@ end
 # FRAMEWORK EXTERNAL API
 #################################################
 
-module Raindeer
-  class << self
-    def router(&block)
-      Providers['rain.router'].instance_eval(&block)
-    end
-  end
-end
+require_relative 'raindeer'
 
 #################################################
 # APPLICATION CODE
