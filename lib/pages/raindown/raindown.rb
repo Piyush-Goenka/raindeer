@@ -5,10 +5,8 @@ require 'antlers/elements'
 require_relative 'elements'
 
 module Rain
-  class Raindown
-    def initialize(metadata: {})
-      @metadata = metadata
-    end
+  module Raindown
+    extend self
 
     def render(markdown:)
       template = markdown.gsub('<{', '<!-- ANTLERS').gsub('}>', 'ANTLERS -->')
