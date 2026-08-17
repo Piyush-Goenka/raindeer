@@ -75,7 +75,7 @@ module Rain
         segment
       end.compact.join('/')
 
-      File.dirname(url_path).delete_prefix('.')
+      url_path.delete_suffix(File.extname(url_path))
     end
 
     def tag(type:, tag:, file_path:)
