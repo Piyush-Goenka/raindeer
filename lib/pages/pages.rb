@@ -29,6 +29,16 @@ module Rain
       Page.new(metadata, raindown)
     end
 
+    def list(file_paths:)
+      sorted_paths = file_paths.sort_by { order(it) }
+
+      sorted_paths.map do |file_path|
+        metadata, markdown = parse_file(file_path:)
+        metadata[:content] = markdown.empty? ? '' : Raindown.render(markdown:)
+        OpenStruct.new(metadata)
+      end
+    end
+
     def tagged(**typed_tags)
       results = []
 
