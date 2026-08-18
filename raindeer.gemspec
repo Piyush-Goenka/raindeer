@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nokogiri'
 
   spec.add_dependency 'low_event', '~> 0.5'
-  spec.add_dependency 'lowload', '~> 0.5'
+  spec.add_dependency 'lowload', '~> 0.6.2'
   spec.add_dependency 'low_loop', '~> 0.6'
   spec.add_dependency 'low_node'
   spec.add_dependency 'low_state'
