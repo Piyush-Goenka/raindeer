@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'trees'
-require_relative 'static/static'
+require_relative 'static'
 
 module Rain
   module CLI

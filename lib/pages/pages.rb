@@ -11,7 +11,7 @@ module Rain
     Page = Struct.new(:metadata, :html)
 
     def initialize(metadata:)
-      @file_paths = [*metadata.file_types['md'], *metadata.file_types['markdown']]
+      @file_paths = metadata.file_types.values_at('md', 'rd', 'markdown', 'raindown').flat_map { it }.compact
       @url_paths = {}
       @tags = {}
 
@@ -53,8 +53,8 @@ module Rain
 
     def process_files
       @file_paths.each do |file_path|
-        url_path = url_path(file_path:)
-        @url_paths[url_path] = file_path
+        url_path = Pages.url_path(file_path:)
+        @url_paths[url_path] = file_path unless url_path.empty?
 
         tag(type: :folder, tag: folders(file_path:).last, file_path:)
 
@@ -63,19 +63,6 @@ module Rain
           tag(type:, tag:, file_path:)
         end        
       end
-    end
-
-    # Remove segments beginning with "_" and ending with "/" or "-".
-    # Example: app/pages/docs/_basics/_1-getting-started.md => app/pages/docs/getting-started.md
-    def url_path(file_path:)
-      url_path = file_path.split('/').map do |segment|
-        next segment.sub(/^_\d\W/, '') if segment.sub(/^_\d\W/, '') != segment
-        next nil if segment.sub(/^_/, '') != segment
-
-        segment
-      end.compact.join('/')
-
-      url_path.delete_suffix(File.extname(url_path))
     end
 
     def tag(type:, tag:, file_path:)
@@ -125,6 +112,21 @@ module Rain
       end
 
       [YAML.safe_load(data_lines.join, symbolize_names: true), text_lines.join.strip]
+    end
+
+    class << self
+      # Remove segments beginning with "_" and ending with "/" or "-".
+      # Example: app/pages/docs/_basics/_1-getting-started.md => app/pages/docs/getting-started.md
+      def url_path(file_path:)
+        url_path = file_path.split('/').map do |segment|
+          next segment.sub(/^_\d\W/, '') if segment.sub(/^_\d\W/, '') != segment
+          next nil if segment.sub(/^_/, '') != segment
+
+          segment
+        end.compact.join('/')
+
+        url_path.delete_suffix(File.extname(url_path))
+      end
     end
   end
 end
