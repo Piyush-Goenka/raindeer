@@ -7,12 +7,14 @@ require 'async'
 require 'async/http/internet'
 require 'fileutils'
 
+require_relative '../pages/pages'
+
 module Rain
   module CLI
     module Static
       extend self
 
-      Result = Data.define(:path, :html)
+      RequestResult = Data.define(:path, :html)
 
       def build(application_path:)
         metadata = LowLoad.dirload(File.expand_path('app', application_path))
@@ -32,7 +34,12 @@ module Rain
       private
 
       def request_paths(metadata:, application_path:)
-        tasks = metadata.url_paths.keys.compact.map do |file_path|
+        file_paths = metadata.file_types.values_at('md', 'rd', 'markdown', 'raindown').flat_map { it }.compact
+        url_paths = file_paths.map { |file_path| Rain::Pages.url_path(file_path:) }.compact
+        # Skip files that became solely metadata due to underscores hiding the entire file path.
+        url_paths.reject! { |url_path| url_path == "#{application_path}/app/pages" }
+
+        tasks = url_paths.map do |file_path|
           Async do
             request_path = request_path(application_path:, file_path:)
             request_url = endpoint + request_path
@@ -41,7 +48,7 @@ module Rain
             response_html = response.read
             response.close
 
-            Result.new(path: request_path, html: response_html)
+            RequestResult.new(path: request_path, html: response_html)
           end
         end
 
